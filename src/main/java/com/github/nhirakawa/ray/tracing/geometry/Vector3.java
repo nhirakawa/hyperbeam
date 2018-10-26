@@ -24,6 +24,10 @@ public class Vector3 extends Vector3D {
     return from(super.add(vector));
   }
 
+  public Vector3 subtract(Vector3 vector) {
+    return from(super.subtract(vector));
+  }
+
   public Vector3 multiply(Vector3 vector) {
     double x = getX() * vector.getX();
     double y = getY() * vector.getY();
