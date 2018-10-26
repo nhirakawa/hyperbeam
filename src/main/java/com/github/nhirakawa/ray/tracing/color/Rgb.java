@@ -1,4 +1,4 @@
-package com.github.nhirakawa.ray.tracing;
+package com.github.nhirakawa.ray.tracing.color;
 
 public class Rgb {
 

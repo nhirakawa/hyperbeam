@@ -21,7 +21,7 @@ public class Vector3 extends Vector3D {
   }
 
   public Vector3 add(Vector3 vector) {
-    return from(add(vector));
+    return from(super.add(vector));
   }
 
   public Vector3 multiply(Vector3 vector) {
@@ -40,16 +40,20 @@ public class Vector3 extends Vector3D {
     return new Vector3(x, y, z);
   }
 
-  public Vector3 scalarMultiply(double scalar, Vector3 vector) {
-    return from(vector.scalarMultiply(scalar));
+  public Vector3 scalarMultiply(double scalar) {
+    return from(super.scalarMultiply(scalar));
   }
 
   public Vector3 scalarDivide(double scalar, Vector3 vector) {
-    return vector.scalarMultiply(1 / scalar, vector);
+    return vector.scalarMultiply(1 / scalar);
   }
 
   public Vector3 cross(Vector3 vector) {
     return from(crossProduct(vector));
+  }
+
+  public Vector3 unit() {
+    return from(normalize());
   }
 
   private static Vector3 from(Vector3D vector) {
