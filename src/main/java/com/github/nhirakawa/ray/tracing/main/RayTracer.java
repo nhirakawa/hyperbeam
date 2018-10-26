@@ -73,8 +73,15 @@ public class RayTracer {
   }
 
   private static Vector3 color(Ray ray) {
-    if (collidesWithSphere(new Vector3(0, 0, -1), 0.5, ray)) {
-      return new Vector3(1, 0, 0);
+    double sphereCollision = collideWithSphere(new Vector3(0, 0, -1), 0.5, ray);
+
+    if (sphereCollision > 0) {
+      Vector3 normal = ray.getPointAtParameter(sphereCollision).subtract(new Vector3(0, 0, -1)).unit();
+      double x = normal.getX() + 1;
+      double y = normal.getY() + 1;
+      double z = normal.getZ() + 1;
+
+      return new Vector3(x, y, z).scalarMultiply(0.5);
     }
 
     Vector3 unitDirection = ray.getDirection().unit();
@@ -86,7 +93,7 @@ public class RayTracer {
     return a.add(b);
   }
 
-  private static boolean collidesWithSphere(Vector3 sphereCenter, double radius, Ray ray) {
+  private static double collideWithSphere(Vector3 sphereCenter, double radius, Ray ray) {
     Vector3 oc = ray.getOrigin().subtract(sphereCenter);
     double a = ray.getDirection().dotProduct(ray.getDirection());
     double b = 2 * oc.dotProduct(ray.getDirection());
@@ -94,7 +101,12 @@ public class RayTracer {
 
     double discriminant = (b * b) - (4 * a * c);
 
-    return discriminant > 0;
+    if (discriminant < 0) {
+      return -1;
+    } else {
+      return (-b - Math.sqrt(discriminant)) / (2 * a);
+    }
+
   }
 
 }
