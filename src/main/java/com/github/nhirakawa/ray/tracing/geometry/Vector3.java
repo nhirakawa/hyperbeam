@@ -48,8 +48,8 @@ public class Vector3 extends Vector3D {
     return from(super.scalarMultiply(scalar));
   }
 
-  public Vector3 scalarDivide(double scalar, Vector3 vector) {
-    return vector.scalarMultiply(1 / scalar);
+  public Vector3 scalarDivide(double scalar) {
+    return scalarMultiply(1 / scalar);
   }
 
   public Vector3 cross(Vector3 vector) {
