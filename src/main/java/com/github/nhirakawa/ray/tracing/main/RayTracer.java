@@ -5,15 +5,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
-import com.github.nhirakawa.ray.tracing.HitRecord;
-import com.github.nhirakawa.ray.tracing.Hittable;
-import com.github.nhirakawa.ray.tracing.HittablesList;
-import com.github.nhirakawa.ray.tracing.Sphere;
+import com.github.nhirakawa.ray.tracing.camera.Camera;
 import com.github.nhirakawa.ray.tracing.color.Rgb;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.image.PpmWriter;
+import com.github.nhirakawa.ray.tracing.shape.HitRecord;
+import com.github.nhirakawa.ray.tracing.shape.Hittable;
+import com.github.nhirakawa.ray.tracing.shape.HittablesList;
+import com.github.nhirakawa.ray.tracing.shape.Sphere;
 import com.google.common.collect.ImmutableList;
 
 public class RayTracer {
@@ -26,7 +28,8 @@ public class RayTracer {
 
 //    List<Rgb> rgbs = buildRainbowRgbs(numberOfRows, numberOfColumns);
 //    List<Rgb> rgbs = buildBlueRgbs(numberOfRows, numberOfColumns);
-    List<Rgb> rgbs = buildHittableSpheres(numberOfRows, numberOfColumns);
+//    List<Rgb> rgbs = buildHittableSpheres(numberOfRows, numberOfColumns);
+    List<Rgb> rgbs = buildAntiAliasedSpheres(numberOfRows, numberOfColumns);
 
     new PpmWriter().write(new File(FILENAME), numberOfRows, numberOfColumns, rgbs);
   }
@@ -112,6 +115,45 @@ public class RayTracer {
     return Collections.unmodifiableList(rgbs);
   }
 
+  private static List<Rgb> buildAntiAliasedSpheres(int numberOfRows, int numberOfColumns) {
+    int numberOfSamples = 100;
+
+    Hittable sphere1 = new Sphere(new Vector3(0, 0, -1), 0.5);
+    Hittable sphere2 = new Sphere(new Vector3(0, -100.5, -1), 100);
+
+    HittablesList world = new HittablesList(ImmutableList.of(sphere1, sphere2));
+
+    Camera camera = new Camera();
+
+    List<Rgb> rgbs = new ArrayList<>();
+    for (int j = numberOfColumns; j >= 0; j--) {
+      for (int i = 0; i < numberOfRows; i++) {
+        Vector3 color = new Vector3(0, 0, 0);
+
+        for (int s = 0; s < numberOfSamples; s++) {
+          double u = ((double) (i + rand()) / numberOfRows);
+          double v = ((double) (j + rand()) / numberOfColumns);
+
+          Ray ray = camera.getRay(u, v);
+
+          Vector3 point = ray.getPointAtParameter(2);
+
+          color = color.add(color(ray, world));
+        }
+
+        color = color.scalarDivide(numberOfSamples);
+
+        int red = (int) (255.99 * color.getRed());
+        int green = (int) (255.99 * color.getGreen());
+        int blue = (int) (255.99 * color.getBlue());
+
+        rgbs.add(new Rgb(red, green, blue));
+      }
+    }
+
+    return Collections.unmodifiableList(rgbs);
+  }
+
   private static Vector3 color(Ray ray, Hittable hittable) {
     Optional<HitRecord> maybeHitRecord = hittable.hit(ray, 0, Double.MAX_VALUE);
     if (maybeHitRecord.isPresent()) {
@@ -159,6 +201,10 @@ public class RayTracer {
       return (-b - Math.sqrt(discriminant)) / (2 * a);
     }
 
+  }
+
+  private static double rand() {
+    return ThreadLocalRandom.current().nextDouble();
   }
 
 }

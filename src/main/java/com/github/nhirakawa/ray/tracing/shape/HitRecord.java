@@ -1,4 +1,4 @@
-package com.github.nhirakawa.ray.tracing;
+package com.github.nhirakawa.ray.tracing.shape;
 
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 
