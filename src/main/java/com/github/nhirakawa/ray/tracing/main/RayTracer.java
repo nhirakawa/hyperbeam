@@ -13,6 +13,9 @@ import com.github.nhirakawa.ray.tracing.color.Rgb;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.image.PpmWriter;
+import com.github.nhirakawa.ray.tracing.material.LambertianMaterial;
+import com.github.nhirakawa.ray.tracing.material.MaterialScatterRecord;
+import com.github.nhirakawa.ray.tracing.material.MetalMaterial;
 import com.github.nhirakawa.ray.tracing.shape.HitRecord;
 import com.github.nhirakawa.ray.tracing.shape.Hittable;
 import com.github.nhirakawa.ray.tracing.shape.HittablesList;
@@ -35,10 +38,12 @@ public class RayTracer {
   private static List<Rgb> buildAntiAliasedSpheres(int numberOfRows, int numberOfColumns) {
     int numberOfSamples = 100;
 
-    Hittable sphere1 = new Sphere(new Vector3(0, 0, -1), 0.5);
-    Hittable sphere2 = new Sphere(new Vector3(0, -100.5, -1), 100);
+    Hittable sphere1 = new Sphere(new Vector3(0, 0, -1), 0.5, new LambertianMaterial(new Vector3(0.8, 0.3, 0.3)));
+    Hittable sphere2 = new Sphere(new Vector3(0, -100.5, -1), 100, new LambertianMaterial(new Vector3(0.8, 0.8, 0.0)));
+    Hittable sphere3 = new Sphere(new Vector3(1, 0, -1), 0.5, new MetalMaterial(new Vector3(0.8, 0.6, 0.2), 0.3));
+    Hittable sphere4 = new Sphere(new Vector3(-1, 0, -1), 0.5, new MetalMaterial(new Vector3(0.8, 0.8, 0.8), 1.0));
 
-    HittablesList world = new HittablesList(ImmutableList.of(sphere1, sphere2));
+    HittablesList world = new HittablesList(ImmutableList.of(sphere1, sphere2, sphere3, sphere4));
 
     Camera camera = new Camera();
 
@@ -55,7 +60,7 @@ public class RayTracer {
 
           Vector3 point = ray.getPointAtParameter(2);
 
-          color = color.add(color(ray, world));
+          color = color.add(color(ray, world, 0));
         }
 
         color = color.scalarDivide(numberOfSamples);
@@ -72,15 +77,16 @@ public class RayTracer {
     return Collections.unmodifiableList(rgbs);
   }
 
-  private static Vector3 color(Ray ray, Hittable hittable) {
+  private static Vector3 color(Ray ray, Hittable hittable, int depth) {
     Optional<HitRecord> maybeHitRecord = hittable.hit(ray, 0.001, Double.MAX_VALUE);
     if (maybeHitRecord.isPresent()) {
-      Vector3 point = maybeHitRecord.get().getPoint();
-      Vector3 normal = maybeHitRecord.get().getNormal();
+      MaterialScatterRecord materialScatterRecord = maybeHitRecord.get().getMaterial().scatter(ray, maybeHitRecord.get());
 
-      Vector3 target = point.add(normal).add(getRandomUnitSphereVector());
-
-      return color(new Ray(point, target.subtract(point)), hittable).scalarMultiply(0.5);
+      if (depth < 50 && materialScatterRecord.isWasScattered()) {
+        return materialScatterRecord.getAttenuation().multiply(color(materialScatterRecord.getScattered(), hittable, depth + 1));
+      } else {
+        return Vector3.zero();
+      }
     } else {
       Vector3 unitDirection = ray.getDirection().unit();
       double t = 0.5 * (unitDirection.getY() + 1);

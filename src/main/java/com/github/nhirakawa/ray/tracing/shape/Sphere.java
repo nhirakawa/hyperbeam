@@ -4,16 +4,19 @@ import java.util.Optional;
 
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
+import com.github.nhirakawa.ray.tracing.material.Material;
 import com.google.common.collect.Range;
 
 public class Sphere implements Hittable {
 
   private final Vector3 center;
   private final double radius;
+  private final Material material;
 
-  public Sphere(Vector3 center, double radius) {
+  public Sphere(Vector3 center, double radius, Material material) {
     this.center = center;
     this.radius = radius;
+    this.material = material;
   }
 
   public Vector3 getCenter() {
@@ -41,14 +44,14 @@ public class Sphere implements Hittable {
       if (parameterRange.contains(negativeTemp)) {
         Vector3 point = ray.getPointAtParameter(negativeTemp);
         Vector3 normal = point.subtract(center).scalarDivide(radius);
-        return Optional.of(new HitRecord(negativeTemp, point, normal));
+        return Optional.of(new HitRecord(negativeTemp, point, normal, material));
       }
 
       double positiveTemp = (-b + Math.sqrt(discriminant)) / a; // TODO rename this awful variable
       if (parameterRange.contains(positiveTemp)) {
         Vector3 point = ray.getPointAtParameter(positiveTemp);
         Vector3 normal = point.subtract(center).scalarDivide(radius);
-        return Optional.of(new HitRecord(positiveTemp, point, normal));
+        return Optional.of(new HitRecord(positiveTemp, point, normal, material));
       }
     }
 

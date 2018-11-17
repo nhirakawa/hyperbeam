@@ -6,6 +6,8 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 public class Vector3 extends Vector3D {
 
+  private static final Vector3 ZERO = new Vector3(0, 0, 0);
+
   public Vector3(double x, double y, double z) {
     super(x, y, z);
   }
@@ -72,6 +74,10 @@ public class Vector3 extends Vector3D {
     double newZ = function.apply(getZ());
 
     return new Vector3(newX, newY, newZ);
+  }
+
+  public static Vector3 zero() {
+    return ZERO;
   }
 
   private static Vector3 from(Vector3D vector) {
