@@ -1,5 +1,7 @@
 package com.github.nhirakawa.ray.tracing.geometry;
 
+import java.util.function.Function;
+
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 public class Vector3 extends Vector3D {
@@ -58,6 +60,18 @@ public class Vector3 extends Vector3D {
 
   public Vector3 unit() {
     return from(normalize());
+  }
+
+  public double getSquaredLength() {
+    return (getX() * getX()) + (getY() * getY()) + (getZ() * getZ());
+  }
+
+  public Vector3 apply(Function<Double, Double> function) {
+    double newX = function.apply(getX());
+    double newY = function.apply(getY());
+    double newZ = function.apply(getZ());
+
+    return new Vector3(newX, newY, newZ);
   }
 
   private static Vector3 from(Vector3D vector) {
