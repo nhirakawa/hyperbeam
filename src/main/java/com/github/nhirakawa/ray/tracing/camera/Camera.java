@@ -43,13 +43,15 @@ public class Camera {
     Vector3 rd = VectorUtils.getRandomVectorInUnitDisk().scalarMultiply(lensRadius);
     Vector3 offset = u.scalarMultiply(rd.getX()).add(v.scalarMultiply(rd.getY()));
 
-    return new Ray(
-        origin.add(offset),
-        lowerLeftCorner.add(horizontal.scalarMultiply(s))
-            .add(vertical.scalarMultiply(t))
-            .subtract(origin)
-            .subtract(offset)
-    );
+    return Ray.builder()
+        .setOrigin(origin.add(offset))
+        .setDirection(
+            lowerLeftCorner.add(horizontal.scalarMultiply(s))
+                .add(vertical.scalarMultiply(t))
+                .subtract(origin)
+                .subtract(offset)
+        )
+        .build();
   }
 
 }

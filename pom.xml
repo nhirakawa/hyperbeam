@@ -17,6 +17,8 @@
   <properties>
     <commons.math.version>3.6.1</commons.math.version>
     <guava.version>27.0-jre</guava.version>
+    <immutables.version>2.7.3</immutables.version>
+    <immutable-style.version>3.0</immutable-style.version>
   </properties>
 
   <dependencyManagement>
@@ -27,9 +29,19 @@
         <version>${guava.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.github.nhirakawa</groupId>
+        <artifactId>immutable-style</artifactId>
+        <version>${immutable-style.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-math3</artifactId>
         <version>${commons.math.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.immutables</groupId>
+        <artifactId>value</artifactId>
+        <version>${immutables.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -40,8 +52,16 @@
       <artifactId>guava</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.github.nhirakawa</groupId>
+      <artifactId>immutable-style</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-math3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.immutables</groupId>
+      <artifactId>value</artifactId>
     </dependency>
   </dependencies>
 

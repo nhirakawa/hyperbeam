@@ -16,6 +16,8 @@ import javax.imageio.ImageIO;
 
 import com.github.nhirakawa.ray.tracing.camera.Camera;
 import com.github.nhirakawa.ray.tracing.color.Rgb;
+import com.github.nhirakawa.ray.tracing.color.RgbModel;
+import com.github.nhirakawa.ray.tracing.geometry.Coordinates;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.DielectricMaterial;
@@ -34,7 +36,7 @@ public class RayTracer {
 
   private static final String FILENAME = "test.png";
 
-  private static final int MULTIPLIER = 4;
+  private static final int MULTIPLIER = 2;
 
   public static void main(String... args) throws Exception {
     int numberOfRows = 200 * MULTIPLIER;
@@ -47,20 +49,20 @@ public class RayTracer {
                                          int numberOfColumns,
                                          int numberOfThreads) throws IOException {
     Stopwatch stopwatch = Stopwatch.createStarted();
-    List<Rgb> rgbs = buildAntiAliasedSpheres(numberOfRows, numberOfColumns, numberOfThreads);
+    List<RgbModel> rgbs = buildAntiAliasedSpheres(numberOfRows, numberOfColumns, numberOfThreads);
     stopwatch.stop();
 
     System.out.printf("Computed %d pixels with %d threads in %d ms%n", rgbs.size(), numberOfThreads, stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
     BufferedImage bufferedImage = new BufferedImage(numberOfRows, numberOfColumns, BufferedImage.TYPE_3BYTE_BGR);
-    for (Rgb rgb : rgbs) {
+    for (RgbModel rgb : rgbs) {
       bufferedImage.setRGB(rgb.getCoordinates().getX(), rgb.getCoordinates().getY(), rgb.getColor().getRGB());
     }
 
     ImageIO.write(bufferedImage, "png", new File(String.format("%d-%s", numberOfThreads, FILENAME)));
   }
 
-  private static List<Rgb> buildAntiAliasedSpheres(int numberOfRows, int numberOfColumns, int numberOfThreads) {
+  private static List<RgbModel> buildAntiAliasedSpheres(int numberOfRows, int numberOfColumns, int numberOfThreads) {
     int numberOfSamples = 100;
 
     Hittable sphere1 = new Sphere(new Vector3(0, 0, -1), 0.5, new LambertianMaterial(new Vector3(0.1, 0.2, 0.5)));
@@ -81,13 +83,13 @@ public class RayTracer {
 
     ExecutorService executorService = buildExecutor(numberOfThreads);
 
-    List<CompletableFuture<Rgb>> futures = new ArrayList<>();
+    List<CompletableFuture<RgbModel>> futures = new ArrayList<>();
     for (int j = numberOfColumns; j > 0; j--) {
       for (int i = 0; i < numberOfRows; i++) {
         int finalI = i;
         int finalJ = j;
 
-        CompletableFuture<Rgb> future = CompletableFuture.supplyAsync(
+        CompletableFuture<RgbModel> future = CompletableFuture.supplyAsync(
             () -> buildRgb(numberOfSamples, numberOfRows, numberOfColumns, camera, world, finalI, finalJ),
             executorService
         );
@@ -95,7 +97,7 @@ public class RayTracer {
       }
     }
 
-    List<Rgb> rgbs = futures.stream()
+    List<RgbModel> rgbs = futures.stream()
         .map(CompletableFuture::join)
         .collect(ImmutableList.toImmutableList());
 
@@ -104,13 +106,13 @@ public class RayTracer {
     return rgbs;
   }
 
-  private static Rgb buildRgb(int numberOfSamples,
-                              int numberOfRows,
-                              int numberOfColumns,
-                              Camera camera,
-                              Hittable world,
-                              int i,
-                              int j) {
+  private static RgbModel buildRgb(int numberOfSamples,
+                                   int numberOfRows,
+                                   int numberOfColumns,
+                                   Camera camera,
+                                   Hittable world,
+                                   int i,
+                                   int j) {
     Vector3 color = new Vector3(0, 0, 0);
 
     for (int s = 0; s < numberOfSamples; s++) {
@@ -129,7 +131,17 @@ public class RayTracer {
     int green = (int) (255.99 * color.getGreen());
     int blue = (int) (255.99 * color.getBlue());
 
-    return new Rgb(new Coordinates(i, numberOfColumns - j), red, green, blue);
+    Coordinates coordinates = Coordinates.builder()
+        .setX(i)
+        .setY(numberOfColumns - j)
+        .build();
+
+    return Rgb.builder()
+        .setCoordinates(coordinates)
+        .setRed(red)
+        .setGreen(green)
+        .setBlue(blue)
+        .build();
   }
 
   private static Vector3 color(Ray ray, Hittable hittable, int depth) {
@@ -139,7 +151,7 @@ public class RayTracer {
           .getMaterial()
           .scatter(ray, maybeHitRecord.get());
 
-      if (depth < 50 && materialScatterRecord.isWasScattered()) {
+      if (depth < 50 && materialScatterRecord.wasScattered()) {
         return materialScatterRecord.getAttenuation()
             .multiply(color(materialScatterRecord.getScattered(), hittable, depth + 1));
       } else {
