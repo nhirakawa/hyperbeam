@@ -325,3 +325,4 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/vim,java,maven,macos,linux,emacs,windows,eclipse,intellij+all
 
 *.ppm
+*.png

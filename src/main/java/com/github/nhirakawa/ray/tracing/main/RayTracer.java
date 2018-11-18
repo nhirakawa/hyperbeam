@@ -1,19 +1,23 @@
 package com.github.nhirakawa.ray.tracing.main;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.math.BigDecimal;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
 
 import com.github.nhirakawa.ray.tracing.camera.Camera;
 import com.github.nhirakawa.ray.tracing.color.Rgb;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
-import com.github.nhirakawa.ray.tracing.image.PpmWriter;
 import com.github.nhirakawa.ray.tracing.material.DielectricMaterial;
 import com.github.nhirakawa.ray.tracing.material.LambertianMaterial;
 import com.github.nhirakawa.ray.tracing.material.MaterialScatterRecord;
@@ -24,10 +28,11 @@ import com.github.nhirakawa.ray.tracing.shape.HittablesList;
 import com.github.nhirakawa.ray.tracing.shape.Sphere;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 public class RayTracer {
 
-  private static final String FILENAME = "test.ppm";
+  private static final String FILENAME = "test.png";
 
   private static final int MULTIPLIER = 4;
 
@@ -35,16 +40,27 @@ public class RayTracer {
     int numberOfRows = 200 * MULTIPLIER;
     int numberOfColumns = 100 * MULTIPLIER;
 
-    Stopwatch stopwatch = Stopwatch.createStarted();
-    List<Rgb> rgbs = buildAntiAliasedSpheres(numberOfRows, numberOfColumns);
-    stopwatch.stop();
-
-    System.out.printf("Computed %d pixels in %d ms%n", rgbs.size(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
-
-    new PpmWriter().write(new File(FILENAME), numberOfRows, numberOfColumns, rgbs);
+    doThreadedRayTrace(numberOfRows, numberOfColumns, Runtime.getRuntime().availableProcessors());
   }
 
-  private static List<Rgb> buildAntiAliasedSpheres(int numberOfRows, int numberOfColumns) {
+  private static void doThreadedRayTrace(int numberOfRows,
+                                         int numberOfColumns,
+                                         int numberOfThreads) throws IOException {
+    Stopwatch stopwatch = Stopwatch.createStarted();
+    List<Rgb> rgbs = buildAntiAliasedSpheres(numberOfRows, numberOfColumns, numberOfThreads);
+    stopwatch.stop();
+
+    System.out.printf("Computed %d pixels with %d threads in %d ms%n", rgbs.size(), numberOfThreads, stopwatch.elapsed(TimeUnit.MILLISECONDS));
+
+    BufferedImage bufferedImage = new BufferedImage(numberOfRows, numberOfColumns, BufferedImage.TYPE_3BYTE_BGR);
+    for (Rgb rgb : rgbs) {
+      bufferedImage.setRGB(rgb.getCoordinates().getX(), rgb.getCoordinates().getY(), rgb.getColor().getRGB());
+    }
+
+    ImageIO.write(bufferedImage, "png", new File(String.format("%d-%s", numberOfThreads, FILENAME)));
+  }
+
+  private static List<Rgb> buildAntiAliasedSpheres(int numberOfRows, int numberOfColumns, int numberOfThreads) {
     int numberOfSamples = 100;
 
     Hittable sphere1 = new Sphere(new Vector3(0, 0, -1), 0.5, new LambertianMaterial(new Vector3(0.1, 0.2, 0.5)));
@@ -63,34 +79,57 @@ public class RayTracer {
     double aspectRatio = (double) numberOfRows / (double) numberOfColumns;
     Camera camera = new Camera(lookFrom, lookAt, viewUp, 20, aspectRatio, aperture, distanceToFocus);
 
-    List<Rgb> rgbs = new ArrayList<>();
-    for (int j = numberOfColumns; j >= 0; j--) {
+    ExecutorService executorService = buildExecutor(numberOfThreads);
+
+    List<CompletableFuture<Rgb>> futures = new ArrayList<>();
+    for (int j = numberOfColumns; j > 0; j--) {
       for (int i = 0; i < numberOfRows; i++) {
-        Vector3 color = new Vector3(0, 0, 0);
+        int finalI = i;
+        int finalJ = j;
 
-        for (int s = 0; s < numberOfSamples; s++) {
-          double u = ((double) (i + rand()) / numberOfRows);
-          double v = ((double) (j + rand()) / numberOfColumns);
-
-          Ray ray = camera.getRay(u, v);
-
-          Vector3 point = ray.getPointAtParameter(2);
-
-          color = color.add(color(ray, world, 0));
-        }
-
-        color = color.scalarDivide(numberOfSamples);
-        color = color.apply(Math::sqrt);
-
-        int red = (int) (255.99 * color.getRed());
-        int green = (int) (255.99 * color.getGreen());
-        int blue = (int) (255.99 * color.getBlue());
-
-        rgbs.add(new Rgb(red, green, blue));
+        CompletableFuture<Rgb> future = CompletableFuture.supplyAsync(
+            () -> buildRgb(numberOfSamples, numberOfRows, numberOfColumns, camera, world, finalI, finalJ),
+            executorService
+        );
+        futures.add(future);
       }
     }
 
-    return Collections.unmodifiableList(rgbs);
+    List<Rgb> rgbs = futures.stream()
+        .map(CompletableFuture::join)
+        .collect(ImmutableList.toImmutableList());
+
+    executorService.shutdown();
+
+    return rgbs;
+  }
+
+  private static Rgb buildRgb(int numberOfSamples,
+                              int numberOfRows,
+                              int numberOfColumns,
+                              Camera camera,
+                              Hittable world,
+                              int i,
+                              int j) {
+    Vector3 color = new Vector3(0, 0, 0);
+
+    for (int s = 0; s < numberOfSamples; s++) {
+      double u = ((double) (i + rand()) / numberOfRows);
+      double v = ((double) (j + rand()) / numberOfColumns);
+
+      Ray ray = camera.getRay(u, v);
+
+      color = color.add(color(ray, world, 0));
+    }
+
+    color = color.scalarDivide(numberOfSamples);
+    color = color.apply(Math::sqrt);
+
+    int red = (int) (255.99 * color.getRed());
+    int green = (int) (255.99 * color.getGreen());
+    int blue = (int) (255.99 * color.getBlue());
+
+    return new Rgb(new Coordinates(i, numberOfColumns - j), red, green, blue);
   }
 
   private static Vector3 color(Ray ray, Hittable hittable, int depth) {
@@ -113,17 +152,17 @@ public class RayTracer {
     }
   }
 
-  private static Vector3 getRandomUnitSphereVector() {
-    while (true) {
-      Vector3 point = new Vector3(rand(), rand(), rand()).scalarMultiply(2).subtract(new Vector3(1, 1, 1));
-      if (BigDecimal.valueOf(point.getSquaredLength()).compareTo(BigDecimal.ONE) < 0) {
-        return point;
-      }
-    }
-  }
-
   private static double rand() {
     return ThreadLocalRandom.current().nextDouble();
+  }
+
+  private static ExecutorService buildExecutor(int numberOfThreads) {
+    return Executors.newFixedThreadPool(
+        numberOfThreads,
+        new ThreadFactoryBuilder()
+            .setNameFormat("ray-tracer-%s")
+            .build()
+    );
   }
 
 }
