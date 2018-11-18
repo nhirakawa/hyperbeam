@@ -16,8 +16,15 @@ public class LambertianMaterial extends Material {
   @Override
   public MaterialScatterRecord scatter(Ray inRay, HitRecord hitRecord) {
     Vector3 target = hitRecord.getPoint().add(hitRecord.getNormal()).add(VectorUtils.getRandomUnitSphereVector());
-    Ray scattered = new Ray(hitRecord.getPoint(), target.subtract(hitRecord.getPoint()));
+    Ray scatteredRay = Ray.builder()
+        .setOrigin(hitRecord.getPoint())
+        .setDirection(target.subtract(hitRecord.getPoint()))
+        .build();
 
-    return new MaterialScatterRecord(albedo, scattered, true);
+    return MaterialScatterRecord.builder()
+        .setAttenuation(albedo)
+        .setScattered(scatteredRay)
+        .setWasScattered(true)
+        .build();
   }
 }

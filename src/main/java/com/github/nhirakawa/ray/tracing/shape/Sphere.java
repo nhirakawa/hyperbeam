@@ -2,7 +2,7 @@ package com.github.nhirakawa.ray.tracing.shape;
 
 import java.util.Optional;
 
-import com.github.nhirakawa.ray.tracing.geometry.Ray;
+import com.github.nhirakawa.ray.tracing.geometry.RayModel;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.Material;
 import com.google.common.collect.Range;
@@ -28,7 +28,7 @@ public class Sphere implements Hittable {
   }
 
   @Override
-  public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
+  public Optional<HitRecord> hit(RayModel ray, double tMin, double tMax) {
     Vector3 oc = ray.getOrigin().subtract(center);
 
     double a = ray.getDirection().dotProduct(ray.getDirection());

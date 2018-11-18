@@ -3,7 +3,7 @@ package com.github.nhirakawa.ray.tracing.shape;
 import java.util.List;
 import java.util.Optional;
 
-import com.github.nhirakawa.ray.tracing.geometry.Ray;
+import com.github.nhirakawa.ray.tracing.geometry.RayModel;
 
 public class HittablesList implements Hittable {
 
@@ -14,7 +14,7 @@ public class HittablesList implements Hittable {
   }
 
   @Override
-  public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
+  public Optional<HitRecord> hit(RayModel ray, double tMin, double tMax) {
     Optional<HitRecord> tempRecord = Optional.empty();
     double closestSoFar = tMax;
 

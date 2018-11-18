@@ -18,9 +18,17 @@ public class MetalMaterial extends Material {
   @Override
   public MaterialScatterRecord scatter(Ray inRay, HitRecord hitRecord) {
     Vector3 reflected = reflect(inRay.getDirection().unit(), hitRecord.getNormal());
-    Ray scatteredRay = new Ray(hitRecord.getPoint(), reflected.add(VectorUtils.getRandomUnitSphereVector().scalarMultiply(fuzz)));
+    Ray scatteredRay = Ray.builder()
+        .setOrigin(hitRecord.getPoint())
+        .setDirection(reflected.add(VectorUtils.getRandomUnitSphereVector().scalarMultiply(fuzz)))
+        .build();
     boolean wasScattered = scatteredRay.getDirection().dotProduct(hitRecord.getNormal()) > 0;
-    return new MaterialScatterRecord(albedo, scatteredRay, wasScattered);
+
+    return MaterialScatterRecord.builder()
+        .setAttenuation(albedo)
+        .setScattered(scatteredRay)
+        .setWasScattered(wasScattered)
+        .build();
   }
 
 }

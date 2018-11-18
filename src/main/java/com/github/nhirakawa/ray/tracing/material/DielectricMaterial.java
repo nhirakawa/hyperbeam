@@ -29,7 +29,8 @@ public class DielectricMaterial extends Material {
     if (inRay.getDirection().dotProduct(hitRecord.getNormal()) > 0) {
       outwardNormal = hitRecord.getNormal().scalarMultiply(-1);
       niOverNt = refractiveIndex;
-      cosine = (refractiveIndex * inRay.getDirection().dotProduct(hitRecord.getNormal())) / inRay.getDirection().getNorm();
+      cosine = (refractiveIndex * inRay.getDirection().dotProduct(hitRecord.getNormal())) / inRay.getDirection()
+          .getNorm();
     } else {
       outwardNormal = hitRecord.getNormal();
       niOverNt = 1 / refractiveIndex;
@@ -46,9 +47,27 @@ public class DielectricMaterial extends Material {
     }
 
     if (rand() < reflectProbability) {
-      return new MaterialScatterRecord(ATTENUATION, new Ray(hitRecord.getPoint(), reflected), true);
+      return MaterialScatterRecord.builder()
+          .setAttenuation(ATTENUATION)
+          .setScattered(
+              Ray.builder()
+                  .setOrigin(hitRecord.getPoint())
+                  .setDirection(reflected)
+                  .build()
+          )
+          .setWasScattered(true)
+          .build();
     } else {
-      return new MaterialScatterRecord(ATTENUATION, new Ray(hitRecord.getPoint(), refracted.get()), true);
+      return MaterialScatterRecord.builder()
+          .setAttenuation(ATTENUATION)
+          .setScattered(
+              Ray.builder()
+                  .setOrigin(hitRecord.getPoint())
+                  .setDirection(refracted.get())
+                  .build()
+          )
+          .setWasScattered(true)
+          .build();
     }
   }
 
