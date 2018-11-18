@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 import com.github.nhirakawa.ray.tracing.camera.Camera;
 import com.github.nhirakawa.ray.tracing.color.Rgb;
@@ -21,6 +22,7 @@ import com.github.nhirakawa.ray.tracing.shape.HitRecord;
 import com.github.nhirakawa.ray.tracing.shape.Hittable;
 import com.github.nhirakawa.ray.tracing.shape.HittablesList;
 import com.github.nhirakawa.ray.tracing.shape.Sphere;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 
 public class RayTracer {
@@ -33,7 +35,11 @@ public class RayTracer {
     int numberOfRows = 200 * MULTIPLIER;
     int numberOfColumns = 100 * MULTIPLIER;
 
+    Stopwatch stopwatch = Stopwatch.createStarted();
     List<Rgb> rgbs = buildAntiAliasedSpheres(numberOfRows, numberOfColumns);
+    stopwatch.stop();
+
+    System.out.printf("Computed %d pixels in %d ms%n", rgbs.size(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
     new PpmWriter().write(new File(FILENAME), numberOfRows, numberOfColumns, rgbs);
   }
