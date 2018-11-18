@@ -44,17 +44,32 @@ public class Sphere implements Hittable {
       if (parameterRange.contains(negativeTemp)) {
         Vector3 point = ray.getPointAtParameter(negativeTemp);
         Vector3 normal = point.subtract(center).scalarDivide(radius);
-        return Optional.of(new HitRecord(negativeTemp, point, normal, material));
+        return Optional.of(
+            HitRecord.builder()
+                .setT(negativeTemp)
+                .setPoint(point)
+                .setNormal(normal)
+                .setMaterial(material)
+                .build()
+        );
       }
 
       double positiveTemp = (-b + Math.sqrt(discriminant)) / a; // TODO rename this awful variable
       if (parameterRange.contains(positiveTemp)) {
         Vector3 point = ray.getPointAtParameter(positiveTemp);
         Vector3 normal = point.subtract(center).scalarDivide(radius);
-        return Optional.of(new HitRecord(positiveTemp, point, normal, material));
+        return Optional.of(
+            HitRecord.builder()
+                .setT(positiveTemp)
+                .setPoint(point)
+                .setNormal(normal)
+                .setMaterial(material)
+                .build()
+        );
       }
     }
 
     return Optional.empty();
   }
+
 }
