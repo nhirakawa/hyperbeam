@@ -5,7 +5,7 @@ import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.shape.HitRecord;
 import com.github.nhirakawa.ray.tracing.util.VectorUtils;
 
-public class MetalMaterial implements Material {
+public class MetalMaterial extends Material {
 
   private final Vector3 albedo;
   private final double fuzz;
@@ -23,7 +23,4 @@ public class MetalMaterial implements Material {
     return new MaterialScatterRecord(albedo, scatteredRay, wasScattered);
   }
 
-  private static Vector3 reflect(Vector3 vector, Vector3 normal) {
-    return vector.subtract(normal.scalarMultiply(2).scalarMultiply(vector.dotProduct(normal)));
-  }
 }

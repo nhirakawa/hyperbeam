@@ -1,7 +1,8 @@
 package com.github.nhirakawa.ray.tracing.util;
 
+import static com.github.nhirakawa.ray.tracing.util.MathUtils.rand;
+
 import java.math.BigDecimal;
-import java.util.concurrent.ThreadLocalRandom;
 
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 
@@ -16,9 +17,5 @@ public final class VectorUtils {
         return point;
       }
     }
-  }
-
-  private static double rand() {
-    return ThreadLocalRandom.current().nextDouble();
   }
 }

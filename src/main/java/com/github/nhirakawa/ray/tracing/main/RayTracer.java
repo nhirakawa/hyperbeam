@@ -13,6 +13,7 @@ import com.github.nhirakawa.ray.tracing.color.Rgb;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.image.PpmWriter;
+import com.github.nhirakawa.ray.tracing.material.DielectricMaterial;
 import com.github.nhirakawa.ray.tracing.material.LambertianMaterial;
 import com.github.nhirakawa.ray.tracing.material.MaterialScatterRecord;
 import com.github.nhirakawa.ray.tracing.material.MetalMaterial;
@@ -26,9 +27,11 @@ public class RayTracer {
 
   private static final String FILENAME = "test.ppm";
 
+  private static final int MULTIPLIER = 4;
+
   public static void main(String... args) throws Exception {
-    int numberOfRows = 200;
-    int numberOfColumns = 100;
+    int numberOfRows = 200 * MULTIPLIER;
+    int numberOfColumns = 100 * MULTIPLIER;
 
     List<Rgb> rgbs = buildAntiAliasedSpheres(numberOfRows, numberOfColumns);
 
@@ -38,12 +41,13 @@ public class RayTracer {
   private static List<Rgb> buildAntiAliasedSpheres(int numberOfRows, int numberOfColumns) {
     int numberOfSamples = 100;
 
-    Hittable sphere1 = new Sphere(new Vector3(0, 0, -1), 0.5, new LambertianMaterial(new Vector3(0.8, 0.3, 0.3)));
+    Hittable sphere1 = new Sphere(new Vector3(0, 0, -1), 0.5, new LambertianMaterial(new Vector3(0.1, 0.2, 0.5)));
     Hittable sphere2 = new Sphere(new Vector3(0, -100.5, -1), 100, new LambertianMaterial(new Vector3(0.8, 0.8, 0.0)));
     Hittable sphere3 = new Sphere(new Vector3(1, 0, -1), 0.5, new MetalMaterial(new Vector3(0.8, 0.6, 0.2), 0.3));
-    Hittable sphere4 = new Sphere(new Vector3(-1, 0, -1), 0.5, new MetalMaterial(new Vector3(0.8, 0.8, 0.8), 1.0));
+    Hittable sphere4 = new Sphere(new Vector3(-1, 0, -1), 0.5, new DielectricMaterial(1.5));
+    Hittable sphere5 = new Sphere(new Vector3(-1, 0, -1), -0.45, new DielectricMaterial(1.5));
 
-    HittablesList world = new HittablesList(ImmutableList.of(sphere1, sphere2, sphere3, sphere4));
+    HittablesList world = new HittablesList(ImmutableList.of(sphere1, sphere2, sphere3, sphere4, sphere5));
 
     Camera camera = new Camera();
 

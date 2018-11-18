@@ -5,7 +5,7 @@ import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.shape.HitRecord;
 import com.github.nhirakawa.ray.tracing.util.VectorUtils;
 
-public class LambertianMaterial implements Material {
+public class LambertianMaterial extends Material {
 
   private final Vector3 albedo;
 
