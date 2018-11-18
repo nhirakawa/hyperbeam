@@ -18,4 +18,14 @@ public final class VectorUtils {
       }
     }
   }
+
+  public static Vector3 getRandomVectorInUnitDisk() {
+    while (true) {
+      Vector3 point = new Vector3(rand(), rand(), 0).scalarMultiply(2).subtract(new Vector3(1, 1, 0));
+      if(point.dotProduct(point) < 1) {
+        return point;
+      }
+    }
+  }
+
 }

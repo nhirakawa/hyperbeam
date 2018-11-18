@@ -56,11 +56,13 @@ public class RayTracer {
     HittablesList world = new HittablesList(ImmutableList.of(sphere1, sphere2, sphere3, sphere4, sphere5));
 //    HittablesList world = new HittablesList(ImmutableList.of(sphere1, sphere2));
 
-    Vector3 lookFrom = new Vector3(-2, 2, 1);
+    Vector3 lookFrom = new Vector3(3, 3, 2);
     Vector3 lookAt = new Vector3(0, 0, -1);
     Vector3 viewUp = new Vector3(0, 1, 0);
+    double distanceToFocus = lookFrom.subtract(lookAt).getNorm();
+    double aperture = 2;
     double aspectRatio = (double) numberOfRows / (double) numberOfColumns;
-    Camera camera = new Camera(lookFrom, lookAt, viewUp, 45, aspectRatio);
+    Camera camera = new Camera(lookFrom, lookAt, viewUp, 20, aspectRatio, aperture, distanceToFocus);
 
     List<Rgb> rgbs = new ArrayList<>();
     for (int j = numberOfColumns; j >= 0; j--) {
