@@ -30,6 +30,7 @@ public class RayTracer {
   private static final int MULTIPLIER = 4;
 
   public static void main(String... args) throws Exception {
+
     int numberOfRows = 200 * MULTIPLIER;
     int numberOfColumns = 100 * MULTIPLIER;
 
@@ -39,6 +40,7 @@ public class RayTracer {
   }
 
   private static List<Rgb> buildAntiAliasedSpheres(int numberOfRows, int numberOfColumns) {
+
     int numberOfSamples = 100;
 
     Hittable sphere1 = new Sphere(new Vector3(0, 0, -1), 0.5, new LambertianMaterial(new Vector3(0.1, 0.2, 0.5)));
@@ -47,9 +49,18 @@ public class RayTracer {
     Hittable sphere4 = new Sphere(new Vector3(-1, 0, -1), 0.5, new DielectricMaterial(1.5));
     Hittable sphere5 = new Sphere(new Vector3(-1, 0, -1), -0.45, new DielectricMaterial(1.5));
 
-    HittablesList world = new HittablesList(ImmutableList.of(sphere1, sphere2, sphere3, sphere4, sphere5));
+//    double r = StrictMath.cos(Math.PI / 4);
+//    Hittable sphere1 = new Sphere(new Vector3(-r, 0, -1), r, new LambertianMaterial(new Vector3(0, 0, 1)));
+//    Hittable sphere2 = new Sphere(new Vector3(r, 0, -1), r, new LambertianMaterial(new Vector3(1, 0, 0)));
 
-    Camera camera = new Camera();
+    HittablesList world = new HittablesList(ImmutableList.of(sphere1, sphere2, sphere3, sphere4, sphere5));
+//    HittablesList world = new HittablesList(ImmutableList.of(sphere1, sphere2));
+
+    Vector3 lookFrom = new Vector3(-2, 2, 1);
+    Vector3 lookAt = new Vector3(0, 0, -1);
+    Vector3 viewUp = new Vector3(0, 1, 0);
+    double aspectRatio = (double) numberOfRows / (double) numberOfColumns;
+    Camera camera = new Camera(lookFrom, lookAt, viewUp, 45, aspectRatio);
 
     List<Rgb> rgbs = new ArrayList<>();
     for (int j = numberOfColumns; j >= 0; j--) {
@@ -82,12 +93,16 @@ public class RayTracer {
   }
 
   private static Vector3 color(Ray ray, Hittable hittable, int depth) {
+
     Optional<HitRecord> maybeHitRecord = hittable.hit(ray, 0.001, Double.MAX_VALUE);
     if (maybeHitRecord.isPresent()) {
-      MaterialScatterRecord materialScatterRecord = maybeHitRecord.get().getMaterial().scatter(ray, maybeHitRecord.get());
+      MaterialScatterRecord materialScatterRecord = maybeHitRecord.get()
+          .getMaterial()
+          .scatter(ray, maybeHitRecord.get());
 
       if (depth < 50 && materialScatterRecord.isWasScattered()) {
-        return materialScatterRecord.getAttenuation().multiply(color(materialScatterRecord.getScattered(), hittable, depth + 1));
+        return materialScatterRecord.getAttenuation()
+            .multiply(color(materialScatterRecord.getScattered(), hittable, depth + 1));
       } else {
         return Vector3.zero();
       }
@@ -99,6 +114,7 @@ public class RayTracer {
   }
 
   private static Vector3 getRandomUnitSphereVector() {
+
     while (true) {
       Vector3 point = new Vector3(rand(), rand(), rand()).scalarMultiply(2).subtract(new Vector3(1, 1, 1));
       if (BigDecimal.valueOf(point.getSquaredLength()).compareTo(BigDecimal.ONE) < 0) {
@@ -108,6 +124,7 @@ public class RayTracer {
   }
 
   private static double rand() {
+
     return ThreadLocalRandom.current().nextDouble();
   }
 
