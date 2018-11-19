@@ -10,6 +10,7 @@ public interface RayModel {
 
   Vector3 getOrigin();
   Vector3 getDirection();
+  double getTime();
 
   default Vector3 getPointAtParameter(double t) {
     return getOrigin().add(getDirection().scalarMultiply(t));

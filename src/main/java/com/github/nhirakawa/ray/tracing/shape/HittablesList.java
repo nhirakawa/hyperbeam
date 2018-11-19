@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import com.github.nhirakawa.ray.tracing.geometry.RayModel;
+import com.google.common.collect.ImmutableList;
 
 public class HittablesList implements Hittable {
 
   private final List<Hittable> hittables;
 
   public HittablesList(List<Hittable> hittables) {
-    this.hittables = hittables;
+    this.hittables = ImmutableList.copyOf(hittables);
   }
 
   @Override
@@ -28,4 +29,5 @@ public class HittablesList implements Hittable {
 
     return tempRecord;
   }
+
 }

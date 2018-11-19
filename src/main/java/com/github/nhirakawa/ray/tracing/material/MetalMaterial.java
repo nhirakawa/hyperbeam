@@ -21,6 +21,7 @@ public class MetalMaterial extends Material {
     Ray scatteredRay = Ray.builder()
         .setOrigin(hitRecord.getPoint())
         .setDirection(reflected.add(VectorUtils.getRandomUnitSphereVector().scalarMultiply(fuzz)))
+        .setTime(inRay.getTime())
         .build();
     boolean wasScattered = scatteredRay.getDirection().dotProduct(hitRecord.getNormal()) > 0;
 

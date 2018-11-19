@@ -19,6 +19,7 @@ public class LambertianMaterial extends Material {
     Ray scatteredRay = Ray.builder()
         .setOrigin(hitRecord.getPoint())
         .setDirection(target.subtract(hitRecord.getPoint()))
+        .setTime(inRay.getTime())
         .build();
 
     return MaterialScatterRecord.builder()
