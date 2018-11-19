@@ -14,6 +14,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.nhirakawa.ray.tracing.camera.Camera;
 import com.github.nhirakawa.ray.tracing.color.Rgb;
 import com.github.nhirakawa.ray.tracing.color.RgbModel;
@@ -34,6 +37,8 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 public class RayTracer {
 
+  private static final Logger LOG = LoggerFactory.getLogger(RayTracer.class);
+
   private static final String FILENAME = "test.png";
 
   private static final int MULTIPLIER = 2;
@@ -52,7 +57,7 @@ public class RayTracer {
     List<RgbModel> rgbs = buildAntiAliasedSpheres(numberOfRows, numberOfColumns, numberOfThreads);
     stopwatch.stop();
 
-    System.out.printf("Computed %d pixels with %d threads in %d ms%n", rgbs.size(), numberOfThreads, stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    LOG.info("Computed {} pixels with {} threads in {} ms", rgbs.size(), numberOfThreads, stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
     BufferedImage bufferedImage = new BufferedImage(numberOfRows, numberOfColumns, BufferedImage.TYPE_3BYTE_BGR);
     for (RgbModel rgb : rgbs) {
