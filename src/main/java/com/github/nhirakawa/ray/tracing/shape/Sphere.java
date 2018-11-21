@@ -2,7 +2,10 @@ package com.github.nhirakawa.ray.tracing.shape;
 
 import java.util.Optional;
 
-import com.github.nhirakawa.ray.tracing.geometry.RayModel;
+import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
+import com.github.nhirakawa.ray.tracing.collision.HitRecord;
+import com.github.nhirakawa.ray.tracing.collision.Hittable;
+import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.Material;
 import com.google.common.collect.Range;
@@ -12,11 +15,18 @@ public class Sphere implements Hittable {
   private final Vector3 center;
   private final double radius;
   private final Material material;
+  private final AxisAlignedBoundingBox axisAlignedBoundingBox;
 
   public Sphere(Vector3 center, double radius, Material material) {
     this.center = center;
     this.radius = radius;
     this.material = material;
+
+    Vector3 radiusVector = new Vector3(radius, radius, radius);
+    this.axisAlignedBoundingBox = AxisAlignedBoundingBox.builder()
+        .setMin(center.subtract(radiusVector))
+        .setMax(center.add(radiusVector))
+        .build();
   }
 
   public Vector3 getCenter() {
@@ -28,7 +38,7 @@ public class Sphere implements Hittable {
   }
 
   @Override
-  public Optional<HitRecord> hit(RayModel ray, double tMin, double tMax) {
+  public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
     Vector3 oc = ray.getOrigin().subtract(center);
 
     double a = ray.getDirection().dotProduct(ray.getDirection());
@@ -70,6 +80,11 @@ public class Sphere implements Hittable {
     }
 
     return Optional.empty();
+  }
+
+  @Override
+  public Optional<AxisAlignedBoundingBox> getBoundingBox(double t0, double t1) {
+    return Optional.of(axisAlignedBoundingBox);
   }
 
 }

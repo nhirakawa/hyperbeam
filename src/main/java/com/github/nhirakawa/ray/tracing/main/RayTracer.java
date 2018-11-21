@@ -21,6 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.nhirakawa.ray.tracing.camera.Camera;
+import com.github.nhirakawa.ray.tracing.collision.BoundingVolumeHierarchy;
+import com.github.nhirakawa.ray.tracing.collision.HitRecord;
+import com.github.nhirakawa.ray.tracing.collision.Hittable;
+import com.github.nhirakawa.ray.tracing.collision.HittablesList;
 import com.github.nhirakawa.ray.tracing.color.Rgb;
 import com.github.nhirakawa.ray.tracing.color.RgbModel;
 import com.github.nhirakawa.ray.tracing.geometry.Coordinates;
@@ -31,9 +35,6 @@ import com.github.nhirakawa.ray.tracing.material.LambertianMaterial;
 import com.github.nhirakawa.ray.tracing.material.Material;
 import com.github.nhirakawa.ray.tracing.material.MaterialScatterRecord;
 import com.github.nhirakawa.ray.tracing.material.MetalMaterial;
-import com.github.nhirakawa.ray.tracing.shape.HitRecord;
-import com.github.nhirakawa.ray.tracing.shape.Hittable;
-import com.github.nhirakawa.ray.tracing.shape.HittablesList;
 import com.github.nhirakawa.ray.tracing.shape.MovingSphere;
 import com.github.nhirakawa.ray.tracing.shape.Sphere;
 import com.google.common.base.Preconditions;
@@ -79,7 +80,7 @@ public class RayTracer {
   private static List<RgbModel> render(int numberOfRows,
                                        int numberOfColumns,
                                        int numberOfThreads,
-                                       HittablesList world) {
+                                       Hittable world) {
     int numberOfSamples = 100;
 
     Vector3 lookFrom = new Vector3(13, 2, 3);
@@ -197,7 +198,7 @@ public class RayTracer {
     return executorService;
   }
 
-  private static HittablesList buildRandomSpheres(int numberOfSpheres) {
+  private static Hittable buildRandomSpheres(int numberOfSpheres) {
     List<Hittable> hittables = new ArrayList<>(numberOfSpheres);
 
     hittables.add(new Sphere(new Vector3(0, -1000, 0), 1000, new LambertianMaterial(new Vector3(0.5, 0.5, 0.5))));
@@ -224,13 +225,13 @@ public class RayTracer {
       if (material instanceof LambertianMaterial) {
         hittables.add(
             MovingSphere.builder()
-            .setCenter0(center)
-            .setCenter1(center.add(new Vector3(0, 0.5 * rand(), 0)))
-            .setTime0(0)
-            .setTime1(1)
-            .setRadius(0.2)
-            .setMaterial(material)
-            .build()
+                .setCenter0(center)
+                .setCenter1(center.add(new Vector3(0, 0.5 * rand(), 0)))
+                .setTime0(0)
+                .setTime1(1)
+                .setRadius(0.2)
+                .setMaterial(material)
+                .build()
         );
       } else {
         hittables.add(new Sphere(center, 0.2, material));
@@ -241,7 +242,11 @@ public class RayTracer {
     hittables.add(new Sphere(new Vector3(-4, 1, 0), 1, new LambertianMaterial(new Vector3(0.4, 0.2, 0.1))));
     hittables.add(new Sphere(new Vector3(4, 1, 0), 1, new MetalMaterial(new Vector3(0.7, 0.6, 0.5), 0)));
 
-    return new HittablesList(hittables);
+    return BoundingVolumeHierarchy.builder()
+        .setHittablesList(new HittablesList(hittables))
+        .setTime0(0)
+        .setTime1(1)
+        .build();
   }
 
   private static Material getRandomMaterial() {

@@ -4,9 +4,10 @@ import static com.github.nhirakawa.ray.tracing.util.MathUtils.rand;
 
 import java.util.Optional;
 
+import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
-import com.github.nhirakawa.ray.tracing.shape.HitRecord;
+
 
 public class DielectricMaterial extends Material {
 
