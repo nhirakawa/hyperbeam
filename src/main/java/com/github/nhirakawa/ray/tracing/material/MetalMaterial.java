@@ -1,8 +1,8 @@
 package com.github.nhirakawa.ray.tracing.material;
 
+import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
-import com.github.nhirakawa.ray.tracing.shape.HitRecord;
 import com.github.nhirakawa.ray.tracing.util.VectorUtils;
 
 public class MetalMaterial extends Material {

@@ -12,6 +12,19 @@ public class Vector3 extends Vector3D {
     super(x, y, z);
   }
 
+  public double get(int i) {
+    switch (i) {
+      case 0:
+        return getX();
+      case 1:
+        return getY();
+      case 2:
+        return getZ();
+      default:
+        throw new IllegalArgumentException(i + " is out of bounds");
+    }
+  }
+
   public double getRed() {
     return getX();
   }

@@ -1,4 +1,4 @@
-package com.github.nhirakawa.ray.tracing.shape;
+package com.github.nhirakawa.ray.tracing.collision;
 
 import org.immutables.value.Value;
 
