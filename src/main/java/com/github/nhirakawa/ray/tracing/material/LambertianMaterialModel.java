@@ -16,6 +16,12 @@ public abstract class LambertianMaterialModel extends Material {
   public abstract Texture getTexture();
 
   @Override
+  @Value.Auxiliary
+  public MaterialType getMaterialType() {
+    return MaterialType.LAMBERTIAN;
+  }
+
+  @Override
   public MaterialScatterRecord scatter(Ray inRay, HitRecord hitRecord) {
     Vector3 target = hitRecord.getPoint().add(hitRecord.getNormal()).add(VectorUtils.getRandomUnitSphereVector());
     Ray scatteredRay = Ray.builder()

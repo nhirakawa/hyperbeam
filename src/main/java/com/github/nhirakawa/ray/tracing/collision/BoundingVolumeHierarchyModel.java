@@ -7,6 +7,7 @@ import java.util.function.Function;
 
 import org.immutables.value.Value;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.util.MathUtils;
@@ -26,6 +27,7 @@ public abstract class BoundingVolumeHierarchyModel implements Hittable {
   public abstract double getTime1();
 
   @Value.Lazy
+  @JsonIgnore
   public List<Hittable> getSortedHittablesList() {
     final Comparator<Hittable> comparator;
     switch ((int) (MathUtils.rand() * 3)) {
@@ -48,6 +50,7 @@ public abstract class BoundingVolumeHierarchyModel implements Hittable {
   }
 
   @Value.Lazy
+  @JsonIgnore
   public Hittable getLeft() {
     List<Hittable> sortedHittablesList = getSortedHittablesList();
     int size = sortedHittablesList.size();
@@ -66,6 +69,7 @@ public abstract class BoundingVolumeHierarchyModel implements Hittable {
   }
 
   @Value.Lazy
+  @JsonIgnore
   public Hittable getRight() {
     List<Hittable> sortedHittablesList = getSortedHittablesList();
     int size = sortedHittablesList.size();
@@ -84,6 +88,7 @@ public abstract class BoundingVolumeHierarchyModel implements Hittable {
   }
 
   @Value.Lazy
+  @JsonIgnore
   public AxisAlignedBoundingBox getAxisAlignedBoundingBox() {
     Optional<AxisAlignedBoundingBox> leftBox = getLeft().getBoundingBox(getTime0(), getTime1());
     Optional<AxisAlignedBoundingBox> rightBox = getRight().getBoundingBox(getTime0(), getTime1());

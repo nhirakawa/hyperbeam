@@ -4,19 +4,25 @@ import static com.github.nhirakawa.ray.tracing.util.MathUtils.rand;
 
 import java.util.Optional;
 
+import org.immutables.value.Value;
+
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 
-
-public class DielectricMaterial extends Material {
+@Value.Immutable
+@ImmutableStyle
+public abstract class DielectricMaterialModel extends Material {
 
   private static final Vector3 ATTENUATION = new Vector3(1, 1, 1);
 
-  private final double refractiveIndex;
+  public abstract double getRefractiveIndex();
 
-  public DielectricMaterial(double refractiveIndex) {
-    this.refractiveIndex = refractiveIndex;
+  @Override
+  @Value.Auxiliary
+  public MaterialType getMaterialType() {
+    return MaterialType.DIELECTRIC;
   }
 
   @Override
@@ -29,12 +35,12 @@ public class DielectricMaterial extends Material {
 
     if (inRay.getDirection().dotProduct(hitRecord.getNormal()) > 0) {
       outwardNormal = hitRecord.getNormal().scalarMultiply(-1);
-      niOverNt = refractiveIndex;
-      cosine = (refractiveIndex * inRay.getDirection().dotProduct(hitRecord.getNormal())) / inRay.getDirection()
+      niOverNt = getRefractiveIndex();
+      cosine = (getRefractiveIndex() * inRay.getDirection().dotProduct(hitRecord.getNormal())) / inRay.getDirection()
           .getNorm();
     } else {
       outwardNormal = hitRecord.getNormal();
-      niOverNt = 1 / refractiveIndex;
+      niOverNt = 1 / getRefractiveIndex();
       cosine = -inRay.getDirection().dotProduct(hitRecord.getNormal()) / inRay.getDirection().getNorm();
     }
 
@@ -42,7 +48,7 @@ public class DielectricMaterial extends Material {
 
     final double reflectProbability;
     if (refracted.isPresent()) {
-      reflectProbability = computeSchlick(cosine, refractiveIndex);
+      reflectProbability = computeSchlick(cosine, getRefractiveIndex());
     } else {
       reflectProbability = 1;
     }

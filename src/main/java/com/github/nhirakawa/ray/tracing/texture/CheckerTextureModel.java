@@ -13,6 +13,12 @@ public abstract class CheckerTextureModel implements Texture {
   public abstract Texture getTexture1();
 
   @Override
+  @Value.Auxiliary
+  public TextureType getTextureType() {
+    return TextureType.CHECKER;
+  }
+
+  @Override
   public Vector3 getValue(double u, double v, Vector3 point) {
     double sines = StrictMath.sin(10 * point.getX()) * StrictMath.sin(10 * point.getY()) * StrictMath.sin(10 * point.getZ());
     if (sines < 0) {
