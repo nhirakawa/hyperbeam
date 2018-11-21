@@ -1,17 +1,19 @@
 package com.github.nhirakawa.ray.tracing.material;
 
+import org.immutables.value.Value;
+
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
+import com.github.nhirakawa.ray.tracing.texture.Texture;
 import com.github.nhirakawa.ray.tracing.util.VectorUtils;
 
-public class LambertianMaterial extends Material {
+@Value.Immutable
+@ImmutableStyle
+public abstract class LambertianMaterialModel extends Material {
 
-  private final Vector3 albedo;
-
-  public LambertianMaterial(Vector3 albedo) {
-    this.albedo = albedo;
-  }
+  public abstract Texture getTexture();
 
   @Override
   public MaterialScatterRecord scatter(Ray inRay, HitRecord hitRecord) {
@@ -23,9 +25,10 @@ public class LambertianMaterial extends Material {
         .build();
 
     return MaterialScatterRecord.builder()
-        .setAttenuation(albedo)
+        .setAttenuation(getTexture().getValue(0, 0, hitRecord.getPoint()))
         .setScattered(scatteredRay)
         .setWasScattered(true)
         .build();
   }
+
 }
