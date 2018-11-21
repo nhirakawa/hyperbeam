@@ -50,7 +50,7 @@ public class RayTracer {
 
   private static final String FILENAME = "test.png";
 
-  private static final int MULTIPLIER = 2;
+  private static final int MULTIPLIER = 1;
 
   public static void main(String... args) throws Exception {
     int numberOfRows = 200 * MULTIPLIER;
@@ -97,7 +97,7 @@ public class RayTracer {
         .setAperture(aperture)
         .setFocusDistance(distanceToFocus)
         .setTime0(0)
-        .setTime1(1)
+        .setTime1(0)
         .build();
 
     ExecutorService executorService = buildExecutor(numberOfThreads);
