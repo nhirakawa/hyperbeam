@@ -32,11 +32,15 @@ import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.DielectricMaterial;
 import com.github.nhirakawa.ray.tracing.material.LambertianMaterial;
+import com.github.nhirakawa.ray.tracing.material.LambertianMaterialModel;
 import com.github.nhirakawa.ray.tracing.material.Material;
 import com.github.nhirakawa.ray.tracing.material.MaterialScatterRecord;
 import com.github.nhirakawa.ray.tracing.material.MetalMaterial;
 import com.github.nhirakawa.ray.tracing.shape.MovingSphere;
 import com.github.nhirakawa.ray.tracing.shape.Sphere;
+import com.github.nhirakawa.ray.tracing.texture.CheckerTexture;
+import com.github.nhirakawa.ray.tracing.texture.ConstantTexture;
+import com.github.nhirakawa.ray.tracing.texture.Texture;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Supplier;
@@ -51,7 +55,7 @@ public class RayTracer {
 
   private static final String FILENAME = "test.png";
 
-  private static final int MULTIPLIER = 1;
+  private static final int MULTIPLIER = 2;
 
   public static void main(String... args) throws Exception {
     int numberOfRows = 200 * MULTIPLIER;
@@ -98,7 +102,7 @@ public class RayTracer {
         .setAperture(aperture)
         .setFocusDistance(distanceToFocus)
         .setTime0(0)
-        .setTime1(0)
+        .setTime1(1)
         .build();
 
     ExecutorService executorService = buildExecutor(numberOfThreads);
@@ -201,7 +205,27 @@ public class RayTracer {
   private static Hittable buildRandomSpheres(int numberOfSpheres) {
     List<Hittable> hittables = new ArrayList<>(numberOfSpheres);
 
-    hittables.add(new Sphere(new Vector3(0, -1000, 0), 1000, new LambertianMaterial(new Vector3(0.5, 0.5, 0.5))));
+    Texture checkerTexture = CheckerTexture.builder()
+        .setTexture0(
+            ConstantTexture.builder()
+                .setColor(new Vector3(0.2, 0.3, 0.1))
+                .build()
+        )
+        .setTexture1(
+            ConstantTexture.builder()
+                .setColor(new Vector3(0.9, 0.9, 0.9))
+                .build()
+        )
+        .build();
+    hittables.add(
+        new Sphere(
+            new Vector3(0, -1000, 0),
+            1000,
+            LambertianMaterial.builder()
+                .setTexture(checkerTexture)
+                .build()
+        )
+    );
 
     Set<Integer> bounds = IntStream.range(-10, 10)
         .boxed()
@@ -222,7 +246,7 @@ public class RayTracer {
       Vector3 center = new Vector3(a + (0.9 * rand()), 0.2, b + (0.9 * rand()));
       Material material = getRandomMaterial();
 
-      if (material instanceof LambertianMaterial) {
+      if (material instanceof LambertianMaterialModel) {
         hittables.add(
             MovingSphere.builder()
                 .setCenter0(center)
@@ -239,7 +263,19 @@ public class RayTracer {
     }
 
     hittables.add(new Sphere(new Vector3(0, 1, 0), 1, new DielectricMaterial(1.5)));
-    hittables.add(new Sphere(new Vector3(-4, 1, 0), 1, new LambertianMaterial(new Vector3(0.4, 0.2, 0.1))));
+    hittables.add(
+        new Sphere(
+            new Vector3(-4, 1, 0),
+            1,
+            LambertianMaterial.builder()
+                .setTexture(
+                    ConstantTexture.builder()
+                        .setColor(new Vector3(0.4, 0.2, 0.1))
+                        .build()
+                )
+                .build()
+        )
+    );
     hittables.add(new Sphere(new Vector3(4, 1, 0), 1, new MetalMaterial(new Vector3(0.7, 0.6, 0.5), 0)));
 
     return BoundingVolumeHierarchy.builder()
@@ -252,7 +288,13 @@ public class RayTracer {
   private static Material getRandomMaterial() {
     double chooseMaterial = rand();
     if (chooseMaterial < 0.8) {
-      return new LambertianMaterial(new Vector3(rand() * rand(), rand() * rand(), rand() * rand()));
+      return LambertianMaterial.builder()
+          .setTexture(
+              ConstantTexture.builder()
+                  .setColor(new Vector3(rand() * rand(), rand() * rand(), rand() * rand()))
+                  .build()
+          )
+          .build();
     } else if (chooseMaterial < 0.95) {
       Supplier<Double> random = () -> 0.5 * (1 + rand());
       return new MetalMaterial(new Vector3(random.get(), random.get(), random.get()), 0.5 * rand());
