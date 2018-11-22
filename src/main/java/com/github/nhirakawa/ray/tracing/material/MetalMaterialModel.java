@@ -1,18 +1,24 @@
 package com.github.nhirakawa.ray.tracing.material;
 
+import org.immutables.value.Value;
+
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.util.VectorUtils;
 
-public class MetalMaterial extends Material {
+@Value.Immutable
+@ImmutableStyle
+public abstract class MetalMaterialModel extends Material {
 
-  private final Vector3 albedo;
-  private final double fuzz;
+  public abstract Vector3 getAlbedo();
+  public abstract double getFuzz();
 
-  public MetalMaterial(Vector3 albedo, double fuzz) {
-    this.albedo = albedo;
-    this.fuzz = Math.min(fuzz, 1);
+  @Override
+  @Value.Auxiliary
+  public MaterialType getMaterialType() {
+    return MaterialType.METAL;
   }
 
   @Override
@@ -20,13 +26,13 @@ public class MetalMaterial extends Material {
     Vector3 reflected = reflect(inRay.getDirection().unit(), hitRecord.getNormal());
     Ray scatteredRay = Ray.builder()
         .setOrigin(hitRecord.getPoint())
-        .setDirection(reflected.add(VectorUtils.getRandomUnitSphereVector().scalarMultiply(fuzz)))
+        .setDirection(reflected.add(VectorUtils.getRandomUnitSphereVector().scalarMultiply(getFuzz())))
         .setTime(inRay.getTime())
         .build();
     boolean wasScattered = scatteredRay.getDirection().dotProduct(hitRecord.getNormal()) > 0;
 
     return MaterialScatterRecord.builder()
-        .setAttenuation(albedo)
+        .setAttenuation(getAlbedo())
         .setScattered(scatteredRay)
         .setWasScattered(wasScattered)
         .build();

@@ -2,12 +2,24 @@ package com.github.nhirakawa.ray.tracing.material;
 
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 
-
+@JsonTypeInfo(use = Id.NAME, include = As.EXISTING_PROPERTY, property = "materialType")
+@JsonSubTypes({
+    @Type(value = DielectricMaterial.class, name = "DIELECTRIC"),
+    @Type(value = MetalMaterial.class, name = "METAL"),
+    @Type(value = LambertianMaterial.class, name = "LAMBERTIAN")
+})
 public abstract class Material {
+
+  public abstract MaterialType getMaterialType();
 
   public abstract MaterialScatterRecord scatter(Ray inRay, HitRecord hitRecord);
 

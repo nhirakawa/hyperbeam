@@ -13,13 +13,13 @@ public class HittablesList implements Hittable {
 
   private static final Logger LOG = LoggerFactory.getLogger(HittablesList.class);
 
-  private final List<Hittable> hittables;
+  private final List<? extends Hittable> hittables;
 
-  public HittablesList(List<Hittable> hittables) {
+  public HittablesList(List<? extends Hittable> hittables) {
     this.hittables = ImmutableList.copyOf(hittables);
   }
 
-  public List<Hittable> getHittables() {
+  public List<? extends Hittable> getHittables() {
     return hittables;
   }
 

@@ -2,48 +2,53 @@ package com.github.nhirakawa.ray.tracing.shape;
 
 import java.util.Optional;
 
+import org.immutables.value.Value;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
 import com.github.nhirakawa.ray.tracing.collision.HitRecord;
-import com.github.nhirakawa.ray.tracing.collision.Hittable;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.Material;
 import com.google.common.collect.Range;
 
-public class Sphere implements Hittable {
+@Value.Immutable
+@ImmutableStyle
+public abstract class SphereModel implements Shape {
 
-  private final Vector3 center;
-  private final double radius;
-  private final Material material;
-  private final AxisAlignedBoundingBox axisAlignedBoundingBox;
+  public abstract Vector3 getCenter();
+  public abstract double getRadius();
+  public abstract Material getMaterial();
 
-  public Sphere(Vector3 center, double radius, Material material) {
-    this.center = center;
-    this.radius = radius;
-    this.material = material;
+  @JsonIgnore
+  @Value.Derived
+  public Vector3 getRadiusVector() {
+    return new Vector3(getRadius(), getRadius(), getRadius());
+  }
 
-    Vector3 radiusVector = new Vector3(radius, radius, radius);
-    this.axisAlignedBoundingBox = AxisAlignedBoundingBox.builder()
-        .setMin(center.subtract(radiusVector))
-        .setMax(center.add(radiusVector))
+  @JsonIgnore
+  @Value.Derived
+  public AxisAlignedBoundingBox getAxisAlignedBoundingBox() {
+    return AxisAlignedBoundingBox.builder()
+        .setMin(getCenter().subtract(getRadiusVector()))
+        .setMax(getCenter().add(getRadiusVector()))
         .build();
   }
 
-  public Vector3 getCenter() {
-    return center;
-  }
-
-  public double getRadius() {
-    return radius;
+  @Override
+  @Value.Auxiliary
+  public ShapeType getShapeType() {
+    return ShapeType.SPHERE;
   }
 
   @Override
   public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
-    Vector3 oc = ray.getOrigin().subtract(center);
+    Vector3 oc = ray.getOrigin().subtract(getCenter());
 
     double a = ray.getDirection().dotProduct(ray.getDirection());
     double b = oc.dotProduct(ray.getDirection());
-    double c = oc.dotProduct(oc) - (radius * radius);
+    double c = oc.dotProduct(oc) - (getRadius() * getRadius());
 
     double discriminant = (b * b) - (a * c);
 
@@ -53,13 +58,13 @@ public class Sphere implements Hittable {
 
       if (parameterRange.contains(negativeTemp)) {
         Vector3 point = ray.getPointAtParameter(negativeTemp);
-        Vector3 normal = point.subtract(center).scalarDivide(radius);
+        Vector3 normal = point.subtract(getCenter()).scalarDivide(getRadius());
         return Optional.of(
             HitRecord.builder()
                 .setT(negativeTemp)
                 .setPoint(point)
                 .setNormal(normal)
-                .setMaterial(material)
+                .setMaterial(getMaterial())
                 .build()
         );
       }
@@ -67,13 +72,13 @@ public class Sphere implements Hittable {
       double positiveTemp = (-b + Math.sqrt(discriminant)) / a; // TODO rename this awful variable
       if (parameterRange.contains(positiveTemp)) {
         Vector3 point = ray.getPointAtParameter(positiveTemp);
-        Vector3 normal = point.subtract(center).scalarDivide(radius);
+        Vector3 normal = point.subtract(getCenter()).scalarDivide(getRadius());
         return Optional.of(
             HitRecord.builder()
                 .setT(positiveTemp)
                 .setPoint(point)
                 .setNormal(normal)
-                .setMaterial(material)
+                .setMaterial(getMaterial())
                 .build()
         );
       }
@@ -84,7 +89,7 @@ public class Sphere implements Hittable {
 
   @Override
   public Optional<AxisAlignedBoundingBox> getBoundingBox(double t0, double t1) {
-    return Optional.of(axisAlignedBoundingBox);
+    return Optional.of(getAxisAlignedBoundingBox());
   }
 
 }

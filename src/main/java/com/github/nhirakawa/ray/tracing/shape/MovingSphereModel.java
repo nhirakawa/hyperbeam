@@ -15,7 +15,7 @@ import com.google.common.collect.Range;
 
 @Value.Immutable
 @ImmutableStyle
-public abstract class MovingSphereModel implements Hittable {
+public abstract class MovingSphereModel implements Hittable, Shape {
 
   public abstract Vector3 getCenter0();
   public abstract Vector3 getCenter1();
@@ -23,6 +23,12 @@ public abstract class MovingSphereModel implements Hittable {
   public abstract double getTime1();
   public abstract double getRadius();
   public abstract Material getMaterial();
+
+  @Override
+  @Value.Auxiliary
+  public ShapeType getShapeType() {
+    return ShapeType.MOVING_SPHERE;
+  }
 
   @Override
   public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {

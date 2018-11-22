@@ -2,6 +2,7 @@ package com.github.nhirakawa.ray.tracing.camera;
 
 import org.immutables.value.Value;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
@@ -23,46 +24,55 @@ public interface CameraModel {
   double getTime1();
 
   @Value.Lazy
+  @JsonIgnore
   default double getTheta() {
     return (getVerticalFovDegrees() * Math.PI) / 180;
   }
 
   @Value.Lazy
+  @JsonIgnore
   default double getHalfHeight() {
     return StrictMath.tan(getTheta() / 2);
   }
 
   @Value.Lazy
+  @JsonIgnore
   default double getHalfWidth() {
     return getAspectRatio() * getHalfHeight();
   }
 
   @Value.Lazy
+  @JsonIgnore
   default Vector3 getW() {
     return getLookFrom().subtract(getLookAt()).unit();
   }
 
   @Value.Lazy
+  @JsonIgnore
   default Vector3 getU() {
     return getViewUp().cross(getW()).unit();
   }
 
   @Value.Lazy
+  @JsonIgnore
   default Vector3 getV() {
     return getW().cross(getU());
   }
 
   @Value.Lazy
+  @JsonIgnore
   default double getLensRadius() {
     return getAperture() / 2;
   }
 
   @Value.Lazy
+  @JsonIgnore
   default Vector3 getOrigin() {
     return getLookFrom();
   }
 
   @Value.Lazy
+  @JsonIgnore
   default Vector3 getLowerLeftCorner() {
     return getOrigin().subtract(getU().scalarMultiply(getHalfWidth() * getFocusDistance()))
         .subtract(getV().scalarMultiply(getHalfHeight() * getFocusDistance()))
@@ -70,11 +80,13 @@ public interface CameraModel {
   }
 
   @Value.Lazy
+  @JsonIgnore
   default Vector3 getHorizontal() {
     return getU().scalarMultiply(2 * getFocusDistance() * getHalfWidth());
   }
 
   @Value.Lazy
+  @JsonIgnore
   default Vector3 getVertical() {
     return getV().scalarMultiply(2 * getFocusDistance() * getHalfHeight());
   }

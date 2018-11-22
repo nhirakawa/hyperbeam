@@ -12,6 +12,12 @@ public abstract class ConstantTextureModel implements Texture {
   public abstract Vector3 getColor();
 
   @Override
+  @Value.Auxiliary
+  public TextureType getTextureType() {
+    return TextureType.CONSTANT;
+  }
+
+  @Override
   public Vector3 getValue(double u, double v, Vector3 point) {
     return getColor();
   }
