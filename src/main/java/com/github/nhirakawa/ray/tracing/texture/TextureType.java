@@ -4,5 +4,6 @@ public enum TextureType {
 
   CONSTANT,
   CHECKER,
+  PERLIN_NOISE,
 
 }

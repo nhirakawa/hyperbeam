@@ -56,7 +56,7 @@ public class RayTracer {
   }
 
   private static void doThreadedRayTrace(ConfigWrapper configWrapper) throws IOException {
-    byte[] bytes = Resources.toByteArray(Resources.getResource("checkerboard-spheres.json"));
+    byte[] bytes = Resources.toByteArray(Resources.getResource("two-perlin-spheres.json"));
     Scene scene = OBJECT_MAPPER.readValue(bytes, Scene.class);
 
     Stopwatch stopwatch = Stopwatch.createStarted();
@@ -134,9 +134,9 @@ public class RayTracer {
     color = color.scalarDivide(numberOfSamples);
     color = color.apply(Math::sqrt);
 
-    int red = (int) (255.99 * color.getRed());
-    int green = (int) (255.99 * color.getGreen());
-    int blue = (int) (255.99 * color.getBlue());
+    int red = (int) (255 * color.getRed());
+    int green = (int) (255 * color.getGreen());
+    int blue = (int) (255 * color.getBlue());
 
     Coordinates coordinates = Coordinates.builder()
         .setX(i)

@@ -10,7 +10,8 @@ import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 @JsonTypeInfo(use = Id.NAME, include = As.EXISTING_PROPERTY, property = "textureType")
 @JsonSubTypes({
     @Type(value = CheckerTexture.class, name = "CHECKER"),
-    @Type(value = ConstantTexture.class, name = "CONSTANT")
+    @Type(value = ConstantTexture.class, name = "CONSTANT"),
+    @Type(value = PerlinNoiseTexture.class, name = "PERLIN_NOISE")
 })
 public interface Texture {
 
