@@ -8,5 +8,8 @@ public enum ShapeType {
   YZ_RECTANGLE,
   XZ_RECTANGLE,
   REVERSE_NORMALS,
+  BOX,
+  TRANSLATION,
+  Y_ROTATION,
 
 }
