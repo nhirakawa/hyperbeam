@@ -12,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
@@ -46,6 +47,8 @@ public class RayTracer {
 
   private static final ObjectMapper OBJECT_MAPPER = buildObjectMapper();
 
+  private static final Function<Double, Double> CLAMP = d -> Math.min(d, 1);
+
   public static void main(String... args) throws Exception {
     Config config = ConfigFactory.load();
     ConfigWrapper configWrapper = ConfigWrapper.builder()
@@ -56,7 +59,7 @@ public class RayTracer {
   }
 
   private static void doThreadedRayTrace(ConfigWrapper configWrapper) throws IOException {
-    byte[] bytes = Resources.toByteArray(Resources.getResource("earth.json"));
+    byte[] bytes = Resources.toByteArray(Resources.getResource("cornell-box.json"));
     Scene scene = OBJECT_MAPPER.readValue(bytes, Scene.class);
 
     Stopwatch stopwatch = Stopwatch.createStarted();
@@ -133,6 +136,7 @@ public class RayTracer {
 
     color = color.scalarDivide(numberOfSamples);
     color = color.apply(Math::sqrt);
+    color = color.apply(CLAMP);
 
     int red = (int) (255 * color.getRed());
     int green = (int) (255 * color.getGreen());
@@ -143,31 +147,37 @@ public class RayTracer {
         .setY(numberOfColumns - j)
         .build();
 
-    return Rgb.builder()
-        .setCoordinates(coordinates)
-        .setRed(red)
-        .setGreen(green)
-        .setBlue(blue)
-        .build();
+    try {
+      return Rgb.builder()
+          .setCoordinates(coordinates)
+          .setRed(red)
+          .setGreen(green)
+          .setBlue(blue)
+          .build();
+    } catch (IllegalArgumentException e) {
+      throw e;
+    }
   }
 
   private static Vector3 color(Ray ray, Hittable hittable, int depth) {
     Optional<HitRecord> maybeHitRecord = hittable.hit(ray, 0.001, Double.MAX_VALUE);
     if (maybeHitRecord.isPresent()) {
-      MaterialScatterRecord materialScatterRecord = maybeHitRecord.get()
+      HitRecord hitRecord = maybeHitRecord.get();
+
+      Vector3 emitted = hitRecord
           .getMaterial()
-          .scatter(ray, maybeHitRecord.get());
+          .emit(hitRecord.getU(), hitRecord.getV(), hitRecord.getPoint());
+
+      MaterialScatterRecord materialScatterRecord = hitRecord.getMaterial().scatter(ray, hitRecord);
 
       if (depth < 50 && materialScatterRecord.wasScattered()) {
-        return materialScatterRecord.getAttenuation()
-            .multiply(color(materialScatterRecord.getScattered(), hittable, depth + 1));
+        Vector3 addedColor = color(materialScatterRecord.getScattered(), hittable, depth + 1);
+        return emitted.add(addedColor.multiply(materialScatterRecord.getAttenuation()));
       } else {
-        return Vector3.zero();
+        return emitted;
       }
     } else {
-      Vector3 unitDirection = ray.getDirection().unit();
-      double t = 0.5 * (unitDirection.getY() + 1);
-      return new Vector3(1, 1, 1).scalarMultiply(1 - t).add(new Vector3(0.5, 0.7, 1).scalarMultiply(t));
+      return Vector3.zero();
     }
   }
 

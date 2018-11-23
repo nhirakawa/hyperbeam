@@ -119,6 +119,11 @@ public class Vector3 {
     return new Vector3D(x, y, z).getNorm();
   }
 
+  @JsonIgnore
+  public Vector3 negate() {
+    return new Vector3(-x, -y, -z);
+  }
+
   public Vector3 apply(Function<Double, Double> function) {
     double newX = function.apply(x);
     double newY = function.apply(y);

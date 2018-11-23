@@ -5,5 +5,6 @@ public enum MaterialType {
   DIELECTRIC,
   LAMBERTIAN,
   METAL,
+  DIFFUSE_LIGHT,
 
 }
