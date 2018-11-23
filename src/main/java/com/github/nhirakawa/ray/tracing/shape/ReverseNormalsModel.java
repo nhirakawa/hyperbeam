@@ -1,0 +1,34 @@
+package com.github.nhirakawa.ray.tracing.shape;
+
+import java.util.Optional;
+
+import org.immutables.value.Value;
+
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
+import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
+import com.github.nhirakawa.ray.tracing.collision.HitRecord;
+import com.github.nhirakawa.ray.tracing.geometry.Ray;
+
+@Value.Immutable
+@ImmutableStyle
+public abstract class ReverseNormalsModel implements Shape {
+
+  public abstract Shape getShape();
+
+  @Override
+  public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
+    return getShape().hit(ray, tMin, tMax)
+        .map(hitRecord -> hitRecord.withNormal(hitRecord.getNormal().negate()));
+  }
+
+  @Override
+  public Optional<AxisAlignedBoundingBox> getBoundingBox(double t0, double t1) {
+    return getShape().getBoundingBox(t0, t1);
+  }
+
+  @Override
+  public ShapeType getShapeType() {
+    return ShapeType.REVERSE_NORMALS;
+  }
+
+}

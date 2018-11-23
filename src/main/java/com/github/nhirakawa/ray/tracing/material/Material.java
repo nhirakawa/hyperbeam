@@ -15,13 +15,18 @@ import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 @JsonSubTypes({
     @Type(value = DielectricMaterial.class, name = "DIELECTRIC"),
     @Type(value = MetalMaterial.class, name = "METAL"),
-    @Type(value = LambertianMaterial.class, name = "LAMBERTIAN")
+    @Type(value = LambertianMaterial.class, name = "LAMBERTIAN"),
+    @Type(value = DiffuseLightMaterial.class, name = "DIFFUSE_LIGHT")
 })
 public abstract class Material {
 
   public abstract MaterialType getMaterialType();
 
   public abstract MaterialScatterRecord scatter(Ray inRay, HitRecord hitRecord);
+
+  public Vector3 emit(double u, double v, Vector3 point) {
+    return Vector3.zero();
+  }
 
   protected static Optional<Vector3> refract(Vector3 vector, Vector3 normal, double niOverNt) {
     Vector3 unitVector = vector.unit();
