@@ -15,4 +15,14 @@ public interface HitRecordModel {
   Vector3 getNormal();
   Material getMaterial();
 
+  @Value.Default
+  default double getU() {
+    return 0;
+  }
+
+  @Value.Default
+  default double getV() {
+    return 0;
+  }
+
 }
