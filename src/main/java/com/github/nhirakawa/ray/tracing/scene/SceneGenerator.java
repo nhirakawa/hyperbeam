@@ -8,10 +8,13 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.github.nhirakawa.ray.tracing.camera.Camera;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.LambertianMaterial;
+import com.github.nhirakawa.ray.tracing.material.Material;
 import com.github.nhirakawa.ray.tracing.shape.Shape;
 import com.github.nhirakawa.ray.tracing.shape.Sphere;
+import com.github.nhirakawa.ray.tracing.texture.ImageTexture;
 import com.github.nhirakawa.ray.tracing.texture.PerlinNoiseTexture;
 import com.github.nhirakawa.ray.tracing.texture.Texture;
+import com.google.common.io.Resources;
 
 public class SceneGenerator {
 
@@ -57,6 +60,39 @@ public class SceneGenerator {
         .build();
   }
 
+  public static Scene generateEarth() {
+    Material material = LambertianMaterial.builder()
+        .setTexture(
+            ImageTexture.builder()
+                .setImageUrl(Resources.getResource("earth-8k.jpg"))
+                .build()
+        )
+        .build();
+
+    Sphere sphere = Sphere.builder()
+        .setCenter(new Vector3(0, 0, 0))
+        .setRadius(2)
+        .setMaterial(material)
+        .build();
+
+    Camera camera = Camera.builder()
+        .setLookFrom(new Vector3(13, 2, 3))
+        .setLookAt(new Vector3(0, 0, 0))
+        .setViewUp(new Vector3(0, 1, 0))
+        .setFocusDistance(10)
+        .setAperture(0)
+        .setAspectRatio(200 / 100)
+        .setTime0(0)
+        .setTime1(1)
+        .setVerticalFovDegrees(20)
+        .build();
+
+    return Scene.builder()
+        .setCamera(camera)
+        .addShapes(sphere)
+        .build();
+  }
+
   private static ObjectMapper buildObjectMapper() {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new GuavaModule());
@@ -64,10 +100,12 @@ public class SceneGenerator {
   }
 
   public static void main(String... args) throws IOException {
-    Scene twoPerlinSpheres = generateTwoPerlinSpheres();
+//    try (FileWriter fileWriter = new FileWriter("two-perlin-spheres.json")) {
+//      fileWriter.write(OBJECT_MAPPER.writeValueAsString(generateTwoPerlinSpheres()));
+//    }
 
-    try (FileWriter fileWriter = new FileWriter("two-perlin-spheres.json")) {
-      fileWriter.write(OBJECT_MAPPER.writeValueAsString(twoPerlinSpheres));
+    try (FileWriter fileWriter = new FileWriter("earth.json")) {
+      fileWriter.write(OBJECT_MAPPER.writeValueAsString(generateEarth()));
     }
   }
 }

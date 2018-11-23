@@ -56,7 +56,7 @@ public class RayTracer {
   }
 
   private static void doThreadedRayTrace(ConfigWrapper configWrapper) throws IOException {
-    byte[] bytes = Resources.toByteArray(Resources.getResource("two-perlin-spheres.json"));
+    byte[] bytes = Resources.toByteArray(Resources.getResource("earth.json"));
     Scene scene = OBJECT_MAPPER.readValue(bytes, Scene.class);
 
     Stopwatch stopwatch = Stopwatch.createStarted();

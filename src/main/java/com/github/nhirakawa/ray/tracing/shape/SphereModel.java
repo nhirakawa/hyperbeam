@@ -59,12 +59,23 @@ public abstract class SphereModel implements Shape {
       if (parameterRange.contains(negativeTemp)) {
         Vector3 point = ray.getPointAtParameter(negativeTemp);
         Vector3 normal = point.subtract(getCenter()).scalarDivide(getRadius());
+
+        Vector3 uvPpoint = point.subtract(getCenter());
+
+        double phi = Math.atan2(uvPpoint.getZ(), uvPpoint.getX());
+        double theta = Math.asin(uvPpoint.getY());
+
+        double u = (1 - phi + Math.PI) / (2 * Math.PI);
+        double v = (theta + (Math.PI / 2)) / Math.PI;
+
         return Optional.of(
             HitRecord.builder()
                 .setT(negativeTemp)
                 .setPoint(point)
                 .setNormal(normal)
                 .setMaterial(getMaterial())
+                .setU(u)
+                .setV(v)
                 .build()
         );
       }
@@ -73,12 +84,23 @@ public abstract class SphereModel implements Shape {
       if (parameterRange.contains(positiveTemp)) {
         Vector3 point = ray.getPointAtParameter(positiveTemp);
         Vector3 normal = point.subtract(getCenter()).scalarDivide(getRadius());
+
+        Vector3 uvPpoint = point.subtract(getCenter());
+
+        double phi = Math.atan2(uvPpoint.getZ(), uvPpoint.getX());
+        double theta = Math.asin(uvPpoint.getY());
+
+        double u = (1 - phi + Math.PI) / (2 * Math.PI);
+        double v = (theta + (Math.PI / 2)) / Math.PI;
+
         return Optional.of(
             HitRecord.builder()
                 .setT(positiveTemp)
                 .setPoint(point)
                 .setNormal(normal)
                 .setMaterial(getMaterial())
+                .setU(u)
+                .setV(v)
                 .build()
         );
       }
