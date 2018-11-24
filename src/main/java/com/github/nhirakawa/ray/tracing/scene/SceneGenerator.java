@@ -11,6 +11,7 @@ import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.DiffuseLightMaterial;
 import com.github.nhirakawa.ray.tracing.material.LambertianMaterial;
 import com.github.nhirakawa.ray.tracing.material.Material;
+import com.github.nhirakawa.ray.tracing.shape.Box;
 import com.github.nhirakawa.ray.tracing.shape.ReverseNormals;
 import com.github.nhirakawa.ray.tracing.shape.Shape;
 import com.github.nhirakawa.ray.tracing.shape.Sphere;
@@ -21,10 +22,15 @@ import com.github.nhirakawa.ray.tracing.texture.ConstantTexture;
 import com.github.nhirakawa.ray.tracing.texture.ImageTexture;
 import com.github.nhirakawa.ray.tracing.texture.PerlinNoiseTexture;
 import com.github.nhirakawa.ray.tracing.texture.Texture;
+import com.github.nhirakawa.ray.tracing.transform.Translation;
+import com.github.nhirakawa.ray.tracing.transform.YRotation;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
 
-public class SceneGenerator {
+@SuppressWarnings("MagicNumber")
+public final class SceneGenerator {
+
+  private SceneGenerator() {}
 
   private static final ObjectMapper OBJECT_MAPPER = buildObjectMapper();
 
@@ -276,7 +282,37 @@ public class SceneGenerator {
                     .setMaterial(white)
                     .build()
             )
-            .build()
+            .build(),
+        Translation.builder()
+            .setShape(
+                YRotation.builder()
+                    .setShape(
+                        Box.builder()
+                            .setPMin(Vector3.zero())
+                            .setPMax(new Vector3(165, 165, 165))
+                            .setMaterial(white)
+                            .build()
+                    )
+                    .setAngleInDegrees(-18)
+                    .build()
+            )
+            .setOffset(new Vector3(130, 0, 65))
+            .build(),
+        Translation.builder()
+            .setShape(
+                YRotation.builder()
+                    .setShape(
+                        Box.builder()
+                            .setPMin(Vector3.zero())
+                            .setPMax(new Vector3(165, 330, 165))
+                            .setMaterial(white)
+                            .build()
+                    )
+                    .setAngleInDegrees(15)
+                    .build()
+            )
+            .setOffset(new Vector3(265, 0, 295))
+        .build()
     );
 
     return Scene.builder()
@@ -296,4 +332,5 @@ public class SceneGenerator {
       fileWriter.write(OBJECT_MAPPER.writeValueAsString(generateCornellBox()));
     }
   }
+
 }
