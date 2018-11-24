@@ -126,8 +126,8 @@ public class RayTracer {
     Vector3 color = new Vector3(0, 0, 0);
 
     for (int s = 0; s < numberOfSamples; s++) {
-      double u = ((double) (i + rand()) / numberOfRows);
-      double v = ((double) (j + rand()) / numberOfColumns);
+      double u = ((i + rand()) / numberOfRows);
+      double v = ((j + rand()) / numberOfColumns);
 
       Ray ray = camera.getRay(u, v);
 
