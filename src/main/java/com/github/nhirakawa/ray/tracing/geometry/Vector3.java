@@ -1,5 +1,6 @@
 package com.github.nhirakawa.ray.tracing.geometry;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -158,4 +159,10 @@ public class Vector3 {
 
     return x == other.x && y == other.y && z == other.z;
   }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(x, y, z);
+  }
+
 }
