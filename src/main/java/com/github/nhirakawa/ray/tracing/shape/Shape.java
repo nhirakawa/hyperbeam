@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.nhirakawa.ray.tracing.collision.Hittable;
-import com.github.nhirakawa.ray.tracing.transform.YRotation;
 import com.github.nhirakawa.ray.tracing.transform.Translation;
+import com.github.nhirakawa.ray.tracing.transform.YRotation;
 
 @SuppressWarnings("ClassReferencesSubclass")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "shapeType")
@@ -18,7 +18,8 @@ import com.github.nhirakawa.ray.tracing.transform.Translation;
     @Type(value = ReverseNormals.class, name = "REVERSE_NORMALS"),
     @Type(value = Box.class, name = "BOX"),
     @Type(value = Translation.class, name = "TRANSLATION"),
-    @Type(value = YRotation.class, name = "Y_ROTATION")
+    @Type(value = YRotation.class, name = "Y_ROTATION"),
+    @Type(value = ConstantMedium.class, name = "CONSTANT_MEDIUM")
 })
 public interface Shape extends Hittable {
 
