@@ -6,5 +6,6 @@ public enum MaterialType {
   LAMBERTIAN,
   METAL,
   DIFFUSE_LIGHT,
+  ISOTROPIC,
 
 }

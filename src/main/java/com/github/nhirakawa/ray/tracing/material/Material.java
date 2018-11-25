@@ -5,21 +5,22 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 
-@JsonTypeInfo(use = Id.NAME, include = As.EXISTING_PROPERTY, property = "materialType")
+@SuppressWarnings({"ClassReferencesSubclass", "HardCodedStringLiteral"})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "materialType")
 @JsonSubTypes({
     @Type(value = DielectricMaterial.class, name = "DIELECTRIC"),
     @Type(value = MetalMaterial.class, name = "METAL"),
     @Type(value = LambertianMaterial.class, name = "LAMBERTIAN"),
-    @Type(value = DiffuseLightMaterial.class, name = "DIFFUSE_LIGHT")
+    @Type(value = DiffuseLightMaterial.class, name = "DIFFUSE_LIGHT"),
+    @Type(value = IsotropicMaterial.class, name = "ISOTROPIC")
 })
 public abstract class Material {
 
+  @SuppressWarnings("unused")
   public abstract MaterialType getMaterialType();
 
   public abstract MaterialScatterRecord scatter(Ray inRay, HitRecord hitRecord);
@@ -45,4 +46,5 @@ public abstract class Material {
   protected static Vector3 reflect(Vector3 vector, Vector3 normal) {
     return vector.subtract(normal.scalarMultiply(2).scalarMultiply(vector.dotProduct(normal)));
   }
+
 }

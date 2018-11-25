@@ -11,5 +11,6 @@ public enum ShapeType {
   BOX,
   TRANSLATION,
   Y_ROTATION,
+  CONSTANT_MEDIUM,
 
 }

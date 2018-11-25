@@ -12,6 +12,7 @@ import com.github.nhirakawa.ray.tracing.material.DiffuseLightMaterial;
 import com.github.nhirakawa.ray.tracing.material.LambertianMaterial;
 import com.github.nhirakawa.ray.tracing.material.Material;
 import com.github.nhirakawa.ray.tracing.shape.Box;
+import com.github.nhirakawa.ray.tracing.shape.ConstantMedium;
 import com.github.nhirakawa.ray.tracing.shape.ReverseNormals;
 import com.github.nhirakawa.ray.tracing.shape.Shape;
 import com.github.nhirakawa.ray.tracing.shape.Sphere;
@@ -312,7 +313,168 @@ public final class SceneGenerator {
                     .build()
             )
             .setOffset(new Vector3(265, 0, 295))
-        .build()
+            .build()
+    );
+
+    return Scene.builder()
+        .setCamera(camera)
+        .addAllShapes(shapes)
+        .build();
+  }
+
+  public static Scene generateCornellSmoke() {
+    Camera camera = Camera.builder()
+        .setLookFrom(new Vector3(278, 278, -800))
+        .setLookAt(new Vector3(278, 278, 0))
+        .setFocusDistance(10)
+        .setAperture(0)
+        .setVerticalFovDegrees(40)
+        .setViewUp(new Vector3(0, 1, 0))
+        .setAspectRatio(2)
+        .setTime0(0)
+        .setTime1(1)
+        .build();
+
+    Material red = LambertianMaterial.builder()
+        .setTexture(
+            ConstantTexture.builder()
+                .setColor(new Vector3(0.65, 0.05, 0.05))
+                .build()
+        )
+        .build();
+    Material white = LambertianMaterial.builder()
+        .setTexture(
+            ConstantTexture.builder()
+                .setColor(new Vector3(0.73, 0.73, 0.73))
+                .build()
+        )
+        .build();
+    Material green = LambertianMaterial.builder()
+        .setTexture(
+            ConstantTexture.builder()
+                .setColor(new Vector3(0.12, 0.45, 0.15))
+                .build()
+        )
+        .build();
+    Material light = DiffuseLightMaterial.builder()
+        .setTexture(
+            ConstantTexture.builder()
+                .setColor(new Vector3(15, 15, 15))
+                .build()
+        )
+        .build();
+
+    List<Shape> shapes = ImmutableList.of(
+        ReverseNormals.builder()
+            .setShape(
+                YZRectangle.builder()
+                    .setY0(0)
+                    .setY1(555)
+                    .setZ0(0)
+                    .setZ1(555)
+                    .setK(555)
+                    .setMaterial(green)
+                    .build()
+            )
+            .build(),
+        YZRectangle.builder()
+            .setY0(0)
+            .setY1(555)
+            .setZ0(0)
+            .setZ1(555)
+            .setK(0)
+            .setMaterial(red)
+            .build(),
+        XZRectangle.builder()
+            .setX0(213)
+            .setX1(343)
+            .setZ0(227)
+            .setZ1(332)
+            .setK(554)
+            .setMaterial(light)
+            .build(),
+        ReverseNormals.builder()
+            .setShape(
+                XZRectangle.builder()
+                    .setX0(0)
+                    .setX1(555)
+                    .setZ0(0)
+                    .setZ1(555)
+                    .setK(555)
+                    .setMaterial(white)
+                    .build()
+            )
+            .build(),
+        XZRectangle.builder()
+            .setX0(0)
+            .setX1(555)
+            .setZ0(0)
+            .setZ1(555)
+            .setK(0)
+            .setMaterial(white)
+            .build(),
+        ReverseNormals.builder()
+            .setShape(
+                XYRectangle.builder()
+                    .setX0(0)
+                    .setX1(555)
+                    .setY0(0)
+                    .setY1(555)
+                    .setK(555)
+                    .setMaterial(white)
+                    .build()
+            )
+            .build(),
+        ConstantMedium.builder()
+            .setShape(
+                Translation.builder()
+                    .setShape(
+                        YRotation.builder()
+                            .setShape(
+                                Box.builder()
+                                    .setPMin(Vector3.zero())
+                                    .setPMax(new Vector3(165, 165, 165))
+                                    .setMaterial(white)
+                                    .build()
+                            )
+                            .setAngleInDegrees(-18)
+                            .build()
+                    )
+                    .setOffset(new Vector3(130, 0, 65))
+                    .build()
+            )
+            .setDensity(0.01)
+            .setTexture(
+                ConstantTexture.builder()
+                    .setColor(new Vector3(1, 1, 1))
+                    .build()
+            )
+            .build(),
+        ConstantMedium.builder()
+            .setShape(
+                Translation.builder()
+                    .setShape(
+                        YRotation.builder()
+                            .setShape(
+                                Box.builder()
+                                    .setPMin(Vector3.zero())
+                                    .setPMax(new Vector3(165, 330, 165))
+                                    .setMaterial(white)
+                                    .build()
+                            )
+                            .setAngleInDegrees(15)
+                            .build()
+                    )
+                    .setOffset(new Vector3(265, 0, 295))
+                    .build()
+            )
+            .setDensity(0.01)
+            .setTexture(
+                ConstantTexture.builder()
+                    .setColor(Vector3.zero())
+                    .build()
+            )
+            .build()
     );
 
     return Scene.builder()
@@ -328,8 +490,8 @@ public final class SceneGenerator {
   }
 
   public static void main(String... args) throws IOException {
-    try (FileWriter fileWriter = new FileWriter("cornell-box.json")) {
-      fileWriter.write(OBJECT_MAPPER.writeValueAsString(generateCornellBox()));
+    try (FileWriter fileWriter = new FileWriter("cornell-smoke.json")) {
+      fileWriter.write(OBJECT_MAPPER.writeValueAsString(generateCornellSmoke()));
     }
   }
 

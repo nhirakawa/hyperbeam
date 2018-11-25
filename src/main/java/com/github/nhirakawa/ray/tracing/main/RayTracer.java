@@ -59,7 +59,7 @@ public class RayTracer {
   }
 
   private static void doThreadedRayTrace(ConfigWrapper configWrapper) throws IOException {
-    byte[] bytes = Resources.toByteArray(Resources.getResource("cornell-box.json"));
+    byte[] bytes = Resources.toByteArray(Resources.getResource("cornell-smoke.json"));
     Scene scene = OBJECT_MAPPER.readValue(bytes, Scene.class);
 
     Stopwatch stopwatch = Stopwatch.createStarted();
