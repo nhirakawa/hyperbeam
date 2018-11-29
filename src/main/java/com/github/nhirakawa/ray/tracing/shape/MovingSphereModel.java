@@ -7,7 +7,7 @@ import org.immutables.value.Value;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
 import com.github.nhirakawa.ray.tracing.collision.HitRecord;
-import com.github.nhirakawa.ray.tracing.collision.Hittable;
+import com.github.nhirakawa.ray.tracing.collision.SceneObject;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.Material;
@@ -15,7 +15,7 @@ import com.google.common.collect.Range;
 
 @Value.Immutable
 @ImmutableStyle
-public abstract class MovingSphereModel implements Hittable, Shape {
+public abstract class MovingSphereModel implements SceneObject, com.github.nhirakawa.ray.tracing.shape.SceneObject {
 
   public abstract Vector3 getCenter0();
   public abstract Vector3 getCenter1();

@@ -9,17 +9,17 @@ import org.slf4j.LoggerFactory;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.google.common.collect.ImmutableList;
 
-public class HittablesList implements Hittable {
+public class HittablesList implements SceneObject {
 
   private static final Logger LOG = LoggerFactory.getLogger(HittablesList.class);
 
-  private final List<? extends Hittable> hittables;
+  private final List<? extends SceneObject> hittables;
 
-  public HittablesList(List<? extends Hittable> hittables) {
+  public HittablesList(List<? extends SceneObject> hittables) {
     this.hittables = ImmutableList.copyOf(hittables);
   }
 
-  public List<? extends Hittable> getHittables() {
+  public List<? extends SceneObject> getHittables() {
     return hittables;
   }
 

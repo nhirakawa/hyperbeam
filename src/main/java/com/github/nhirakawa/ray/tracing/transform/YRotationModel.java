@@ -12,7 +12,7 @@ import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
 import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
-import com.github.nhirakawa.ray.tracing.shape.Shape;
+import com.github.nhirakawa.ray.tracing.shape.SceneObject;
 import com.github.nhirakawa.ray.tracing.shape.ShapeType;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
@@ -20,9 +20,9 @@ import com.google.common.collect.Sets;
 
 @ImmutableStyle
 @Value.Immutable
-public abstract class YRotationModel implements Shape {
+public abstract class YRotationModel implements SceneObject {
 
-  public abstract Shape getShape();
+  public abstract SceneObject getSceneObject();
   public abstract double getAngleInDegrees();
 
   @Value.Derived
@@ -46,7 +46,7 @@ public abstract class YRotationModel implements Shape {
   @Value.Derived
   @JsonIgnore
   public Optional<AxisAlignedBoundingBox> getBoundingBox() {
-    Optional<AxisAlignedBoundingBox> maybeBoundingBox = getShape().getBoundingBox(0, 1);
+    Optional<AxisAlignedBoundingBox> maybeBoundingBox = getSceneObject().getBoundingBox(0, 1);
     if (!maybeBoundingBox.isPresent()) {
       return Optional.empty();
     }
@@ -116,7 +116,7 @@ public abstract class YRotationModel implements Shape {
         .setDirection(newDirection)
         .build();
 
-    Optional<HitRecord> maybeHitRecord = getShape().hit(rotatedRay, tMin, tMax);
+    Optional<HitRecord> maybeHitRecord = getSceneObject().hit(rotatedRay, tMin, tMax);
     if (!maybeHitRecord.isPresent()) {
       return Optional.empty();
     }

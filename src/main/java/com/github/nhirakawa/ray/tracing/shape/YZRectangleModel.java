@@ -14,7 +14,7 @@ import com.github.nhirakawa.ray.tracing.material.Material;
 
 @Value.Immutable
 @ImmutableStyle
-public abstract class YZRectangleModel implements Shape {
+public abstract class YZRectangleModel implements SceneObject {
 
   public abstract double getY0();
   public abstract double getY1();
