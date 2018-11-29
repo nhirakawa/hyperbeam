@@ -22,7 +22,7 @@
     "time0": 0.0,
     "time1": 1.0
   },
-  "shapes": [
+  "sceneObjects": [
     {
       "shapeType": "SPHERE",
       "center": {
@@ -35,7 +35,7 @@
         "materialType": "LAMBERTIAN",
         "texture": {
           "textureType": "PERLIN_NOISE",
-          "scale": 4
+          "scale": 0.3
         }
       }
     },
@@ -51,7 +51,7 @@
         "materialType": "LAMBERTIAN",
         "texture": {
           "textureType": "PERLIN_NOISE",
-          "scale": 4
+          "scale": 0.3
         }
       }
     }

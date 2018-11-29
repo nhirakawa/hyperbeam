@@ -18,9 +18,9 @@ import com.github.nhirakawa.ray.tracing.texture.Texture;
 
 @Value.Immutable
 @ImmutableStyle
-public abstract class ConstantMediumModel implements Shape {
+public abstract class ConstantMediumModel implements SceneObject {
 
-  public abstract Shape getShape();
+  public abstract SceneObject getSceneObject();
   public abstract double getDensity();
   public abstract Texture getTexture();
 
@@ -39,12 +39,12 @@ public abstract class ConstantMediumModel implements Shape {
 
   @Override
   public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
-    Optional<HitRecord> hitRecord1 = getShape().hit(ray, -Double.MAX_VALUE, Double.MAX_VALUE);
+    Optional<HitRecord> hitRecord1 = getSceneObject().hit(ray, -Double.MAX_VALUE, Double.MAX_VALUE);
     if (!hitRecord1.isPresent()) {
       return Optional.empty();
     }
 
-    Optional<HitRecord> hitRecord2 = getShape().hit(ray, hitRecord1.get().getT() + 0.0001, Double.MAX_VALUE);
+    Optional<HitRecord> hitRecord2 = getSceneObject().hit(ray, hitRecord1.get().getT() + 0.0001, Double.MAX_VALUE);
     if (!hitRecord2.isPresent()) {
       return Optional.empty();
     }
@@ -90,7 +90,7 @@ public abstract class ConstantMediumModel implements Shape {
 
   @Override
   public Optional<AxisAlignedBoundingBox> getBoundingBox(double t0, double t1) {
-    return getShape().getBoundingBox(t0, t1);
+    return getSceneObject().getBoundingBox(t0, t1);
   }
 
 }

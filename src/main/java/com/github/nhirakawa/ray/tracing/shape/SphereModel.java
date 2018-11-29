@@ -15,7 +15,7 @@ import com.google.common.collect.Range;
 
 @Value.Immutable
 @ImmutableStyle
-public abstract class SphereModel implements Shape {
+public abstract class SphereModel implements SceneObject {
 
   public abstract Vector3 getCenter();
   public abstract double getRadius();

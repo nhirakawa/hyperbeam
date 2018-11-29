@@ -24,7 +24,7 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.github.nhirakawa.ray.tracing.camera.Camera;
 import com.github.nhirakawa.ray.tracing.collision.BoundingVolumeHierarchy;
 import com.github.nhirakawa.ray.tracing.collision.HitRecord;
-import com.github.nhirakawa.ray.tracing.collision.Hittable;
+import com.github.nhirakawa.ray.tracing.collision.SceneObject;
 import com.github.nhirakawa.ray.tracing.collision.HittablesList;
 import com.github.nhirakawa.ray.tracing.color.Rgb;
 import com.github.nhirakawa.ray.tracing.color.RgbModel;
@@ -59,7 +59,7 @@ public class RayTracer {
   }
 
   private static void doThreadedRayTrace(ConfigWrapper configWrapper) throws IOException {
-    byte[] bytes = Resources.toByteArray(Resources.getResource("cornell-smoke.json"));
+    byte[] bytes = Resources.toByteArray(Resources.getResource("scenes/two-perlin-spheres.json"));
     Scene scene = OBJECT_MAPPER.readValue(bytes, Scene.class);
 
     Stopwatch stopwatch = Stopwatch.createStarted();
@@ -79,8 +79,8 @@ public class RayTracer {
   private static List<RgbModel> render(ConfigWrapper configWrapper, Scene scene) {
     ExecutorService executorService = buildExecutor(configWrapper.getNumberOfThreads());
 
-    Hittable world = BoundingVolumeHierarchy.builder()
-        .setHittablesList(new HittablesList(scene.getShapes()))
+    SceneObject world = BoundingVolumeHierarchy.builder()
+        .setHittablesList(new HittablesList(scene.getSceneObjects()))
         .setTime0(0)
         .setTime1(1)
         .build();
@@ -120,7 +120,7 @@ public class RayTracer {
                                    int numberOfRows,
                                    int numberOfColumns,
                                    Camera camera,
-                                   Hittable world,
+                                   SceneObject world,
                                    int i,
                                    int j) {
     Vector3 color = new Vector3(0, 0, 0);
@@ -159,8 +159,8 @@ public class RayTracer {
     }
   }
 
-  private static Vector3 color(Ray ray, Hittable hittable, int depth) {
-    Optional<HitRecord> maybeHitRecord = hittable.hit(ray, 0.001, Double.MAX_VALUE);
+  private static Vector3 color(Ray ray, SceneObject sceneObject, int depth) {
+    Optional<HitRecord> maybeHitRecord = sceneObject.hit(ray, 0.001, Double.MAX_VALUE);
     if (maybeHitRecord.isPresent()) {
       HitRecord hitRecord = maybeHitRecord.get();
 
@@ -171,7 +171,7 @@ public class RayTracer {
       MaterialScatterRecord materialScatterRecord = hitRecord.getMaterial().scatter(ray, hitRecord);
 
       if (depth < 50 && materialScatterRecord.wasScattered()) {
-        Vector3 addedColor = color(materialScatterRecord.getScattered(), hittable, depth + 1);
+        Vector3 addedColor = color(materialScatterRecord.getScattered(), sceneObject, depth + 1);
         return emitted.add(addedColor.multiply(materialScatterRecord.getAttenuation()));
       } else {
         return emitted;

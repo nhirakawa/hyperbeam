@@ -16,7 +16,7 @@ import com.google.common.collect.ImmutableList;
 
 @Value.Immutable
 @ImmutableStyle
-public abstract class BoxModel implements Shape {
+public abstract class BoxModel implements SceneObject {
 
   public abstract Vector3 getPMin();
   public abstract Vector3 getPMax();
@@ -36,7 +36,7 @@ public abstract class BoxModel implements Shape {
                 .setMaterial(getMaterial())
                 .build(),
             ReverseNormals.builder() // 1
-                .setShape(
+                .setSceneObject(
                     XYRectangle.builder()
                         .setX0(getPMin().getX())
                         .setX1(getPMax().getX())
@@ -56,7 +56,7 @@ public abstract class BoxModel implements Shape {
                 .setMaterial(getMaterial())
                 .build(),
             ReverseNormals.builder() // 3
-                .setShape(
+                .setSceneObject(
                     XZRectangle.builder()
                         .setX0(getPMin().getX())
                         .setX1(getPMax().getX())
@@ -76,7 +76,7 @@ public abstract class BoxModel implements Shape {
                 .setMaterial(getMaterial())
                 .build(),
             ReverseNormals.builder() // 5
-                .setShape(
+                .setSceneObject(
                     YZRectangle.builder()
                         .setY0(getPMin().getY())
                         .setY1(getPMax().getY())

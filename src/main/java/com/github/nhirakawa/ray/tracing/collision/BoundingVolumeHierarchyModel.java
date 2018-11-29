@@ -16,7 +16,7 @@ import com.google.common.collect.ImmutableList;
 
 @Value.Immutable
 @ImmutableStyle
-public abstract class BoundingVolumeHierarchyModel implements Hittable {
+public abstract class BoundingVolumeHierarchyModel implements SceneObject {
 
   private static final Function<AxisAlignedBoundingBox, Double> MIN_X = aabb -> aabb.getMin().getX();
   private static final Function<AxisAlignedBoundingBox, Double> MIN_Y = aabb -> aabb.getMin().getY();
@@ -28,8 +28,8 @@ public abstract class BoundingVolumeHierarchyModel implements Hittable {
 
   @Value.Lazy
   @JsonIgnore
-  public List<Hittable> getSortedHittablesList() {
-    final Comparator<Hittable> comparator;
+  public List<SceneObject> getSortedHittablesList() {
+    final Comparator<SceneObject> comparator;
     switch ((int) (MathUtils.rand() * 3)) {
       case 0:
         comparator = getComparator(MIN_X);
@@ -51,8 +51,8 @@ public abstract class BoundingVolumeHierarchyModel implements Hittable {
 
   @Value.Lazy
   @JsonIgnore
-  public Hittable getLeft() {
-    List<Hittable> sortedHittablesList = getSortedHittablesList();
+  public SceneObject getLeft() {
+    List<SceneObject> sortedHittablesList = getSortedHittablesList();
     int size = sortedHittablesList.size();
 
     if (size == 1) {
@@ -70,8 +70,8 @@ public abstract class BoundingVolumeHierarchyModel implements Hittable {
 
   @Value.Lazy
   @JsonIgnore
-  public Hittable getRight() {
-    List<Hittable> sortedHittablesList = getSortedHittablesList();
+  public SceneObject getRight() {
+    List<SceneObject> sortedHittablesList = getSortedHittablesList();
     int size = sortedHittablesList.size();
 
     if (size == 1) {
@@ -128,7 +128,7 @@ public abstract class BoundingVolumeHierarchyModel implements Hittable {
     return Optional.of(getAxisAlignedBoundingBox());
   }
 
-  private static Comparator<Hittable> getComparator(Function<AxisAlignedBoundingBox, Double> function) {
+  private static Comparator<SceneObject> getComparator(Function<AxisAlignedBoundingBox, Double> function) {
     return (hittable1, hittable2) -> {
       Optional<AxisAlignedBoundingBox> box1 = hittable1.getBoundingBox(0, 0);
       Optional<AxisAlignedBoundingBox> box2 = hittable2.getBoundingBox(0, 0);

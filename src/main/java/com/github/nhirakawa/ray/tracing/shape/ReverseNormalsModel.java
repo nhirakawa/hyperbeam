@@ -11,19 +11,19 @@ import com.github.nhirakawa.ray.tracing.geometry.Ray;
 
 @Value.Immutable
 @ImmutableStyle
-public abstract class ReverseNormalsModel implements Shape {
+public abstract class ReverseNormalsModel implements SceneObject {
 
-  public abstract Shape getShape();
+  public abstract SceneObject getSceneObject();
 
   @Override
   public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
-    return getShape().hit(ray, tMin, tMax)
+    return getSceneObject().hit(ray, tMin, tMax)
         .map(hitRecord -> hitRecord.withNormal(hitRecord.getNormal().negate()));
   }
 
   @Override
   public Optional<AxisAlignedBoundingBox> getBoundingBox(double t0, double t1) {
-    return getShape().getBoundingBox(t0, t1);
+    return getSceneObject().getBoundingBox(t0, t1);
   }
 
   @Override

@@ -1,5 +1,6 @@
 package com.github.nhirakawa.ray.tracing.scene;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -14,7 +15,7 @@ import com.github.nhirakawa.ray.tracing.material.Material;
 import com.github.nhirakawa.ray.tracing.shape.Box;
 import com.github.nhirakawa.ray.tracing.shape.ConstantMedium;
 import com.github.nhirakawa.ray.tracing.shape.ReverseNormals;
-import com.github.nhirakawa.ray.tracing.shape.Shape;
+import com.github.nhirakawa.ray.tracing.shape.SceneObject;
 import com.github.nhirakawa.ray.tracing.shape.Sphere;
 import com.github.nhirakawa.ray.tracing.shape.XYRectangle;
 import com.github.nhirakawa.ray.tracing.shape.XZRectangle;
@@ -60,8 +61,10 @@ public final class SceneGenerator {
         .setVerticalFovDegrees(20)
         .build();
 
-    Texture texture = PerlinNoiseTexture.builder().build();
-    Shape sphere1 = Sphere.builder()
+    Texture texture = PerlinNoiseTexture.builder()
+        .setScale(0.3)
+        .build();
+    SceneObject sphere1 = Sphere.builder()
         .setCenter(new Vector3(0, -1000, 0))
         .setRadius(1000)
         .setMaterial(
@@ -70,7 +73,7 @@ public final class SceneGenerator {
                 .build()
         )
         .build();
-    Shape sphere2 = Sphere.builder()
+    SceneObject sphere2 = Sphere.builder()
         .setCenter(new Vector3(0, 2, 0))
         .setRadius(2)
         .setMaterial(
@@ -82,8 +85,8 @@ public final class SceneGenerator {
 
     return Scene.builder()
         .setCamera(camera)
-        .addShapes(sphere1)
-        .addShapes(sphere2)
+        .addSceneObjects(sphere1)
+        .addSceneObjects(sphere2)
         .build();
   }
 
@@ -91,7 +94,7 @@ public final class SceneGenerator {
     Material material = LambertianMaterial.builder()
         .setTexture(
             ImageTexture.builder()
-                .setImageUrl(Resources.getResource("earth-8k.jpg"))
+                .setImageUrl(Resources.getResource("textures/earth-8k.jpg"))
                 .build()
         )
         .build();
@@ -116,7 +119,7 @@ public final class SceneGenerator {
 
     return Scene.builder()
         .setCamera(camera)
-        .addShapes(sphere)
+        .addSceneObjects(sphere)
         .build();
   }
 
@@ -125,7 +128,7 @@ public final class SceneGenerator {
         .setScale(4)
         .build();
 
-    List<Shape> shapes = ImmutableList.of(
+    List<SceneObject> sceneObjects = ImmutableList.of(
         Sphere.builder()
             .setCenter(new Vector3(0, -1000, 0))
             .setRadius(1000)
@@ -177,7 +180,7 @@ public final class SceneGenerator {
 
     return Scene.builder()
         .setCamera(COMMON_CAMERA)
-        .addAllShapes(shapes)
+        .addAllSceneObjects(sceneObjects)
         .build();
   }
 
@@ -223,9 +226,9 @@ public final class SceneGenerator {
         )
         .build();
 
-    List<Shape> shapes = ImmutableList.of(
+    List<SceneObject> sceneObjects = ImmutableList.of(
         ReverseNormals.builder()
-            .setShape(
+            .setSceneObject(
                 YZRectangle.builder()
                     .setY0(0)
                     .setY1(555)
@@ -253,7 +256,7 @@ public final class SceneGenerator {
             .setMaterial(light)
             .build(),
         ReverseNormals.builder()
-            .setShape(
+            .setSceneObject(
                 XZRectangle.builder()
                     .setX0(0)
                     .setX1(555)
@@ -273,7 +276,7 @@ public final class SceneGenerator {
             .setMaterial(white)
             .build(),
         ReverseNormals.builder()
-            .setShape(
+            .setSceneObject(
                 XYRectangle.builder()
                     .setX0(0)
                     .setX1(555)
@@ -285,9 +288,9 @@ public final class SceneGenerator {
             )
             .build(),
         Translation.builder()
-            .setShape(
+            .setSceneObject(
                 YRotation.builder()
-                    .setShape(
+                    .setSceneObject(
                         Box.builder()
                             .setPMin(Vector3.zero())
                             .setPMax(new Vector3(165, 165, 165))
@@ -300,9 +303,9 @@ public final class SceneGenerator {
             .setOffset(new Vector3(130, 0, 65))
             .build(),
         Translation.builder()
-            .setShape(
+            .setSceneObject(
                 YRotation.builder()
-                    .setShape(
+                    .setSceneObject(
                         Box.builder()
                             .setPMin(Vector3.zero())
                             .setPMax(new Vector3(165, 330, 165))
@@ -318,7 +321,7 @@ public final class SceneGenerator {
 
     return Scene.builder()
         .setCamera(camera)
-        .addAllShapes(shapes)
+        .addAllSceneObjects(sceneObjects)
         .build();
   }
 
@@ -364,9 +367,9 @@ public final class SceneGenerator {
         )
         .build();
 
-    List<Shape> shapes = ImmutableList.of(
+    List<SceneObject> sceneObjects = ImmutableList.of(
         ReverseNormals.builder()
-            .setShape(
+            .setSceneObject(
                 YZRectangle.builder()
                     .setY0(0)
                     .setY1(555)
@@ -394,7 +397,7 @@ public final class SceneGenerator {
             .setMaterial(light)
             .build(),
         ReverseNormals.builder()
-            .setShape(
+            .setSceneObject(
                 XZRectangle.builder()
                     .setX0(0)
                     .setX1(555)
@@ -414,7 +417,7 @@ public final class SceneGenerator {
             .setMaterial(white)
             .build(),
         ReverseNormals.builder()
-            .setShape(
+            .setSceneObject(
                 XYRectangle.builder()
                     .setX0(0)
                     .setX1(555)
@@ -426,11 +429,11 @@ public final class SceneGenerator {
             )
             .build(),
         ConstantMedium.builder()
-            .setShape(
+            .setSceneObject(
                 Translation.builder()
-                    .setShape(
+                    .setSceneObject(
                         YRotation.builder()
-                            .setShape(
+                            .setSceneObject(
                                 Box.builder()
                                     .setPMin(Vector3.zero())
                                     .setPMax(new Vector3(165, 165, 165))
@@ -451,11 +454,11 @@ public final class SceneGenerator {
             )
             .build(),
         ConstantMedium.builder()
-            .setShape(
+            .setSceneObject(
                 Translation.builder()
-                    .setShape(
+                    .setSceneObject(
                         YRotation.builder()
-                            .setShape(
+                            .setSceneObject(
                                 Box.builder()
                                     .setPMin(Vector3.zero())
                                     .setPMax(new Vector3(165, 330, 165))
@@ -479,7 +482,7 @@ public final class SceneGenerator {
 
     return Scene.builder()
         .setCamera(camera)
-        .addAllShapes(shapes)
+        .addAllSceneObjects(sceneObjects)
         .build();
   }
 
@@ -490,8 +493,22 @@ public final class SceneGenerator {
   }
 
   public static void main(String... args) throws IOException {
-    try (FileWriter fileWriter = new FileWriter("cornell-smoke.json")) {
-      fileWriter.write(OBJECT_MAPPER.writeValueAsString(generateCornellSmoke()));
+    writeScene(generateTwoPerlinSpheres(), "two-perlin-spheres.json");
+    writeScene(generateCornellSmoke(), "cornell-smoke.json");
+    writeScene(generateCornellBox(), "cornell-box.json");
+    writeScene(generateEarth(), "earth.json");
+    writeScene(generateSphereAndLight(), "sphere-and-light.json");
+  }
+
+  private static void writeScene(Scene scene, String filename) throws IOException {
+    File file = new File("scenes");
+
+    if (!file.exists()) {
+      file.mkdir();
+    }
+
+    try (FileWriter fileWriter = new FileWriter("scenes/" + filename)) {
+      fileWriter.write(OBJECT_MAPPER.writeValueAsString(scene));
     }
   }
 

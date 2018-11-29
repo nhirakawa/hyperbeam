@@ -3,7 +3,6 @@ package com.github.nhirakawa.ray.tracing.shape;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.github.nhirakawa.ray.tracing.collision.Hittable;
 import com.github.nhirakawa.ray.tracing.transform.Translation;
 import com.github.nhirakawa.ray.tracing.transform.YRotation;
 
@@ -21,7 +20,7 @@ import com.github.nhirakawa.ray.tracing.transform.YRotation;
     @Type(value = YRotation.class, name = "Y_ROTATION"),
     @Type(value = ConstantMedium.class, name = "CONSTANT_MEDIUM")
 })
-public interface Shape extends Hittable {
+public interface SceneObject extends com.github.nhirakawa.ray.tracing.collision.SceneObject {
 
   @SuppressWarnings("unused")
   ShapeType getShapeType();

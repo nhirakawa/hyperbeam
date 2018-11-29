@@ -9,27 +9,27 @@ import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
 import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
-import com.github.nhirakawa.ray.tracing.shape.Shape;
+import com.github.nhirakawa.ray.tracing.shape.SceneObject;
 import com.github.nhirakawa.ray.tracing.shape.ShapeType;
 
 @Value.Immutable
 @ImmutableStyle
-public abstract class TranslationModel implements Shape {
+public abstract class TranslationModel implements SceneObject {
 
-  public abstract Shape getShape();
+  public abstract SceneObject getSceneObject();
   public abstract Vector3 getOffset();
 
   @Override
   public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
     Ray offsetRay = ray.withOrigin(ray.getOrigin().subtract(getOffset()));
 
-    return getShape().hit(offsetRay, tMin, tMax)
+    return getSceneObject().hit(offsetRay, tMin, tMax)
         .map(hitRecord -> hitRecord.withPoint(hitRecord.getPoint().add(getOffset())));
   }
 
   @Override
   public Optional<AxisAlignedBoundingBox> getBoundingBox(double t0, double t1) {
-    return getShape().getBoundingBox(t0, t1)
+    return getSceneObject().getBoundingBox(t0, t1)
         .map(this::getOffsetAxisAlignedBoundingBox);
   }
 
