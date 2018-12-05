@@ -1,4 +1,4 @@
-package com.github.nhirakawa.ray.tracing.collision;
+package com.github.nhirakawa.ray.tracing.shape;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,18 +9,23 @@ import org.slf4j.LoggerFactory;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.google.common.collect.ImmutableList;
 
-public class HittablesList implements SceneObject {
+public class SceneObjectsList implements SceneObject {
 
-  private static final Logger LOG = LoggerFactory.getLogger(HittablesList.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SceneObjectsList.class);
 
   private final List<? extends SceneObject> hittables;
 
-  public HittablesList(List<? extends SceneObject> hittables) {
+  public SceneObjectsList(List<? extends SceneObject> hittables) {
     this.hittables = ImmutableList.copyOf(hittables);
   }
 
   public List<? extends SceneObject> getHittables() {
     return hittables;
+  }
+
+  @Override
+  public SceneObjectType getShapeType() {
+    return SceneObjectType.SCENE_OBJECTS_LIST;
   }
 
   @Override

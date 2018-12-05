@@ -1,4 +1,4 @@
-package com.github.nhirakawa.ray.tracing.collision;
+package com.github.nhirakawa.ray.tracing.shape;
 
 import java.util.Comparator;
 import java.util.List;
@@ -22,9 +22,15 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
   private static final Function<AxisAlignedBoundingBox, Double> MIN_Y = aabb -> aabb.getMin().getY();
   private static final Function<AxisAlignedBoundingBox, Double> MIN_Z = aabb -> aabb.getMin().getZ();
 
-  public abstract HittablesList getHittablesList();
+  public abstract SceneObjectsList getSceneObjectsList();
   public abstract double getTime0();
   public abstract double getTime1();
+
+  @Override
+  @Value.Auxiliary
+  public SceneObjectType getShapeType() {
+    return SceneObjectType.BOUNDING_VOLUME_HIERARCHY;
+  }
 
   @Value.Lazy
   @JsonIgnore
@@ -44,7 +50,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
         throw new IllegalArgumentException("Invalid random number when sorting hittables");
     }
 
-    return getHittablesList().getHittables().stream()
+    return getSceneObjectsList().getHittables().stream()
         .sorted(comparator)
         .collect(ImmutableList.toImmutableList());
   }
@@ -61,7 +67,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
       return sortedHittablesList.get(0);
     } else {
       return BoundingVolumeHierarchy.builder()
-          .setHittablesList(new HittablesList(sortedHittablesList.subList(0, size / 2)))
+          .setSceneObjectsList(new SceneObjectsList(sortedHittablesList.subList(0, size / 2)))
           .setTime0(getTime0())
           .setTime1(getTime1())
           .build();
@@ -80,7 +86,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
       return sortedHittablesList.get(1);
     } else {
       return BoundingVolumeHierarchy.builder()
-          .setHittablesList(new HittablesList(sortedHittablesList.subList(size / 2, size)))
+          .setSceneObjectsList(new SceneObjectsList(sortedHittablesList.subList(size / 2, size)))
           .setTime0(getTime0())
           .setTime1(getTime1())
           .build();

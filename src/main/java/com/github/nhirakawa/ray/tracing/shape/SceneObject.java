@@ -1,8 +1,11 @@
 package com.github.nhirakawa.ray.tracing.shape;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.transform.Translation;
 import com.github.nhirakawa.ray.tracing.transform.YRotation;
 
@@ -18,11 +21,21 @@ import com.github.nhirakawa.ray.tracing.transform.YRotation;
     @Type(value = Box.class, name = "BOX"),
     @Type(value = Translation.class, name = "TRANSLATION"),
     @Type(value = YRotation.class, name = "Y_ROTATION"),
-    @Type(value = ConstantMedium.class, name = "CONSTANT_MEDIUM")
+    @Type(value = ConstantMedium.class, name = "CONSTANT_MEDIUM"),
+    @Type(value = BoundingVolumeHierarchy.class, name = "BOUNDING_VOLUME_HIERARCHY"),
+    @Type(value = SceneObjectsList.class, name = "SCENE_OBJECTS_LIST")
 })
-public interface SceneObject extends com.github.nhirakawa.ray.tracing.collision.SceneObject {
+public interface SceneObject {
 
   @SuppressWarnings("unused")
-  ShapeType getShapeType();
+  SceneObjectType getShapeType();
+
+  default Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
+    return Optional.empty();
+  }
+
+  default Optional<AxisAlignedBoundingBox> getBoundingBox(double t0, double t1) {
+    return Optional.empty();
+  }
 
 }

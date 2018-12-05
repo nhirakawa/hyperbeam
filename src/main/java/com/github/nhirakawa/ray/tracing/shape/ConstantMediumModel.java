@@ -8,8 +8,6 @@ import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
-import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
-import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.IsotropicMaterial;
@@ -33,8 +31,8 @@ public abstract class ConstantMediumModel implements SceneObject {
   }
 
   @Override
-  public ShapeType getShapeType() {
-    return ShapeType.CONSTANT_MEDIUM;
+  public SceneObjectType getShapeType() {
+    return SceneObjectType.CONSTANT_MEDIUM;
   }
 
   @Override

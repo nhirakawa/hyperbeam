@@ -5,12 +5,12 @@ import java.util.Optional;
 import org.immutables.value.Value;
 
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
-import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
-import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
+import com.github.nhirakawa.ray.tracing.shape.AxisAlignedBoundingBox;
+import com.github.nhirakawa.ray.tracing.shape.HitRecord;
 import com.github.nhirakawa.ray.tracing.shape.SceneObject;
-import com.github.nhirakawa.ray.tracing.shape.ShapeType;
+import com.github.nhirakawa.ray.tracing.shape.SceneObjectType;
 
 @Value.Immutable
 @ImmutableStyle
@@ -35,8 +35,8 @@ public abstract class TranslationModel implements SceneObject {
 
   @Override
   @Value.Auxiliary
-  public ShapeType getShapeType() {
-    return ShapeType.TRANSLATION;
+  public SceneObjectType getShapeType() {
+    return SceneObjectType.TRANSLATION;
   }
 
   private AxisAlignedBoundingBox getOffsetAxisAlignedBoundingBox(AxisAlignedBoundingBox axisAlignedBoundingBox) {

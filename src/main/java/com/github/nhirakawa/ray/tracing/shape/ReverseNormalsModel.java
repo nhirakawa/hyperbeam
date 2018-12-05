@@ -5,8 +5,6 @@ import java.util.Optional;
 import org.immutables.value.Value;
 
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
-import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
-import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 
 @Value.Immutable
@@ -27,8 +25,8 @@ public abstract class ReverseNormalsModel implements SceneObject {
   }
 
   @Override
-  public ShapeType getShapeType() {
-    return ShapeType.REVERSE_NORMALS;
+  public SceneObjectType getShapeType() {
+    return SceneObjectType.REVERSE_NORMALS;
   }
 
 }

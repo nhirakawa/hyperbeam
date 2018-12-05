@@ -1,6 +1,6 @@
 package com.github.nhirakawa.ray.tracing.shape;
 
-public enum ShapeType {
+public enum SceneObjectType {
 
   SPHERE,
   MOVING_SPHERE,
@@ -12,5 +12,8 @@ public enum ShapeType {
   TRANSLATION,
   Y_ROTATION,
   CONSTANT_MEDIUM,
+  AXIS_ALIGNED_BOUNDING_BOX,
+  BOUNDING_VOLUME_HIERARCHY,
+  SCENE_OBJECTS_LIST,
 
 }

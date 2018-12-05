@@ -22,10 +22,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.github.nhirakawa.ray.tracing.camera.Camera;
-import com.github.nhirakawa.ray.tracing.collision.BoundingVolumeHierarchy;
-import com.github.nhirakawa.ray.tracing.collision.HitRecord;
-import com.github.nhirakawa.ray.tracing.collision.SceneObject;
-import com.github.nhirakawa.ray.tracing.collision.HittablesList;
 import com.github.nhirakawa.ray.tracing.color.Rgb;
 import com.github.nhirakawa.ray.tracing.color.RgbModel;
 import com.github.nhirakawa.ray.tracing.config.ConfigWrapper;
@@ -34,6 +30,10 @@ import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.MaterialScatterRecord;
 import com.github.nhirakawa.ray.tracing.scene.Scene;
+import com.github.nhirakawa.ray.tracing.shape.BoundingVolumeHierarchy;
+import com.github.nhirakawa.ray.tracing.shape.HitRecord;
+import com.github.nhirakawa.ray.tracing.shape.SceneObject;
+import com.github.nhirakawa.ray.tracing.shape.SceneObjectsList;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
@@ -80,7 +80,7 @@ public class RayTracer {
     ExecutorService executorService = buildExecutor(configWrapper.getNumberOfThreads());
 
     SceneObject world = BoundingVolumeHierarchy.builder()
-        .setHittablesList(new HittablesList(scene.getSceneObjects()))
+        .setSceneObjectsList(new SceneObjectsList(scene.getSceneObjects()))
         .setTime0(0)
         .setTime1(1)
         .build();

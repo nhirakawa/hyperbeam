@@ -6,9 +6,6 @@ import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
-import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
-import com.github.nhirakawa.ray.tracing.collision.HitRecord;
-import com.github.nhirakawa.ray.tracing.collision.HittablesList;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.Material;
@@ -24,8 +21,8 @@ public abstract class BoxModel implements SceneObject {
 
   @Value.Lazy
   @JsonIgnore
-  public HittablesList getHittablesList() {
-    return new HittablesList(
+  public SceneObjectsList getSceneObjectsList() {
+    return new SceneObjectsList(
         ImmutableList.of(
             XYRectangle.builder() // 0
                 .setX0(getPMin().getX())
@@ -102,7 +99,7 @@ public abstract class BoxModel implements SceneObject {
 
   @Override
   public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
-    return getHittablesList().hit(ray, tMin, tMax);
+    return getSceneObjectsList().hit(ray, tMin, tMax);
   }
 
   @Override
@@ -112,8 +109,8 @@ public abstract class BoxModel implements SceneObject {
 
   @Override
   @Value.Auxiliary
-  public ShapeType getShapeType() {
-    return ShapeType.BOX;
+  public SceneObjectType getShapeType() {
+    return SceneObjectType.BOX;
   }
 
 }

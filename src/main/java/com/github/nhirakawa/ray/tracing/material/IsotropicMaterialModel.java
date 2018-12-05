@@ -3,8 +3,8 @@ package com.github.nhirakawa.ray.tracing.material;
 import org.immutables.value.Value;
 
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
-import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
+import com.github.nhirakawa.ray.tracing.shape.HitRecord;
 import com.github.nhirakawa.ray.tracing.texture.Texture;
 import com.github.nhirakawa.ray.tracing.util.VectorUtils;
 

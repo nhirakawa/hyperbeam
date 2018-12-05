@@ -6,8 +6,6 @@ import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
-import com.github.nhirakawa.ray.tracing.collision.AxisAlignedBoundingBox;
-import com.github.nhirakawa.ray.tracing.collision.HitRecord;
 import com.github.nhirakawa.ray.tracing.geometry.Ray;
 import com.github.nhirakawa.ray.tracing.geometry.Vector3;
 import com.github.nhirakawa.ray.tracing.material.Material;
@@ -38,8 +36,8 @@ public abstract class SphereModel implements SceneObject {
 
   @Override
   @Value.Auxiliary
-  public ShapeType getShapeType() {
-    return ShapeType.SPHERE;
+  public SceneObjectType getShapeType() {
+    return SceneObjectType.SPHERE;
   }
 
   @Override
