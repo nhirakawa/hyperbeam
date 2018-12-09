@@ -23,6 +23,7 @@
     <immutables.version>2.7.3</immutables.version>
     <jackson.version>2.9.5</jackson.version>
     <jsr305.version>3.0.2</jsr305.version>
+    <metrics.version>4.0.0</metrics.version>
     <slf4j.version>1.7.25</slf4j.version>
   </properties>
 
@@ -124,6 +125,11 @@
       <groupId>com.typesafe</groupId>
       <artifactId>config</artifactId>
     </dependency>
+      <dependency>
+        <groupId>io.dropwizard.metrics</groupId>
+        <artifactId>metrics-core</artifactId>
+        <version>${metrics.version}</version>
+      </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-math3</artifactId>

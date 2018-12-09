@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -19,8 +20,10 @@ import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.codahale.metrics.Timer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.github.nhirakawa.hyperbeam.Metrics;
 import com.github.nhirakawa.hyperbeam.camera.Camera;
 import com.github.nhirakawa.hyperbeam.color.Rgb;
 import com.github.nhirakawa.hyperbeam.color.RgbModel;
@@ -30,6 +33,7 @@ import com.github.nhirakawa.hyperbeam.geometry.Ray;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.MaterialScatterRecord;
 import com.github.nhirakawa.hyperbeam.scene.Scene;
+import com.github.nhirakawa.hyperbeam.scene.SceneGenerator;
 import com.github.nhirakawa.hyperbeam.shape.BoundingVolumeHierarchy;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 import com.github.nhirakawa.hyperbeam.shape.SceneObject;
@@ -60,7 +64,8 @@ public class RayTracer {
 
   private static void doThreadedRayTrace(ConfigWrapper configWrapper) throws IOException {
     byte[] bytes = Resources.toByteArray(Resources.getResource("scenes/two-perlin-spheres.json"));
-    Scene scene = OBJECT_MAPPER.readValue(bytes, Scene.class);
+
+    Scene scene = SceneGenerator.generateTwoPerlinSpheres();
 
     Stopwatch stopwatch = Stopwatch.createStarted();
     List<RgbModel> rgbs = render(configWrapper, scene);
@@ -113,7 +118,21 @@ public class RayTracer {
 
     executorService.shutdown();
 
+    logMetrics();
+
     return rgbs;
+  }
+
+  private static void logMetrics() {
+    logTimers();
+  }
+
+  private static void logTimers() {
+    for (Entry<String, Timer> entry : Metrics.instance().getTimers().entrySet()) {
+      LOG.info("{}-50th - {}", entry.getKey(), entry.getValue().getSnapshot().getMedian());
+      LOG.info("{}-75th - {}", entry.getKey(), entry.getValue().getSnapshot().get75thPercentile());
+      LOG.info("{}-99th - {}", entry.getKey(), entry.getValue().getSnapshot().get99thPercentile());
+    }
   }
 
   private static RgbModel buildRgb(int numberOfSamples,
@@ -131,7 +150,9 @@ public class RayTracer {
 
       Ray ray = camera.getRay(u, v);
 
-      color = color.add(color(ray, world, 0));
+      try (Timer.Context ignored = Metrics.getTimer("color").time()) {
+        color = color.add(color(ray, world, 0));
+      }
     }
 
     color = color.scalarDivide(numberOfSamples);
