@@ -62,7 +62,7 @@ public class RayTracer {
   }
 
   private static void doThreadedRayTrace(ConfigWrapper configWrapper) throws IOException {
-    Scene scene = SceneGenerator.generateTwoPerlinSpheres();
+    Scene scene = SceneGenerator.generateSphereAndLight();
 
     LOG.debug("Scene is {} bytes", OBJECT_MAPPER.writeValueAsBytes(scene).length);
 
