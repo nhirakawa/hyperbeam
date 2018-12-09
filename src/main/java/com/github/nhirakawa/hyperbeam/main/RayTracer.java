@@ -65,6 +65,8 @@ public class RayTracer {
   private static void doThreadedRayTrace(ConfigWrapper configWrapper) throws IOException {
     byte[] bytes = Resources.toByteArray(Resources.getResource("scenes/two-perlin-spheres.json"));
 
+    LOG.debug("Scene is {} bytes", bytes.length);
+
     Scene scene = SceneGenerator.generateTwoPerlinSpheres();
 
     Stopwatch stopwatch = Stopwatch.createStarted();
