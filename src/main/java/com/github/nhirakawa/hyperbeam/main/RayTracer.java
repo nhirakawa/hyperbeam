@@ -40,7 +40,6 @@ import com.github.nhirakawa.hyperbeam.shape.SceneObject;
 import com.github.nhirakawa.hyperbeam.shape.SceneObjectsList;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.Resources;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -63,11 +62,9 @@ public class RayTracer {
   }
 
   private static void doThreadedRayTrace(ConfigWrapper configWrapper) throws IOException {
-    byte[] bytes = Resources.toByteArray(Resources.getResource("scenes/two-perlin-spheres.json"));
-
-    LOG.debug("Scene is {} bytes", bytes.length);
-
     Scene scene = SceneGenerator.generateTwoPerlinSpheres();
+
+    LOG.debug("Scene is {} bytes", OBJECT_MAPPER.writeValueAsBytes(scene).length);
 
     Stopwatch stopwatch = Stopwatch.createStarted();
     List<RgbModel> rgbs = render(configWrapper, scene);
