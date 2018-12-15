@@ -5,6 +5,7 @@ import static com.github.nhirakawa.hyperbeam.util.MathUtils.rand;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -125,9 +126,10 @@ public class RayTracer {
 
   private static void logTimers() {
     for (Entry<String, Timer> entry : Metrics.instance().getTimers().entrySet()) {
-      LOG.info("{}-50th - {}", entry.getKey(), entry.getValue().getSnapshot().getMedian());
-      LOG.info("{}-75th - {}", entry.getKey(), entry.getValue().getSnapshot().get75thPercentile());
-      LOG.info("{}-99th - {}", entry.getKey(), entry.getValue().getSnapshot().get99thPercentile());
+      LOG.info("{}-50th - {} ms", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().getMedian()).toMillis());
+      LOG.info("{}-75th - {} ms", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().get75thPercentile()).toMillis());
+      LOG.info("{}-99th - {} ms", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().get99thPercentile()).toMillis());
+      LOG.info("{} - 999th - {} ms", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().get999thPercentile()).toMillis());
     }
   }
 
