@@ -1,4 +1,4 @@
-package com.github.nhirakawa.hyperbeam.main;
+package com.github.nhirakawa.hyperbeam;
 
 import static com.github.nhirakawa.hyperbeam.util.MathUtils.rand;
 
@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import com.codahale.metrics.Timer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import com.github.nhirakawa.hyperbeam.Metrics;
 import com.github.nhirakawa.hyperbeam.camera.Camera;
 import com.github.nhirakawa.hyperbeam.color.Rgb;
 import com.github.nhirakawa.hyperbeam.color.RgbModel;
@@ -41,30 +41,27 @@ import com.github.nhirakawa.hyperbeam.shape.SceneObjectsList;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 
 public class RayTracer {
 
   private static final Logger LOG = LoggerFactory.getLogger(RayTracer.class);
 
-  private static final ObjectMapper OBJECT_MAPPER = buildObjectMapper();
-
   private static final Function<Double, Double> CLAMP = d -> Math.min(d, 1);
 
-  public static void main(String... args) throws Exception {
-    Config config = ConfigFactory.load();
-    ConfigWrapper configWrapper = ConfigWrapper.builder()
-        .setConfig(config)
-        .build();
+  private final ObjectMapper objectMapper;
+  private final ConfigWrapper configWrapper;
 
-    doThreadedRayTrace(configWrapper);
+  @Inject
+  public RayTracer(ObjectMapper objectMapper,
+                   ConfigWrapper configWrapper) {
+    this.objectMapper = objectMapper;
+    this.configWrapper = configWrapper;
   }
 
-  private static void doThreadedRayTrace(ConfigWrapper configWrapper) throws IOException {
+  public void doThreadedRayTrace() throws IOException {
     Scene scene = SceneGenerator.generateSphereAndLight();
 
-    LOG.debug("Scene is {} bytes", OBJECT_MAPPER.writeValueAsBytes(scene).length);
+    LOG.debug("Scene is {} bytes", objectMapper.writeValueAsBytes(scene).length);
 
     Stopwatch stopwatch = Stopwatch.createStarted();
     List<RgbModel> rgbs = render(configWrapper, scene);
