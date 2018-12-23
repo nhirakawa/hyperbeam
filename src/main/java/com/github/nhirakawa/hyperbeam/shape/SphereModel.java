@@ -58,10 +58,10 @@ public abstract class SphereModel implements SceneObject {
         Vector3 point = ray.getPointAtParameter(negativeTemp);
         Vector3 normal = point.subtract(getCenter()).scalarDivide(getRadius());
 
-        Vector3 uvPpoint = point.subtract(getCenter());
+        Vector3 uvPoint = point.subtract(getCenter());
 
-        double phi = Math.atan2(uvPpoint.getZ(), uvPpoint.getX());
-        double theta = Math.asin(uvPpoint.getY());
+        double phi = Math.atan2(uvPoint.getZ(), uvPoint.getX());
+        double theta = Math.asin(uvPoint.getY());
 
         double u = (1 - phi + Math.PI) / (2 * Math.PI);
         double v = (theta + (Math.PI / 2)) / Math.PI;
