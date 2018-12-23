@@ -16,11 +16,6 @@ import com.google.common.collect.Sets;
 
 public final class PerlinNoise {
 
-  private static final List<Double> RANDOM_DOUBLES = IntStream.range(0, 256)
-      .mapToDouble(ignored -> rand())
-      .boxed()
-      .collect(ImmutableList.toImmutableList());
-
   private static final List<Vector3> RANDOM_VECTORS = generateRandomUnitVectors();
 
   private static final List<Integer> PERMUTED_X = generatePermutatedIntegers();
@@ -102,17 +97,16 @@ public final class PerlinNoise {
       double second = (j * vv) + ((1 - j) * (1 - vv));
       double third = (k * ww) + ((1 - k) * (1 - ww));
 
-      Vector3 weight = new Vector3(u - i, v - j, w - k);
+      Vector3 weight = Vector3.builder()
+          .setX(u - i)
+          .setY(v - j)
+          .setZ(w - k)
+          .build();
 
       accumulate += first * second * third * what[i][j][k].dotProduct(weight);
     }
 
     return accumulate;
-  }
-
-  private static double getHermiteCubic(double d) {
-    double temp = d - StrictMath.floor(d);
-    return temp * temp * (3 - (2 * temp));
   }
 
   private static List<Integer> generatePermutatedIntegers() {
@@ -140,7 +134,13 @@ public final class PerlinNoise {
   private static List<Vector3> generateRandomUnitVectors() {
     List<Vector3> vectors = new ArrayList<>();
     for (int i = 0; i < 256; i++) {
-      vectors.add(new Vector3(-1 + 2 * rand(), -1 + 2 * rand(), -1 + 2 * rand()));
+      Vector3 rand = Vector3.builder()
+          .setX(-1 + 2 * rand())
+          .setY(-1 + 2 * rand())
+          .setZ(-1 + 2 * rand())
+          .build();
+
+      vectors.add(rand);
     }
     return Collections.unmodifiableList(vectors);
   }

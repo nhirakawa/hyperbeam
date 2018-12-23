@@ -2,9 +2,9 @@ package com.github.nhirakawa.hyperbeam.shape;
 
 import org.immutables.value.Value;
 
-import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.Material;
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 
 @Value.Immutable
 @ImmutableStyle

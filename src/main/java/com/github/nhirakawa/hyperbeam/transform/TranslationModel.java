@@ -5,12 +5,12 @@ import java.util.Optional;
 import org.immutables.value.Value;
 
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
-import com.github.nhirakawa.hyperbeam.shape.AxisAlignedBoundingBox;
-import com.github.nhirakawa.hyperbeam.shape.SceneObject;
-import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
+import com.github.nhirakawa.hyperbeam.shape.AxisAlignedBoundingBox;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
+import com.github.nhirakawa.hyperbeam.shape.SceneObject;
 import com.github.nhirakawa.hyperbeam.shape.SceneObjectType;
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 
 @Value.Immutable
 @ImmutableStyle

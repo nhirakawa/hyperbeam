@@ -7,15 +7,13 @@ import java.util.Optional;
 import org.immutables.value.Value;
 
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
+import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
-import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 
 @Value.Immutable
 @ImmutableStyle
 public abstract class DielectricMaterialModel extends Material {
-
-  private static final Vector3 ATTENUATION = new Vector3(1, 1, 1);
 
   public abstract double getRefractiveIndex();
 
@@ -55,7 +53,7 @@ public abstract class DielectricMaterialModel extends Material {
 
     if (rand() < reflectProbability) {
       return MaterialScatterRecord.builder()
-          .setAttenuation(ATTENUATION)
+          .setAttenuation(Vector3.one())
           .setScattered(
               Ray.builder()
                   .setOrigin(hitRecord.getPoint())
@@ -67,7 +65,7 @@ public abstract class DielectricMaterialModel extends Material {
           .build();
     } else {
       return MaterialScatterRecord.builder()
-          .setAttenuation(ATTENUATION)
+          .setAttenuation(Vector3.one())
           .setScattered(
               Ray.builder()
                   .setOrigin(hitRecord.getPoint())

@@ -8,12 +8,12 @@ import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
-import com.github.nhirakawa.hyperbeam.shape.AxisAlignedBoundingBox;
-import com.github.nhirakawa.hyperbeam.shape.SceneObject;
-import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
+import com.github.nhirakawa.hyperbeam.shape.AxisAlignedBoundingBox;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
+import com.github.nhirakawa.hyperbeam.shape.SceneObject;
 import com.github.nhirakawa.hyperbeam.shape.SceneObjectType;
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -53,8 +53,8 @@ public abstract class YRotationModel implements SceneObject {
 
     AxisAlignedBoundingBox boundingBox = maybeBoundingBox.get();
 
-    Vector3 min = new Vector3(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-    Vector3 max = new Vector3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
+    Vector3 min = Vector3.max();
+    Vector3 max = Vector3.min();
 
     Set<Integer> integers = ImmutableSet.of(0, 1);
     Set<List<Integer>> products = Sets.cartesianProduct(integers, integers, integers);
@@ -73,19 +73,31 @@ public abstract class YRotationModel implements SceneObject {
       double newX = (getCosTheta() * x) + (getSinTheta() * z);
       double newZ = (getCosTheta() * z) - (getSinTheta() * x);
 
-      Vector3 tester = new Vector3(newX, y, newZ);
+      Vector3 tester = Vector3.builder()
+          .setX(newX)
+          .setY(y)
+          .setZ(newZ)
+          .build();
 
       double maxX = Math.max(tester.getX(), max.getX());
       double maxY = Math.max(tester.getY(), max.getY());
       double maxZ = Math.max(tester.getZ(), max.getZ());
 
-      max = new Vector3(maxX, maxY, maxZ);
+      max = Vector3.builder()
+          .setX(maxX)
+          .setY(maxY)
+          .setZ(maxZ)
+          .build();
 
       double minX = Math.min(tester.getX(), min.getX());
       double minY = Math.min(tester.getY(), min.getY());
       double minZ = Math.min(tester.getZ(), min.getZ());
 
-      min = new Vector3(minX, minY, minZ);
+      min = Vector3.builder()
+          .setX(minX)
+          .setY(minY)
+          .setZ(minZ)
+          .build();
     }
 
     return Optional.of(
@@ -107,8 +119,17 @@ public abstract class YRotationModel implements SceneObject {
     double newDirectionX = (getCosTheta() * direction.getX()) - (getSinTheta() * direction.getZ());
     double newDirectionZ = (getSinTheta() * direction.getX()) + (getCosTheta() * direction.getZ());
 
-    Vector3 newOrigin = new Vector3(newOriginX, origin.getY(), newOriginZ);
-    Vector3 newDirection = new Vector3(newDirectionX, direction.getY(), newDirectionZ);
+    Vector3 newOrigin = Vector3.builder()
+        .setX(newOriginX)
+        .setY(origin.getY())
+        .setZ(newOriginZ)
+        .build();
+
+    Vector3 newDirection = Vector3.builder()
+        .setX(newDirectionX)
+        .setY(direction.getY())
+        .setZ(newDirectionZ)
+        .build();
 
     Ray rotatedRay = Ray.builder()
         .from(ray)
@@ -131,8 +152,17 @@ public abstract class YRotationModel implements SceneObject {
     double newNormalX = (getCosTheta() * normal.getX()) + (getSinTheta() * normal.getZ());
     double newNormalZ = (getCosTheta() * normal.getZ()) - (getSinTheta() * normal.getZ());
 
-    Vector3 newPoint = new Vector3(newPointX, point.getY(), newPointZ);
-    Vector3 newNormal = new Vector3(newNormalX, normal.getY(), newNormalZ);
+    Vector3 newPoint = Vector3.builder()
+        .setX(newPointX)
+        .setY(point.getY())
+        .setZ(newPointZ)
+        .build();
+
+    Vector3 newNormal = Vector3.builder()
+        .setX(newNormalX)
+        .setY(normal.getY())
+        .setZ(newNormalZ)
+        .build();
 
     return Optional.of(
         HitRecord.builder()

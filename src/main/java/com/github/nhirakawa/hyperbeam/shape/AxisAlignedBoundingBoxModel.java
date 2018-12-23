@@ -3,8 +3,8 @@ package com.github.nhirakawa.hyperbeam.shape;
 import org.immutables.value.Value;
 
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
-import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 
 @Value.Immutable
 @ImmutableStyle
@@ -37,16 +37,17 @@ public abstract class AxisAlignedBoundingBoxModel {
 
   public static AxisAlignedBoundingBox getSurroundingBox(AxisAlignedBoundingBox box0,
                                                          AxisAlignedBoundingBox box1) {
-    Vector3 min = new Vector3(
-        Double.min(box0.getMin().getX(), box1.getMin().getX()),
-        Double.min(box0.getMin().getY(), box1.getMin().getY()),
-        Double.min(box0.getMin().getZ(), box1.getMin().getZ())
-    );
-    Vector3 max = new Vector3(
-        Double.min(box0.getMax().getX(), box1.getMax().getX()),
-        Double.min(box0.getMax().getY(), box1.getMax().getY()),
-        Double.min(box0.getMax().getZ(), box1.getMax().getZ())
-    );
+    Vector3 min = Vector3.builder()
+        .setX(Double.min(box0.getMin().getX(), box1.getMin().getX()))
+        .setY(Double.min(box0.getMin().getY(), box1.getMin().getY()))
+        .setZ(Double.min(box0.getMin().getZ(), box1.getMin().getZ()))
+        .build();
+
+    Vector3 max = Vector3.builder()
+        .setX(Double.min(box0.getMax().getX(), box1.getMax().getX()))
+        .setY(Double.min(box0.getMax().getY(), box1.getMax().getY()))
+        .setZ(Double.min(box0.getMax().getZ(), box1.getMax().getZ()))
+        .build();
 
     return AxisAlignedBoundingBox.builder()
         .setMin(min)

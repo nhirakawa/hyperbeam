@@ -14,6 +14,12 @@ import com.github.nhirakawa.immutable.style.ImmutableStyle;
 @ImmutableStyle
 public abstract class YZRectangleModel implements SceneObject {
 
+  private static final Vector3 NORMAL = Vector3.builder()
+      .setX(1)
+      .setY(0)
+      .setZ(0)
+      .build();
+
   public abstract double getY0();
   public abstract double getY1();
   public abstract double getZ0();
@@ -24,15 +30,27 @@ public abstract class YZRectangleModel implements SceneObject {
   @Value.Lazy
   @JsonIgnore
   public Vector3 getNormal() {
-    return new Vector3(1, 0, 0);
+    return NORMAL;
   }
 
   @Value.Lazy
   @JsonIgnore
   public AxisAlignedBoundingBox getBoundingBox() {
+    Vector3 min = Vector3.builder()
+        .setX(getK() - 0.0001)
+        .setY(getY0())
+        .setZ(getZ0())
+        .build();
+
+    Vector3 max = Vector3.builder()
+        .setX(getK() + 0.0001)
+        .setY(getY1())
+        .setZ(getZ1())
+        .build();
+
     return AxisAlignedBoundingBox.builder()
-        .setMin(new Vector3(getK() - 0.0001, getY0(), getZ0()))
-        .setMax(new Vector3(getK() + 0.0001, getY1(), getZ1()))
+        .setMin(min)
+        .setMax(max)
         .build();
   }
 
