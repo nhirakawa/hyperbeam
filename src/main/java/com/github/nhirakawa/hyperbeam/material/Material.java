@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
-import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
+import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 
 @SuppressWarnings({"ClassReferencesSubclass", "HardCodedStringLiteral"})
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "materialType")

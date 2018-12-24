@@ -8,15 +8,21 @@ import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
-import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.IsotropicMaterial;
 import com.github.nhirakawa.hyperbeam.material.Material;
 import com.github.nhirakawa.hyperbeam.texture.Texture;
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 
 @Value.Immutable
 @ImmutableStyle
 public abstract class ConstantMediumModel implements SceneObject {
+
+  private static final Vector3 NORMAL = Vector3.builder()
+      .setX(1)
+      .setY(0)
+      .setZ(0)
+      .build();
 
   public abstract SceneObject getSceneObject();
   public abstract double getDensity();
@@ -79,11 +85,10 @@ public abstract class ConstantMediumModel implements SceneObject {
         HitRecord.builder()
             .setPoint(point)
             .setMaterial(getPhaseFunction())
-            .setNormal(new Vector3(1, 0, 0))
+            .setNormal(NORMAL)
             .setT(t)
             .build()
     );
-
   }
 
   @Override

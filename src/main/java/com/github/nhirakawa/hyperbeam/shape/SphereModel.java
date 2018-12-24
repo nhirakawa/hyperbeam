@@ -22,7 +22,11 @@ public abstract class SphereModel implements SceneObject {
   @JsonIgnore
   @Value.Derived
   public Vector3 getRadiusVector() {
-    return new Vector3(getRadius(), getRadius(), getRadius());
+    return Vector3.builder()
+        .setX(getRadius())
+        .setY(getRadius())
+        .setZ(getRadius())
+        .build();
   }
 
   @JsonIgnore

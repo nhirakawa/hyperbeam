@@ -46,7 +46,11 @@ public abstract class ImageTextureModel implements Texture {
 
     Color color = new Color(rgb);
 
-    return new Vector3(color.getRed(), color.getGreen(), color.getBlue()).scalarDivide(255);
+    return Vector3.builder()
+        .setX(color.getRed() / 255)
+        .setY(color.getGreen() / 255)
+        .setZ(color.getBlue() / 255)
+        .build();
   }
 
   @Override

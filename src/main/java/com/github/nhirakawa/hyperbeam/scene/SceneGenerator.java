@@ -37,9 +37,21 @@ public final class SceneGenerator {
   private static final ObjectMapper OBJECT_MAPPER = buildObjectMapper();
 
   private static final Camera COMMON_CAMERA = Camera.builder()
-      .setLookFrom(new Vector3(13, 2, 3))
-      .setLookAt(new Vector3(0, 0, 0))
-      .setViewUp(new Vector3(0, 1, 0))
+      .setLookFrom(
+          Vector3.builder()
+              .setX(13)
+              .setY(2)
+              .setZ(3)
+              .build()
+      )
+      .setLookAt(Vector3.zero())
+      .setViewUp(
+          Vector3.builder()
+              .setX(0)
+              .setY(1)
+              .setZ(0)
+              .build()
+      )
       .setFocusDistance(10)
       .setAperture(0)
       .setAspectRatio(200 / 100)
@@ -49,23 +61,17 @@ public final class SceneGenerator {
       .build();
 
   public static Scene generateTwoPerlinSpheres() {
-    Camera camera = Camera.builder()
-        .setLookFrom(new Vector3(13, 2, 3))
-        .setLookAt(new Vector3(0, 0, 0))
-        .setViewUp(new Vector3(0, 1, 0))
-        .setFocusDistance(10)
-        .setAperture(0)
-        .setAspectRatio(200 / 100)
-        .setTime0(0)
-        .setTime1(1)
-        .setVerticalFovDegrees(20)
-        .build();
-
     Texture texture = PerlinNoiseTexture.builder()
         .setScale(0.3)
         .build();
     SceneObject sphere1 = Sphere.builder()
-        .setCenter(new Vector3(0, -1000, 0))
+        .setCenter(
+            Vector3.builder()
+                .setX(0)
+                .setY(-1000)
+                .setZ(0)
+                .build()
+        )
         .setRadius(1000)
         .setMaterial(
             LambertianMaterial.builder()
@@ -74,7 +80,13 @@ public final class SceneGenerator {
         )
         .build();
     SceneObject sphere2 = Sphere.builder()
-        .setCenter(new Vector3(0, 2, 0))
+        .setCenter(
+            Vector3.builder()
+                .setX(0)
+                .setY(2)
+                .setZ(0)
+                .build()
+        )
         .setRadius(2)
         .setMaterial(
             LambertianMaterial.builder()
@@ -84,7 +96,7 @@ public final class SceneGenerator {
         .build();
 
     return Scene.builder()
-        .setCamera(camera)
+        .setCamera(COMMON_CAMERA)
         .addSceneObjects(sphere1)
         .addSceneObjects(sphere2)
         .build();
@@ -100,25 +112,13 @@ public final class SceneGenerator {
         .build();
 
     Sphere sphere = Sphere.builder()
-        .setCenter(new Vector3(0, 0, 0))
+        .setCenter(Vector3.zero())
         .setRadius(2)
         .setMaterial(material)
         .build();
 
-    Camera camera = Camera.builder()
-        .setLookFrom(new Vector3(13, 2, 3))
-        .setLookAt(new Vector3(0, 0, 0))
-        .setViewUp(new Vector3(0, 1, 0))
-        .setFocusDistance(10)
-        .setAperture(0)
-        .setAspectRatio(200 / 100)
-        .setTime0(0)
-        .setTime1(1)
-        .setVerticalFovDegrees(20)
-        .build();
-
     return Scene.builder()
-        .setCamera(camera)
+        .setCamera(COMMON_CAMERA)
         .addSceneObjects(sphere)
         .build();
   }
@@ -130,7 +130,13 @@ public final class SceneGenerator {
 
     List<SceneObject> sceneObjects = ImmutableList.of(
         Sphere.builder()
-            .setCenter(new Vector3(0, -1000, 0))
+            .setCenter(
+                Vector3.builder()
+                    .setX(0)
+                    .setY(-1000)
+                    .setZ(0)
+                    .build()
+            )
             .setRadius(1000)
             .setMaterial(
                 LambertianMaterial.builder()
@@ -139,7 +145,13 @@ public final class SceneGenerator {
             )
             .build(),
         Sphere.builder()
-            .setCenter(new Vector3(0, 2, 0))
+            .setCenter(
+                Vector3.builder()
+                    .setX(0)
+                    .setY(2)
+                    .setZ(0)
+                    .build()
+            )
             .setRadius(2)
             .setMaterial(
                 LambertianMaterial.builder()
@@ -148,13 +160,25 @@ public final class SceneGenerator {
             )
             .build(),
         Sphere.builder()
-            .setCenter(new Vector3(0, 7, 0))
+            .setCenter(
+                Vector3.builder()
+                    .setX(0)
+                    .setY(7)
+                    .setZ(0)
+                    .build()
+            )
             .setRadius(2)
             .setMaterial(
                 DiffuseLightMaterial.builder()
                     .setTexture(
                         ConstantTexture.builder()
-                            .setColor(new Vector3(4, 4, 4))
+                            .setColor(
+                                Vector3.builder()
+                                    .setX(4)
+                                    .setY(4)
+                                    .setZ(4)
+                                    .build()
+                            )
                             .build()
                     )
                     .build()
@@ -170,7 +194,13 @@ public final class SceneGenerator {
                 DiffuseLightMaterial.builder()
                     .setTexture(
                         ConstantTexture.builder()
-                            .setColor(new Vector3(4, 4, 4))
+                            .setColor(
+                                Vector3.builder()
+                                    .setX(4)
+                                    .setY(4)
+                                    .setZ(4)
+                                    .build()
+                            )
                             .build()
                     )
                     .build()
@@ -186,12 +216,30 @@ public final class SceneGenerator {
 
   public static Scene generateCornellBox() {
     Camera camera = Camera.builder()
-        .setLookFrom(new Vector3(278, 278, -800))
-        .setLookAt(new Vector3(278, 278, 0))
+        .setLookFrom(
+            Vector3.builder()
+                .setX(278)
+                .setY(278)
+                .setZ(-800)
+                .build()
+        )
+        .setLookAt(
+            Vector3.builder()
+                .setX(278)
+                .setY(278)
+                .setZ(0)
+                .build()
+        )
         .setFocusDistance(10)
         .setAperture(0)
         .setVerticalFovDegrees(40)
-        .setViewUp(new Vector3(0, 1, 0))
+        .setViewUp(
+            Vector3.builder()
+                .setX(0)
+                .setY(1)
+                .setZ(0)
+                .build()
+        )
         .setAspectRatio(2)
         .setTime0(0)
         .setTime1(1)
@@ -200,28 +248,52 @@ public final class SceneGenerator {
     Material red = LambertianMaterial.builder()
         .setTexture(
             ConstantTexture.builder()
-                .setColor(new Vector3(0.65, 0.05, 0.05))
+                .setColor(
+                    Vector3.builder()
+                        .setX(0.65)
+                        .setY(0.05)
+                        .setZ(0.05)
+                        .build()
+                )
                 .build()
         )
         .build();
     Material white = LambertianMaterial.builder()
         .setTexture(
             ConstantTexture.builder()
-                .setColor(new Vector3(0.73, 0.73, 0.73))
+                .setColor(
+                    Vector3.builder()
+                        .setX(0.73)
+                        .setY(0.73)
+                        .setZ(0.73)
+                        .build()
+                )
                 .build()
         )
         .build();
     Material green = LambertianMaterial.builder()
         .setTexture(
             ConstantTexture.builder()
-                .setColor(new Vector3(0.12, 0.45, 0.15))
+                .setColor(
+                    Vector3.builder()
+                        .setX(0.12)
+                        .setY(0.45)
+                        .setZ(0.15)
+                        .build()
+                )
                 .build()
         )
         .build();
     Material light = DiffuseLightMaterial.builder()
         .setTexture(
             ConstantTexture.builder()
-                .setColor(new Vector3(15, 15, 15))
+                .setColor(
+                    Vector3.builder()
+                        .setX(15)
+                        .setY(15)
+                        .setZ(15)
+                        .build()
+                )
                 .build()
         )
         .build();
@@ -293,14 +365,26 @@ public final class SceneGenerator {
                     .setSceneObject(
                         Box.builder()
                             .setPMin(Vector3.zero())
-                            .setPMax(new Vector3(165, 165, 165))
+                            .setPMax(
+                                Vector3.builder()
+                                    .setX(165)
+                                    .setY(165)
+                                    .setZ(165)
+                                    .build()
+                            )
                             .setMaterial(white)
                             .build()
                     )
                     .setAngleInDegrees(-18)
                     .build()
             )
-            .setOffset(new Vector3(130, 0, 65))
+            .setOffset(
+                Vector3.builder()
+                    .setX(130)
+                    .setY(0)
+                    .setZ(65)
+                    .build()
+            )
             .build(),
         Translation.builder()
             .setSceneObject(
@@ -308,14 +392,26 @@ public final class SceneGenerator {
                     .setSceneObject(
                         Box.builder()
                             .setPMin(Vector3.zero())
-                            .setPMax(new Vector3(165, 330, 165))
+                            .setPMax(
+                                Vector3.builder()
+                                    .setX(165)
+                                    .setY(330)
+                                    .setZ(165)
+                                    .build()
+                            )
                             .setMaterial(white)
                             .build()
                     )
                     .setAngleInDegrees(15)
                     .build()
             )
-            .setOffset(new Vector3(265, 0, 295))
+            .setOffset(
+                Vector3.builder()
+                    .setX(265)
+                    .setY(0)
+                    .setZ(295)
+                    .build()
+            )
             .build()
     );
 
@@ -327,12 +423,30 @@ public final class SceneGenerator {
 
   public static Scene generateCornellSmoke() {
     Camera camera = Camera.builder()
-        .setLookFrom(new Vector3(278, 278, -800))
-        .setLookAt(new Vector3(278, 278, 0))
+        .setLookFrom(
+            Vector3.builder()
+                .setX(278)
+                .setY(278)
+                .setZ(-800)
+                .build()
+        )
+        .setLookAt(
+            Vector3.builder()
+                .setX(278)
+                .setY(278)
+                .setZ(0)
+                .build()
+        )
         .setFocusDistance(10)
         .setAperture(0)
         .setVerticalFovDegrees(40)
-        .setViewUp(new Vector3(0, 1, 0))
+        .setViewUp(
+            Vector3.builder()
+                .setX(0)
+                .setY(1)
+                .setZ(0)
+                .build()
+        )
         .setAspectRatio(2)
         .setTime0(0)
         .setTime1(1)
@@ -341,28 +455,52 @@ public final class SceneGenerator {
     Material red = LambertianMaterial.builder()
         .setTexture(
             ConstantTexture.builder()
-                .setColor(new Vector3(0.65, 0.05, 0.05))
+                .setColor(
+                    Vector3.builder()
+                        .setX(0.65)
+                        .setY(0.05)
+                        .setZ(0.05)
+                        .build()
+                )
                 .build()
         )
         .build();
     Material white = LambertianMaterial.builder()
         .setTexture(
             ConstantTexture.builder()
-                .setColor(new Vector3(0.73, 0.73, 0.73))
+                .setColor(
+                    Vector3.builder()
+                        .setX(0.73)
+                        .setY(0.73)
+                        .setZ(0.73)
+                        .build()
+                )
                 .build()
         )
         .build();
     Material green = LambertianMaterial.builder()
         .setTexture(
             ConstantTexture.builder()
-                .setColor(new Vector3(0.12, 0.45, 0.15))
+                .setColor(
+                    Vector3.builder()
+                        .setX(0.12)
+                        .setY(0.45)
+                        .setZ(0.15)
+                        .build()
+                )
                 .build()
         )
         .build();
     Material light = DiffuseLightMaterial.builder()
         .setTexture(
             ConstantTexture.builder()
-                .setColor(new Vector3(15, 15, 15))
+                .setColor(
+                    Vector3.builder()
+                        .setX(15)
+                        .setY(15)
+                        .setZ(15)
+                        .build()
+                )
                 .build()
         )
         .build();
@@ -436,20 +574,32 @@ public final class SceneGenerator {
                             .setSceneObject(
                                 Box.builder()
                                     .setPMin(Vector3.zero())
-                                    .setPMax(new Vector3(165, 165, 165))
+                                    .setPMax(
+                                        Vector3.builder()
+                                            .setX(165)
+                                            .setY(165)
+                                            .setZ(165)
+                                            .build()
+                                    )
                                     .setMaterial(white)
                                     .build()
                             )
                             .setAngleInDegrees(-18)
                             .build()
                     )
-                    .setOffset(new Vector3(130, 0, 65))
+                    .setOffset(
+                        Vector3.builder()
+                            .setX(130)
+                            .setY(0)
+                            .setZ(65)
+                            .build()
+                    )
                     .build()
             )
             .setDensity(0.01)
             .setTexture(
                 ConstantTexture.builder()
-                    .setColor(new Vector3(1, 1, 1))
+                    .setColor(Vector3.one())
                     .build()
             )
             .build(),
@@ -461,14 +611,26 @@ public final class SceneGenerator {
                             .setSceneObject(
                                 Box.builder()
                                     .setPMin(Vector3.zero())
-                                    .setPMax(new Vector3(165, 330, 165))
+                                    .setPMax(
+                                        Vector3.builder()
+                                            .setX(165)
+                                            .setY(330)
+                                            .setZ(165)
+                                            .build()
+                                    )
                                     .setMaterial(white)
                                     .build()
                             )
                             .setAngleInDegrees(15)
                             .build()
                     )
-                    .setOffset(new Vector3(265, 0, 295))
+                    .setOffset(
+                        Vector3.builder()
+                            .setX(265)
+                            .setY(0)
+                            .setZ(295)
+                            .build()
+                    )
                     .build()
             )
             .setDensity(0.01)

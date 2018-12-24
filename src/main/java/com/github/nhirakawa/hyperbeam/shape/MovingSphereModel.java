@@ -75,7 +75,11 @@ public abstract class MovingSphereModel implements SceneObject {
 
   @Override
   public Optional<AxisAlignedBoundingBox> getBoundingBox(double t0, double t1) {
-    Vector3 radiusVector = new Vector3(getRadius(), getRadius(), getRadius());
+    Vector3 radiusVector = Vector3.builder()
+        .setX(getRadius())
+        .setY(getRadius())
+        .setZ(getRadius())
+        .build();
 
     AxisAlignedBoundingBox box0 = AxisAlignedBoundingBox.builder()
         .setMin(getCenter(t0).subtract(radiusVector))

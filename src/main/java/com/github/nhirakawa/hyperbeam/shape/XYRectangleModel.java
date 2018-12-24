@@ -24,10 +24,22 @@ public abstract class XYRectangleModel implements SceneObject {
   @Value.Lazy
   @JsonIgnore
   public Optional<AxisAlignedBoundingBox> getBoundingBox() {
+    Vector3 min = Vector3.builder()
+        .setX(getX0())
+        .setY(getY0())
+        .setZ(getK() - 0.0001)
+        .build();
+
+    Vector3 max = Vector3.builder()
+        .setX(getX1())
+        .setY(getY1())
+        .setZ(getK() + 0.0001)
+        .build();
+
     return Optional.of(
         AxisAlignedBoundingBox.builder()
-            .setMin(new Vector3(getX0(), getY0(), getK() - 0.0001))
-            .setMax(new Vector3(getX1(), getY1(), getK() + 0.0001))
+            .setMin(min)
+            .setMax(max)
             .build()
     );
   }
@@ -56,10 +68,16 @@ public abstract class XYRectangleModel implements SceneObject {
     double u = (x - getX0()) / (getX1() - getX0());
     double v = (y - getY0()) / (getY1() - getY0());
 
+    Vector3 normal = Vector3.builder()
+        .setX(0)
+        .setY(0)
+        .setZ(1)
+        .build();
+
     return Optional.of(
         HitRecord.builder()
             .setPoint(ray.getPointAtParameter(t))
-            .setNormal(new Vector3(0, 0, 1))
+            .setNormal(normal)
             .setMaterial(getMaterial())
             .setT(t)
             .setU(u)

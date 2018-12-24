@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import com.codahale.metrics.Timer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.github.nhirakawa.hyperbeam.camera.Camera;
 import com.github.nhirakawa.hyperbeam.color.Rgb;
 import com.github.nhirakawa.hyperbeam.color.RgbModel;
@@ -60,7 +59,7 @@ public class RayTracer {
   }
 
   public void doThreadedRayTrace() throws IOException {
-    Scene scene = SceneGenerator.generateSphereAndLight();
+    Scene scene = SceneGenerator.generateCornellBox();
 
     LOG.debug("Scene is {} bytes", objectMapper.writeValueAsBytes(scene).length);
 
@@ -140,7 +139,7 @@ public class RayTracer {
                                    SceneObject world,
                                    int i,
                                    int j) {
-    Vector3 color = new Vector3(0, 0, 0);
+    Vector3 color = Vector3.zero();
 
     for (int s = 0; s < numberOfSamples; s++) {
       double u = ((i + rand()) / numberOfRows);
@@ -212,12 +211,6 @@ public class RayTracer {
     Runtime.getRuntime().addShutdownHook(new Thread(executorService::shutdown));
 
     return executorService;
-  }
-
-  private static ObjectMapper buildObjectMapper() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new GuavaModule());
-    return objectMapper;
   }
 
 }
