@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>hyperbeam-core</module>
-    <module>hyperbeam-module</module>
+    <module>hyperbeam-hadoop</module>
   </modules>
 
   <properties>
