@@ -106,7 +106,7 @@ public final class SceneGenerator {
     Material material = LambertianMaterial.builder()
         .setTexture(
             ImageTexture.builder()
-                .setImageUrl(Resources.getResource("textures/earth-8k.jpg"))
+                .setImageUrl(Resources.getResource("src/src/main/resources/textures/earth-8k.jpg"))
                 .build()
         )
         .build();
@@ -663,7 +663,7 @@ public final class SceneGenerator {
   }
 
   private static void writeScene(Scene scene, String filename) throws IOException {
-    File file = new File("scenes");
+    File file = new File("src/src/main/resources/scenes");
 
     if (!file.exists()) {
       file.mkdir();
