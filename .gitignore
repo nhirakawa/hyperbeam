@@ -326,3 +326,5 @@ $RECYCLE.BIN/
 
 *.ppm
 *.png
+*hadoop-output*
+output/*
