@@ -3,8 +3,8 @@ package com.github.nhirakawa.hyperbeam.dagger;
 import javax.inject.Singleton;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.github.nhirakawa.hyperbeam.config.ConfigWrapper;
+import com.github.nhirakawa.hyperbeam.util.ObjectMapperInstance;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
@@ -17,9 +17,7 @@ class HyperbeamModule {
   @Provides
   @Singleton
   static ObjectMapper provideObjectMapper() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new GuavaModule());
-    return objectMapper;
+    return ObjectMapperInstance.instance();
   }
 
   @Provides

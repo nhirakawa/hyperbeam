@@ -14,5 +14,6 @@ public interface SceneModel {
 
   Camera getCamera();
   List<SceneObject> getSceneObjects();
+  Output getOutput();
 
 }

@@ -26,20 +26,22 @@ import com.codahale.metrics.Timer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nhirakawa.hyperbeam.camera.Camera;
 import com.github.nhirakawa.hyperbeam.color.Rgb;
-import com.github.nhirakawa.hyperbeam.color.RgbModel;
 import com.github.nhirakawa.hyperbeam.config.ConfigWrapper;
 import com.github.nhirakawa.hyperbeam.geometry.Coordinates;
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.MaterialScatterRecord;
+import com.github.nhirakawa.hyperbeam.scene.Output;
 import com.github.nhirakawa.hyperbeam.scene.Scene;
 import com.github.nhirakawa.hyperbeam.scene.SceneGenerator;
 import com.github.nhirakawa.hyperbeam.shape.BoundingVolumeHierarchy;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 import com.github.nhirakawa.hyperbeam.shape.SceneObject;
 import com.github.nhirakawa.hyperbeam.shape.SceneObjectsList;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 public class RayTracer {
@@ -64,20 +66,26 @@ public class RayTracer {
     LOG.debug("Scene is {} bytes", objectMapper.writeValueAsBytes(scene).length);
 
     Stopwatch stopwatch = Stopwatch.createStarted();
-    List<RgbModel> rgbs = render(configWrapper, scene);
+    List<Rgb> rgbs = render(scene);
     stopwatch.stop();
 
-    LOG.info("Computed {} pixels with {} threads in {} ms", rgbs.size(), configWrapper.getNumberOfThreads(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    LOG.info(
+        "Computed {} pixels with {} threads in {} ms",
+        rgbs.size(), configWrapper.getNumberOfThreads(), stopwatch.elapsed(TimeUnit.MILLISECONDS)
+    );
 
-    BufferedImage bufferedImage = new BufferedImage(configWrapper.getNumberOfRows(), configWrapper.getNumberOfColumns(), BufferedImage.TYPE_3BYTE_BGR);
-    for (RgbModel rgb : rgbs) {
+    int numberOfRows = scene.getOutput().getNumberOfRows();
+    int numberOfColumns = scene.getOutput().getNumberOfColumns();
+
+    BufferedImage bufferedImage = new BufferedImage(numberOfRows, numberOfColumns, BufferedImage.TYPE_3BYTE_BGR);
+    for (Rgb rgb : rgbs) {
       bufferedImage.setRGB(rgb.getCoordinates().getX(), rgb.getCoordinates().getY(), rgb.getColor().getRGB());
     }
 
     ImageIO.write(bufferedImage, "png", new File(configWrapper.getOutFile()));
   }
 
-  private static List<RgbModel> render(ConfigWrapper configWrapper, Scene scene) {
+  private List<Rgb> render(Scene scene) {
     ExecutorService executorService = buildExecutor(configWrapper.getNumberOfThreads());
 
     SceneObject world = BoundingVolumeHierarchy.builder()
@@ -86,19 +94,20 @@ public class RayTracer {
         .setTime1(1)
         .build();
 
-    List<CompletableFuture<RgbModel>> futures = new ArrayList<>();
-    for (int j = configWrapper.getNumberOfColumns(); j > 0; j--) {
-      for (int i = 0; i < configWrapper.getNumberOfRows(); i++) {
+    int numberOfRows = scene.getOutput().getNumberOfRows();
+    int numberOfColumns = scene.getOutput().getNumberOfColumns();
+
+    List<CompletableFuture<Rgb>> futures = new ArrayList<>();
+    for (int j = numberOfColumns; j > 0; j--) {
+      for (int i = 0; i < numberOfRows; i++) {
         int finalI = i;
         int finalJ = j;
 
-        CompletableFuture<RgbModel> future = CompletableFuture.supplyAsync(
+        CompletableFuture<Rgb> future = CompletableFuture.supplyAsync(
             () -> buildRgb(
-                configWrapper.getNumberOfSamples(),
-                configWrapper.getNumberOfRows(),
-                configWrapper.getNumberOfColumns(),
                 scene.getCamera(),
                 world,
+                scene.getOutput(),
                 finalI,
                 finalJ
             ),
@@ -108,7 +117,7 @@ public class RayTracer {
       }
     }
 
-    List<RgbModel> rgbs = futures.stream()
+    List<Rgb> rgbs = futures.stream()
         .map(CompletableFuture::join)
         .collect(ImmutableList.toImmutableList());
 
@@ -132,24 +141,20 @@ public class RayTracer {
     }
   }
 
-  private static RgbModel buildRgb(int numberOfSamples,
-                                   int numberOfRows,
-                                   int numberOfColumns,
-                                   Camera camera,
-                                   SceneObject world,
-                                   int i,
-                                   int j) {
+  public Rgb buildRgb(Camera camera,
+                      SceneObject world,
+                      Output output,
+                      int i,
+                      int j) {
+    Timer.Context timer = Metrics.getTimer("color").time();
     Vector3 color = Vector3.zero();
 
-    for (int s = 0; s < numberOfSamples; s++) {
-      double u = ((i + rand()) / numberOfRows);
-      double v = ((j + rand()) / numberOfColumns);
+    int numberOfSamples = output.getNumberOfSamples();
+    int numberOfRows = output.getNumberOfRows();
+    int numberOfColumns = output.getNumberOfColumns();
 
-      Ray ray = camera.getRay(u, v);
-
-      try (Timer.Context ignored = Metrics.getTimer("color").time()) {
-        color = color.add(color(ray, world, 0));
-      }
+    for (int sample = 0; sample < numberOfSamples; sample++) {
+      color = getColorSample(camera, world, i, j, color, numberOfRows, numberOfColumns);
     }
 
     color = color.scalarDivide(numberOfSamples);
@@ -165,6 +170,8 @@ public class RayTracer {
         .setY(numberOfColumns - j)
         .build();
 
+    timer.stop();
+
     try {
       return Rgb.builder()
           .setCoordinates(coordinates)
@@ -175,6 +182,21 @@ public class RayTracer {
     } catch (IllegalArgumentException e) {
       throw e;
     }
+  }
+
+  public Vector3 getColorSample(Camera camera,
+                                SceneObject world,
+                                int i,
+                                int j,
+                                Vector3 color,
+                                int numberOfRows,
+                                int numberOfColumns) {
+    double u = ((i + rand()) / numberOfRows);
+    double v = ((j + rand()) / numberOfColumns);
+
+    Ray ray = camera.getRay(u, v);
+
+    return color.add(color(ray, world, 0));
   }
 
   private static Vector3 color(Ray ray, SceneObject sceneObject, int depth) {
@@ -200,6 +222,16 @@ public class RayTracer {
   }
 
   private static ExecutorService buildExecutor(int numberOfThreads) {
+    Preconditions.checkArgument(
+        numberOfThreads > 0,
+        "Number of threads is %s, but must be > 0",
+        numberOfThreads
+    );
+
+    if (numberOfThreads == 1) {
+      return MoreExecutors.newDirectExecutorService();
+    }
+
     ExecutorService executorService = Executors.newFixedThreadPool(
         numberOfThreads,
         new ThreadFactoryBuilder()

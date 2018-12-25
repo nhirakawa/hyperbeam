@@ -60,6 +60,12 @@ public final class SceneGenerator {
       .setVerticalFovDegrees(20)
       .build();
 
+  private static final Output COMMON_OUTPUT = Output.builder()
+      .setNumberOfColumns(100)
+      .setNumberOfRows(200)
+      .setNumberOfSamples(100)
+      .build();
+
   public static Scene generateTwoPerlinSpheres() {
     Texture texture = PerlinNoiseTexture.builder()
         .setScale(0.3)
@@ -99,6 +105,7 @@ public final class SceneGenerator {
         .setCamera(COMMON_CAMERA)
         .addSceneObjects(sphere1)
         .addSceneObjects(sphere2)
+        .setOutput(COMMON_OUTPUT)
         .build();
   }
 
@@ -120,6 +127,7 @@ public final class SceneGenerator {
     return Scene.builder()
         .setCamera(COMMON_CAMERA)
         .addSceneObjects(sphere)
+        .setOutput(COMMON_OUTPUT)
         .build();
   }
 
@@ -211,6 +219,7 @@ public final class SceneGenerator {
     return Scene.builder()
         .setCamera(COMMON_CAMERA)
         .addAllSceneObjects(sceneObjects)
+        .setOutput(COMMON_OUTPUT)
         .build();
   }
 
@@ -418,6 +427,7 @@ public final class SceneGenerator {
     return Scene.builder()
         .setCamera(camera)
         .addAllSceneObjects(sceneObjects)
+        .setOutput(COMMON_OUTPUT)
         .build();
   }
 
@@ -645,6 +655,7 @@ public final class SceneGenerator {
     return Scene.builder()
         .setCamera(camera)
         .addAllSceneObjects(sceneObjects)
+        .setOutput(COMMON_OUTPUT)
         .build();
   }
 
