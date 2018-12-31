@@ -1,6 +1,9 @@
 package com.github.nhirakawa.hyperbeam.hadoop;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 
 import org.apache.hadoop.conf.Configuration;
@@ -16,6 +19,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.nhirakawa.hyperbeam.geometry.Coordinates;
 import com.github.nhirakawa.hyperbeam.hadoop.writables.HyperbeamKeyWritable;
 import com.github.nhirakawa.hyperbeam.hadoop.writables.RgbWritable;
 import com.github.nhirakawa.hyperbeam.scene.Scene;
@@ -76,15 +80,26 @@ public class HyperbeamJobRunner {
   private void createAndWriteInputFiles() throws IOException {
     Scene scene = SceneGenerator.generateCornellBox();
 
-    BytesWritable bytesWritable = new BytesWritable(ObjectMapperInstance.instance().writeValueAsBytes(scene));
-
-    SequenceFile.Writer writer = buildWriter(buildInputFilePath());
+    Files.createDirectories(Paths.get("hadoop/" + start.toEpochMilli() + "/input"));
 
     for (int i = 0; i < scene.getOutput().getNumberOfRows(); i++) {
       for (int j = 0; j < scene.getOutput().getNumberOfColumns(); j++) {
-        HyperbeamKeyWritable key = new HyperbeamKeyWritable(i, j);
+        SceneWithCoordinates sceneWithCoordinates = SceneWithCoordinates.builder()
+            .setScene(scene)
+            .setCoordinates(
+                Coordinates.builder()
+                    .setX(i)
+                    .setY(j)
+                    .build()
+            )
+            .build();
 
-        writer.append(key, bytesWritable);
+        String path = String.format("hadoop/%s/input/%s-%s", start.toEpochMilli(), i, j);
+        Files.write(
+            Paths.get(path),
+            ObjectMapperInstance.instance().writeValueAsBytes(sceneWithCoordinates),
+            StandardOpenOption.CREATE_NEW
+        );
       }
     }
   }

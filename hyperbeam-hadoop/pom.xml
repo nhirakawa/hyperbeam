@@ -49,6 +49,11 @@
     </dependency>
 
     <dependency>
+      <groupId>org.immutables</groupId>
+      <artifactId>value</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.github.nhirakawa</groupId>
       <artifactId>logging-base</artifactId>
       <scope>runtime</scope>

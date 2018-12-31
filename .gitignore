@@ -328,4 +328,4 @@ $RECYCLE.BIN/
 *.png
 *hadoop-output*
 output/*
-hadoop/*
+**/hadoop/*
