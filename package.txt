@@ -1,0 +1,386 @@
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] Some problems were encountered while building the effective settings
+[[1;33mWARNING[m] Unrecognised tag: 'build' (position: START_TAG seen ...</id>\n       <build>... @43:15)  @ /home/nick/.m2/settings.xml, line 43, column 15
+[[1;33mWARNING[m] 
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] Inspecting build with total of 3 modules...
+[[1;34mINFO[m] Installing Nexus Staging features:
+[[1;34mINFO[m]   ... total of 3 executions of maven-deploy-plugin replaced with nexus-staging-maven-plugin
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Build Order:[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] hyperbeam
+[[1;34mINFO[m] hyperbeam-core
+[[1;34mINFO[m] hyperbeam-hadoop
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mBuilding hyperbeam 1.0-SNAPSHOT[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.5:clean[m [1m(default-clean)[m @ [36mhyperbeam[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mBuilding hyperbeam-core 1.0-SNAPSHOT[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.5:clean[m [1m(default-clean)[m @ [36mhyperbeam-core[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/nick/src/hyperbeam/hyperbeam-core/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhyperbeam-core[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 7 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.7.0:compile[m [1m(default-compile)[m @ [36mhyperbeam-core[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 49 source files to /home/nick/src/hyperbeam/hyperbeam-core/target/classes
+[[1;33mWARNING[m] MethodParameters attribute introduced in version 52.0 class files is ignored in version 51.0 class files
+[[1;33mWARNING[m] MethodParameters attribute introduced in version 52.0 class files is ignored in version 51.0 class files
+[[1;33mWARNING[m] MethodParameters attribute introduced in version 52.0 class files is ignored in version 51.0 class files
+[[1;33mWARNING[m] MethodParameters attribute introduced in version 52.0 class files is ignored in version 51.0 class files
+[[1;33mWARNING[m] MethodParameters attribute introduced in version 52.0 class files is ignored in version 51.0 class files
+[[1;33mWARNING[m] MethodParameters attribute introduced in version 52.0 class files is ignored in version 51.0 class files
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhyperbeam-core[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/nick/src/hyperbeam/hyperbeam-core/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.7.0:testCompile[m [1m(default-testCompile)[m @ [36mhyperbeam-core[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 1 source file to /home/nick/src/hyperbeam/hyperbeam-core/target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:2.12.4:test[m [1m(default-test)[m @ [36mhyperbeam-core[0;1m ---[m
+[[1;34mINFO[m] Surefire report directory: /home/nick/src/hyperbeam/hyperbeam-core/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.github.nhirakawa.hyperbeam.geometry.Vector3Test
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.578 sec
+
+Results :
+
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.4:jar[m [1m(default-jar)[m @ [36mhyperbeam-core[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/nick/src/hyperbeam/hyperbeam-core/target/hyperbeam-core-1.0-SNAPSHOT.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mBuilding hyperbeam-hadoop 1.0-SNAPSHOT[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.5:clean[m [1m(default-clean)[m @ [36mhyperbeam-hadoop[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/nick/src/hyperbeam/hyperbeam-hadoop/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhyperbeam-hadoop[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.7.0:compile[m [1m(default-compile)[m @ [36mhyperbeam-hadoop[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 7 source files to /home/nick/src/hyperbeam/hyperbeam-hadoop/target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhyperbeam-hadoop[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/nick/src/hyperbeam/hyperbeam-hadoop/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.7.0:testCompile[m [1m(default-testCompile)[m @ [36mhyperbeam-hadoop[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:2.12.4:test[m [1m(default-test)[m @ [36mhyperbeam-hadoop[0;1m ---[m
+[[1;34mINFO[m] No tests to run.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.6:jar[m [1m(default-jar)[m @ [36mhyperbeam-hadoop[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/nick/src/hyperbeam/hyperbeam-hadoop/target/hyperbeam-hadoop-1.0-SNAPSHOT.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-shade-plugin:3.2.1:shade[m [1m(default)[m @ [36mhyperbeam-hadoop[0;1m ---[m
+[[1;34mINFO[m] Including com.github.nhirakawa:hyperbeam-core:jar:1.0-SNAPSHOT in the shaded jar.
+[[1;34mINFO[m] Including com.fasterxml.jackson.core:jackson-annotations:jar:2.9.5 in the shaded jar.
+[[1;34mINFO[m] Including com.fasterxml.jackson.core:jackson-databind:jar:2.9.5 in the shaded jar.
+[[1;34mINFO[m] Including com.fasterxml.jackson.core:jackson-core:jar:2.9.5 in the shaded jar.
+[[1;34mINFO[m] Including com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.9.5 in the shaded jar.
+[[1;34mINFO[m] Including com.github.nhirakawa:immutable-style:jar:3.0 in the shaded jar.
+[[1;34mINFO[m] Including org.immutables:value:jar:2.7.3 in the shaded jar.
+[[1;34mINFO[m] Including com.google.code.findbugs:jsr305:jar:3.0.2 in the shaded jar.
+[[1;34mINFO[m] Including com.google.dagger:dagger:jar:2.19 in the shaded jar.
+[[1;34mINFO[m] Including com.google.errorprone:error_prone_annotations:jar:2.1.3 in the shaded jar.
+[[1;34mINFO[m] Including com.google.guava:guava:jar:27.0-jre in the shaded jar.
+[[1;34mINFO[m] Including com.google.guava:failureaccess:jar:1.0 in the shaded jar.
+[[1;34mINFO[m] Including com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava in the shaded jar.
+[[1;34mINFO[m] Including org.checkerframework:checker-qual:jar:2.5.2 in the shaded jar.
+[[1;34mINFO[m] Including com.google.j2objc:j2objc-annotations:jar:1.1 in the shaded jar.
+[[1;34mINFO[m] Including org.codehaus.mojo:animal-sniffer-annotations:jar:1.17 in the shaded jar.
+[[1;34mINFO[m] Including com.typesafe:config:jar:1.3.2 in the shaded jar.
+[[1;34mINFO[m] Including io.dropwizard.metrics:metrics-core:jar:4.0.0 in the shaded jar.
+[[1;34mINFO[m] Including javax.inject:javax.inject:jar:1 in the shaded jar.
+[[1;34mINFO[m] Including org.slf4j:slf4j-api:jar:1.7.25 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.hadoop:hadoop-common:jar:3.1.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.hadoop:hadoop-annotations:jar:3.1.1 in the shaded jar.
+[[1;34mINFO[m] Including commons-cli:commons-cli:jar:1.2 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.commons:commons-math3:jar:3.1.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.httpcomponents:httpclient:jar:4.5.2 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.httpcomponents:httpcore:jar:4.4.4 in the shaded jar.
+[[1;34mINFO[m] Including commons-codec:commons-codec:jar:1.11 in the shaded jar.
+[[1;34mINFO[m] Including commons-io:commons-io:jar:2.5 in the shaded jar.
+[[1;34mINFO[m] Including commons-net:commons-net:jar:3.6 in the shaded jar.
+[[1;34mINFO[m] Including commons-collections:commons-collections:jar:3.2.2 in the shaded jar.
+[[1;34mINFO[m] Including javax.servlet:javax.servlet-api:jar:3.1.0 in the shaded jar.
+[[1;34mINFO[m] Including org.eclipse.jetty:jetty-server:jar:9.3.19.v20170502 in the shaded jar.
+[[1;34mINFO[m] Including org.eclipse.jetty:jetty-http:jar:9.3.19.v20170502 in the shaded jar.
+[[1;34mINFO[m] Including org.eclipse.jetty:jetty-io:jar:9.3.19.v20170502 in the shaded jar.
+[[1;34mINFO[m] Including org.eclipse.jetty:jetty-util:jar:9.3.19.v20170502 in the shaded jar.
+[[1;34mINFO[m] Including org.eclipse.jetty:jetty-servlet:jar:9.3.19.v20170502 in the shaded jar.
+[[1;34mINFO[m] Including org.eclipse.jetty:jetty-security:jar:9.3.19.v20170502 in the shaded jar.
+[[1;34mINFO[m] Including org.eclipse.jetty:jetty-webapp:jar:9.3.19.v20170502 in the shaded jar.
+[[1;34mINFO[m] Including org.eclipse.jetty:jetty-xml:jar:9.3.19.v20170502 in the shaded jar.
+[[1;34mINFO[m] Including javax.servlet.jsp:jsp-api:jar:2.1 in the shaded jar.
+[[1;34mINFO[m] Including com.sun.jersey:jersey-core:jar:1.19 in the shaded jar.
+[[1;34mINFO[m] Including javax.ws.rs:jsr311-api:jar:1.1.1 in the shaded jar.
+[[1;34mINFO[m] Including com.sun.jersey:jersey-servlet:jar:1.19 in the shaded jar.
+[[1;34mINFO[m] Including com.sun.jersey:jersey-json:jar:1.19 in the shaded jar.
+[[1;34mINFO[m] Including org.codehaus.jettison:jettison:jar:1.1 in the shaded jar.
+[[1;34mINFO[m] Including com.sun.xml.bind:jaxb-impl:jar:2.2.3-1 in the shaded jar.
+[[1;34mINFO[m] Including org.codehaus.jackson:jackson-core-asl:jar:1.9.2 in the shaded jar.
+[[1;34mINFO[m] Including org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2 in the shaded jar.
+[[1;34mINFO[m] Including org.codehaus.jackson:jackson-jaxrs:jar:1.9.2 in the shaded jar.
+[[1;34mINFO[m] Including org.codehaus.jackson:jackson-xc:jar:1.9.2 in the shaded jar.
+[[1;34mINFO[m] Including com.sun.jersey:jersey-server:jar:1.19 in the shaded jar.
+[[1;34mINFO[m] Including commons-logging:commons-logging:jar:1.1.3 in the shaded jar.
+[[1;34mINFO[m] Including log4j:log4j:jar:1.2.17 in the shaded jar.
+[[1;34mINFO[m] Including commons-lang:commons-lang:jar:2.6 in the shaded jar.
+[[1;34mINFO[m] Including commons-beanutils:commons-beanutils:jar:1.9.3 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.commons:commons-configuration2:jar:2.1.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.commons:commons-lang3:jar:3.4 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.avro:avro:jar:1.7.7 in the shaded jar.
+[[1;34mINFO[m] Including com.thoughtworks.paranamer:paranamer:jar:2.3 in the shaded jar.
+[[1;34mINFO[m] Including org.xerial.snappy:snappy-java:jar:1.0.5 in the shaded jar.
+[[1;34mINFO[m] Including com.google.re2j:re2j:jar:1.1 in the shaded jar.
+[[1;34mINFO[m] Including com.google.protobuf:protobuf-java:jar:2.5.0 in the shaded jar.
+[[1;34mINFO[m] Including com.google.code.gson:gson:jar:2.2.4 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.hadoop:hadoop-auth:jar:3.1.1 in the shaded jar.
+[[1;34mINFO[m] Including com.nimbusds:nimbus-jose-jwt:jar:4.41.1 in the shaded jar.
+[[1;34mINFO[m] Including com.github.stephenc.jcip:jcip-annotations:jar:1.0-1 in the shaded jar.
+[[1;34mINFO[m] Including net.minidev:json-smart:jar:2.3 in the shaded jar.
+[[1;34mINFO[m] Including net.minidev:accessors-smart:jar:1.2 in the shaded jar.
+[[1;34mINFO[m] Including org.ow2.asm:asm:jar:5.0.4 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.curator:curator-framework:jar:2.12.0 in the shaded jar.
+[[1;34mINFO[m] Including com.jcraft:jsch:jar:0.1.54 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.curator:curator-client:jar:2.12.0 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.curator:curator-recipes:jar:2.12.0 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.htrace:htrace-core4:jar:4.1.0-incubating in the shaded jar.
+[[1;34mINFO[m] Including org.apache.zookeeper:zookeeper:jar:3.4.9 in the shaded jar.
+[[1;34mINFO[m] Including jline:jline:jar:0.9.94 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.commons:commons-compress:jar:1.4.1 in the shaded jar.
+[[1;34mINFO[m] Including org.tukaani:xz:jar:1.0 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerb-simplekdc:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerb-client:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerby-config:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerb-core:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerby-pkix:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerby-asn1:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerby-util:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerb-common:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerb-crypto:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerb-util:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:token-provider:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerb-admin:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerb-server:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerb-identity:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.kerby:kerby-xdr:jar:1.0.1 in the shaded jar.
+[[1;34mINFO[m] Including org.codehaus.woodstox:stax2-api:jar:3.1.4 in the shaded jar.
+[[1;34mINFO[m] Including com.fasterxml.woodstox:woodstox-core:jar:5.0.3 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.hadoop:hadoop-mapreduce-client-core:jar:3.1.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.hadoop:hadoop-yarn-client:jar:3.1.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.hadoop:hadoop-yarn-api:jar:3.1.1 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.hadoop:hadoop-yarn-common:jar:3.1.1 in the shaded jar.
+[[1;34mINFO[m] Including javax.xml.bind:jaxb-api:jar:2.2.11 in the shaded jar.
+[[1;34mINFO[m] Including com.sun.jersey:jersey-client:jar:1.19 in the shaded jar.
+[[1;34mINFO[m] Including com.google.inject:guice:jar:4.0 in the shaded jar.
+[[1;34mINFO[m] Including aopalliance:aopalliance:jar:1.0 in the shaded jar.
+[[1;34mINFO[m] Including com.sun.jersey.contribs:jersey-guice:jar:1.19 in the shaded jar.
+[[1;34mINFO[m] Including com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.7.8 in the shaded jar.
+[[1;34mINFO[m] Including com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:jar:2.7.8 in the shaded jar.
+[[1;34mINFO[m] Including com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:jar:2.7.8 in the shaded jar.
+[[1;34mINFO[m] Including org.apache.hadoop:hadoop-hdfs-client:jar:3.1.1 in the shaded jar.
+[[1;34mINFO[m] Including com.squareup.okhttp:okhttp:jar:2.7.5 in the shaded jar.
+[[1;34mINFO[m] Including com.squareup.okio:okio:jar:1.6.0 in the shaded jar.
+[[1;34mINFO[m] Including com.google.inject.extensions:guice-servlet:jar:4.0 in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty:jar:3.10.5.Final in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:aws-sdk-java:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:pinpoint:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:xray:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:opsworkscm:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:support:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:servicecatalog:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:transcribestreaming:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:sms:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:swf:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:storagegateway:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:route53:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:sts:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:aws-query-protocol:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:profiles:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:sqs:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:rds:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:redshift:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:elasticbeanstalk:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:iam:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:datapipeline:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:elasticloadbalancing:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:elasticloadbalancingv2:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:elasticache:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:elastictranscoder:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:sns:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:budgets:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cloudtrail:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cloudwatch:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cloudwatchlogs:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cloudwatchevents:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cognitoidentity:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cognitosync:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:directconnect:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cloudformation:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cloudfront:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:clouddirectory:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:kinesis:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:aws-cbor-protocol:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:jar:2.9.7 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:firehose:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:kinesisanalytics:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:kinesisvideo:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:opsworks:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:ses:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:autoscaling:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cloudsearch:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:codepipeline:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:kms:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:config:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:lambda:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:ecs:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:ecr:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cloudhsm:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:ssm:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:workspaces:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:machinelearning:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:directory:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:efs:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:codecommit:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:devicefarm:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:elasticsearch:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:marketplacecommerceanalytics:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:inspector:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:iot:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:iotdataplane:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:apigateway:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:acm:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:gamelift:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:databasemigration:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:marketplacemetering:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:cognitoidentityprovider:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:applicationdiscovery:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:applicationautoscaling:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:snowball:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:rekognition:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:polly:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:lightsail:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:sfn:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:health:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:costandusagereport:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:costexplorer:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:resourcegroups:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:codebuild:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:appstream:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:shield:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:batch:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:dynamodb:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:athena:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:codestar:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:dax:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:ec2:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:glacier:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:greengrass:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:lexruntime:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:lexmodelbuilding:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:mediastore:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:mediastoredata:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:secretsmanager:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:marketplaceentitlement:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:mturk:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:serverlessapplicationrepository:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:workdocs:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:appsync:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:organizations:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:amplify:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:datasync:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:neptune:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:quicksight:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:rdsdata:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:robomaker:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:transfer:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:globalaccelerator:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:comprehendmedical:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:fsx:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:kinesisanalyticsv2:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:mediaconnect:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:securityhub:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:appmesh:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:licensemanager:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:kafka:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:codedeploy:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:s3:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:aws-xml-protocol:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:protocol-core:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:sdk-core:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including org.reactivestreams:reactive-streams:jar:1.0.2 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:auth:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon:flow:jar:1.7 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:http-client-spi:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:regions:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:annotations:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:utils:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:aws-core:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:apache-client:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:netty-nio-client:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty-codec-http:jar:4.1.32.Final in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty-codec-http2:jar:4.1.32.Final in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty-codec:jar:4.1.32.Final in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty-transport:jar:4.1.32.Final in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty-resolver:jar:4.1.32.Final in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty-common:jar:4.1.32.Final in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty-buffer:jar:4.1.32.Final in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty-handler:jar:4.1.32.Final in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.32.Final in the shaded jar.
+[[1;34mINFO[m] Including io.netty:netty-transport-native-unix-common:jar:4.1.32.Final in the shaded jar.
+[[1;34mINFO[m] Including com.typesafe.netty:netty-reactive-streams-http:jar:2.0.0 in the shaded jar.
+[[1;34mINFO[m] Including com.typesafe.netty:netty-reactive-streams:jar:2.0.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:emr:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including software.amazon.awssdk:aws-json-protocol:jar:2.2.0 in the shaded jar.
+[[1;34mINFO[m] Including com.github.nhirakawa:logging-base:jar:1.0 in the shaded jar.
+[[1;34mINFO[m] Including ch.qos.logback:logback-classic:jar:1.2.3 in the shaded jar.
+[[1;34mINFO[m] Including ch.qos.logback:logback-core:jar:1.2.3 in the shaded jar.
+[[1;33mWARNING[m] failureaccess-1.0.jar, guava-27.0-jre.jar define 2 overlapping classes: 
+[[1;33mWARNING[m]   - com.google.common.util.concurrent.internal.InternalFutureFailureAccess
+[[1;33mWARNING[m]   - com.google.common.util.concurrent.internal.InternalFutures
+[[1;33mWARNING[m] maven-shade-plugin has detected that some class files are
+[[1;33mWARNING[m] present in two or more JARs. When this happens, only one
+[[1;33mWARNING[m] single version of the class is copied to the uber jar.
+[[1;33mWARNING[m] Usually this is not harmful and you can skip these warnings,
+[[1;33mWARNING[m] otherwise try to manually exclude artifacts based on
+[[1;33mWARNING[m] mvn dependency:tree -Ddetail=true and the above output.
+[[1;33mWARNING[m] See http://maven.apache.org/plugins/maven-shade-plugin/
+[[1;34mINFO[m] Replacing original artifact with shaded artifact.
+[[1;34mINFO[m] Replacing /home/nick/src/hyperbeam/hyperbeam-hadoop/target/hyperbeam-hadoop-1.0-SNAPSHOT.jar with /home/nick/src/hyperbeam/hyperbeam-hadoop/target/hyperbeam-hadoop-1.0-SNAPSHOT-shaded.jar
+[[1;34mINFO[m] Dependency-reduced POM written at: /home/nick/src/hyperbeam/hyperbeam-hadoop/dependency-reduced-pom.xml
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Summary:[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] hyperbeam .......................................... [1;32mSUCCESS[m [  0.126 s]
+[[1;34mINFO[m] hyperbeam-core ..................................... [1;32mSUCCESS[m [ 18.576 s]
+[[1;34mINFO[m] hyperbeam-hadoop ................................... [1;32mSUCCESS[m [ 27.425 s]
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time: 48.361 s
+[[1;34mINFO[m] Finished at: 2018-12-25T19:09:45-05:00
+[[1;34mINFO[m] Final Memory: 92M/780M
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m

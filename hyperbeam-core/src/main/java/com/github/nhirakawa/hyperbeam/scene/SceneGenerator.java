@@ -5,8 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.github.nhirakawa.hyperbeam.camera.Camera;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.DiffuseLightMaterial;
@@ -26,6 +24,7 @@ import com.github.nhirakawa.hyperbeam.texture.PerlinNoiseTexture;
 import com.github.nhirakawa.hyperbeam.texture.Texture;
 import com.github.nhirakawa.hyperbeam.transform.Translation;
 import com.github.nhirakawa.hyperbeam.transform.YRotation;
+import com.github.nhirakawa.hyperbeam.util.ObjectMapperInstance;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
 
@@ -33,8 +32,6 @@ import com.google.common.io.Resources;
 public final class SceneGenerator {
 
   private SceneGenerator() {}
-
-  private static final ObjectMapper OBJECT_MAPPER = buildObjectMapper();
 
   private static final Camera COMMON_CAMERA = Camera.builder()
       .setLookFrom(
@@ -61,8 +58,8 @@ public final class SceneGenerator {
       .build();
 
   private static final Output COMMON_OUTPUT = Output.builder()
-      .setNumberOfColumns(100)
-      .setNumberOfRows(200)
+      .setNumberOfColumns(10)
+      .setNumberOfRows(20)
       .setNumberOfSamples(100)
       .build();
 
@@ -659,12 +656,6 @@ public final class SceneGenerator {
         .build();
   }
 
-  private static ObjectMapper buildObjectMapper() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new GuavaModule());
-    return objectMapper;
-  }
-
   public static void main(String... args) throws IOException {
     writeScene(generateTwoPerlinSpheres(), "two-perlin-spheres.json");
     writeScene(generateCornellSmoke(), "cornell-smoke.json");
@@ -681,7 +672,7 @@ public final class SceneGenerator {
     }
 
     try (FileWriter fileWriter = new FileWriter("scenes/" + filename)) {
-      fileWriter.write(OBJECT_MAPPER.writeValueAsString(scene));
+      fileWriter.write(ObjectMapperInstance.instance().writeValueAsString(scene));
     }
   }
 

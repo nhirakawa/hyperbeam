@@ -1,7 +1,6 @@
 package com.github.nhirakawa.hyperbeam.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
 
 public final class ObjectMapperInstance {
 
@@ -15,7 +14,7 @@ public final class ObjectMapperInstance {
 
   private static ObjectMapper build() {
     ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new GuavaModule());
+//    objectMapper.registerModule(new GuavaModule());
     return objectMapper;
   }
 

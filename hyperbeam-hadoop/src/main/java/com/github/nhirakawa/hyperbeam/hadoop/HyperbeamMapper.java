@@ -19,6 +19,7 @@ import com.github.nhirakawa.hyperbeam.shape.BoundingVolumeHierarchy;
 import com.github.nhirakawa.hyperbeam.shape.SceneObject;
 import com.github.nhirakawa.hyperbeam.shape.SceneObjectsList;
 import com.github.nhirakawa.hyperbeam.util.ObjectMapperInstance;
+import com.google.common.base.Preconditions;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
@@ -51,6 +52,8 @@ public class HyperbeamMapper implements Mapper<HyperbeamKeyWritable, BytesWritab
 
   @Override
   public void configure(JobConf jobConf) {
+    Preconditions.checkState(true, "does this work?");
+
     Config config = ConfigFactory.load();
 
     ConfigWrapper configWrapper = ConfigWrapper.builder()

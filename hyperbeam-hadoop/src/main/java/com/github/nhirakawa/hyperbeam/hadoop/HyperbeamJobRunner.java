@@ -8,9 +8,10 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.SequenceFile;
-import org.apache.hadoop.mapred.FileInputFormat;
+import org.apache.hadoop.io.SequenceFile.CompressionType;
 import org.apache.hadoop.mapred.FileOutputFormat;
 import org.apache.hadoop.mapred.JobConf;
+import org.apache.hadoop.mapred.SequenceFileAsBinaryInputFormat;
 import org.apache.hadoop.mapreduce.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +59,9 @@ public class HyperbeamJobRunner {
     jobConf.setOutputKeyClass(RgbWritable.class);
     jobConf.setOutputValueClass(NullWritable.class);
 
-    FileInputFormat.addInputPath(jobConf, buildInputPath());
+    SequenceFileAsBinaryInputFormat.addInputPath(jobConf, buildInputPath());
     FileOutputFormat.setOutputPath(jobConf, buildOutputPath());
+
     return jobConf;
   }
 
@@ -76,16 +78,19 @@ public class HyperbeamJobRunner {
 
     BytesWritable bytesWritable = new BytesWritable(ObjectMapperInstance.instance().writeValueAsBytes(scene));
 
+    SequenceFile.Writer writer = buildWriter(buildInputFilePath());
+
     for (int i = 0; i < scene.getOutput().getNumberOfRows(); i++) {
       for (int j = 0; j < scene.getOutput().getNumberOfColumns(); j++) {
-        Path path = buildInputFilePath(i, j);
-        SequenceFile.Writer writer = buildWriter(path);
-
         HyperbeamKeyWritable key = new HyperbeamKeyWritable(i, j);
 
         writer.append(key, bytesWritable);
       }
     }
+  }
+
+  private Path buildInputFilePath() {
+    return new Path(String.format("hadoop/%s/input/scene", start.toEpochMilli()));
   }
 
   private Path buildInputFilePath(int i, int j) {
@@ -98,7 +103,8 @@ public class HyperbeamJobRunner {
         new Configuration(),
         SequenceFile.Writer.keyClass(HyperbeamKeyWritable.class),
         SequenceFile.Writer.valueClass(BytesWritable.class),
-        SequenceFile.Writer.file(path)
+        SequenceFile.Writer.file(path),
+        SequenceFile.Writer.compression(CompressionType.NONE)
     );
   }
 
