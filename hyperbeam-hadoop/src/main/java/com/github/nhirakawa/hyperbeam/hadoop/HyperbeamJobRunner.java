@@ -55,8 +55,8 @@ public class HyperbeamJobRunner {
 
     jobConf.setMapperClass(HyperbeamMapper.class);
 
-    jobConf.setMapOutputKeyClass(NullWritable.class);
-    jobConf.setMapOutputValueClass(RgbWritable.class);
+    jobConf.setMapOutputKeyClass(RgbWritable.class);
+    jobConf.setMapOutputValueClass(NullWritable.class);
 
     jobConf.setReducerClass(HyperbeamReducer.class);
     jobConf.setNumReduceTasks(10);
