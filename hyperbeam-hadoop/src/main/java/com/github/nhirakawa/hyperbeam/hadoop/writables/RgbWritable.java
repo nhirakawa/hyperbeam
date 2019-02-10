@@ -3,10 +3,13 @@ package com.github.nhirakawa.hyperbeam.hadoop.writables;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Objects;
 
 import org.apache.hadoop.io.WritableComparable;
 
 import com.github.nhirakawa.hyperbeam.color.Rgb;
+import com.github.nhirakawa.hyperbeam.geometry.Coordinates;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ComparisonChain;
 
 public class RgbWritable implements WritableComparable<RgbWritable> {
@@ -16,6 +19,8 @@ public class RgbWritable implements WritableComparable<RgbWritable> {
   private int red;
   private int green;
   private int blue;
+
+  public RgbWritable() {} // for Hadoop
 
   public RgbWritable(Rgb rgb) {
     this.x = rgb.getCoordinates().getX();
@@ -72,6 +77,55 @@ public class RgbWritable implements WritableComparable<RgbWritable> {
     red = dataInput.readInt();
     green = dataInput.readInt();
     blue = dataInput.readInt();
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(x, y, red, green, blue);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    RgbWritable that = (RgbWritable) o;
+
+    return x == that.x
+        && y == that.y
+        && red == that.red
+        && green == that.green
+        && blue == that.blue;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(RgbWritable.class)
+        .add("x", x)
+        .add("y", y)
+        .add("red", red)
+        .add("green", green)
+        .add("blue", blue)
+        .toString();
+  }
+
+  public Rgb toRgb() {
+    return Rgb.builder()
+        .setRed(red)
+        .setBlue(blue)
+        .setGreen(green)
+        .setCoordinates(
+            Coordinates.builder()
+                .setX(x)
+                .setY(y)
+                .build()
+        )
+        .build();
   }
 
 }

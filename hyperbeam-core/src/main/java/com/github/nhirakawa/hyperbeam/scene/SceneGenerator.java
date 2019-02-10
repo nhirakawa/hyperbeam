@@ -58,8 +58,8 @@ public final class SceneGenerator {
       .build();
 
   private static final Output COMMON_OUTPUT = Output.builder()
-      .setNumberOfColumns(10)
-      .setNumberOfRows(20)
+      .setNumberOfColumns(100)
+      .setNumberOfRows(200)
       .setNumberOfSamples(100)
       .build();
 

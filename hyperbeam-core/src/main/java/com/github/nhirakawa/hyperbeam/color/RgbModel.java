@@ -4,6 +4,7 @@ import java.awt.*;
 
 import org.immutables.value.Value;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.hyperbeam.geometry.Coordinates;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
 
@@ -17,6 +18,7 @@ public interface RgbModel {
   int getBlue();
 
   @Value.Derived
+  @JsonIgnore
   default Color getColor() {
     return new Color(getRed(), getGreen(), getBlue());
   }

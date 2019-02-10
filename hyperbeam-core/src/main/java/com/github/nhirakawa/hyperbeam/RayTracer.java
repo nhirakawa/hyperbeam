@@ -74,10 +74,7 @@ public class RayTracer {
         rgbs.size(), configWrapper.getNumberOfThreads(), stopwatch.elapsed(TimeUnit.MILLISECONDS)
     );
 
-    int numberOfRows = scene.getOutput().getNumberOfRows();
-    int numberOfColumns = scene.getOutput().getNumberOfColumns();
-
-    BufferedImage bufferedImage = new BufferedImage(numberOfRows, numberOfColumns, BufferedImage.TYPE_3BYTE_BGR);
+    BufferedImage bufferedImage = scene.getOutput().getEmptyBufferedImage();
     for (Rgb rgb : rgbs) {
       bufferedImage.setRGB(rgb.getCoordinates().getX(), rgb.getCoordinates().getY(), rgb.getColor().getRGB());
     }
@@ -141,11 +138,7 @@ public class RayTracer {
     }
   }
 
-  public Rgb buildRgb(Camera camera,
-                      SceneObject world,
-                      Output output,
-                      int i,
-                      int j) {
+  public Rgb buildRgb(Camera camera, SceneObject world, Output output, int i, int j) {
     Timer.Context timer = Metrics.getTimer("color").time();
     Vector3 color = Vector3.zero();
 
