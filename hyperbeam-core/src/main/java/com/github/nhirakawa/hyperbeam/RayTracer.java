@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import javax.imageio.ImageIO;
-import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +50,6 @@ public class RayTracer {
   private final ObjectMapper objectMapper;
   private final ConfigWrapper configWrapper;
 
-  @Inject
   public RayTracer(ObjectMapper objectMapper,
                    ConfigWrapper configWrapper) {
     this.objectMapper = objectMapper;
@@ -125,10 +123,10 @@ public class RayTracer {
 
   private static void logTimers() {
     for (Entry<String, Timer> entry : Metrics.instance().getTimers().entrySet()) {
-      LOG.info("{}-50th - {} ms", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().getMedian()).toMillis());
-      LOG.info("{}-75th - {} ms", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().get75thPercentile()).toMillis());
-      LOG.info("{}-99th - {} ms", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().get99thPercentile()).toMillis());
-      LOG.info("{} - 999th - {} ms", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().get999thPercentile()).toMillis());
+      LOG.info("{}-50th - {} ns", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().getMedian()).toNanos());
+      LOG.info("{}-75th - {} ns", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().get75thPercentile()).toNanos());
+      LOG.info("{}-99th - {} ns", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().get99thPercentile()).toNanos());
+      LOG.info("{} - 999th - {} ns", entry.getKey(), Duration.ofNanos((long) entry.getValue().getSnapshot().get999thPercentile()).toNanos());
     }
   }
 
