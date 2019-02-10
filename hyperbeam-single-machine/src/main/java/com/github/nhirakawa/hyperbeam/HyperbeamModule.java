@@ -1,4 +1,4 @@
-package com.github.nhirakawa.hyperbeam.dagger;
+package com.github.nhirakawa.hyperbeam;
 
 import javax.inject.Singleton;
 
@@ -30,6 +30,13 @@ class HyperbeamModule {
     return ConfigWrapper.builder()
         .setConfig(config)
         .build();
+  }
+
+  @Provides
+  @Singleton
+  static RayTracer provideRayTracer(ObjectMapper objectMapper,
+                                    ConfigWrapper configWrapper) {
+    return new RayTracer(objectMapper, configWrapper);
   }
 
 }
