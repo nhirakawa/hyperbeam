@@ -2,11 +2,11 @@
 A (toy) ray tracer in Java
 
 ## To-Do
-- A better CLI?
-- Scene files as CLI options
+- A better CLI
+- Default scene files as CLI options
 - Instrumentation
-  - Metrics
-  - Logging
+  - Better metrics
+  - Comprehensive logging
 - Refactoring
   - More idiomatic Java
   - Better variable names
@@ -17,7 +17,7 @@ A (toy) ray tracer in Java
   - ANTLR parsing
 - Moving images
   - Dynamic camera
-- Distributed cluster (Akka? gRPC? HTTP?)
+- Distributed cluster (Akka? gRPC? HTTP? SQS?)
 
 ## Resources
 
