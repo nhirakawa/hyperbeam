@@ -86,6 +86,7 @@ public class HyperbeamMapper implements Mapper<Text, Text, RgbWritable, NullWrit
     @Override
     public Scene load(@Nonnull String key) throws Exception {
       try {
+        System.out.println("loading " + key);
         LOG.info("Loading {}", key);
         File file = new File(key);
         return ObjectMapperInstance.instance().readValue(file, Scene.class);
