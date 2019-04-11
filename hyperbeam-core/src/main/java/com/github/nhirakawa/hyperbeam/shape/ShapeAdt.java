@@ -6,7 +6,7 @@ import org.derive4j.Data;
 public abstract class ShapeAdt {
 
   interface Cases<R>{
-    R BOX(Box box);
+    R BOX(BoxModel box);
   }
 
   public abstract <R> R match(Cases<R> cases);
