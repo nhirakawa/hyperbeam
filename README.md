@@ -1,7 +1,27 @@
 # hyperbeam
 A (toy) ray tracer in Java
 
-## To-Do
+## Build
+
+### JAR
+
+`mvn clean package`
+
+### Docker
+
+`docker build`
+
+## Run
+
+### Java
+
+`java -jar ./hyperbeam-single-machine/hyperbeam-single-machine.jar`
+
+### Kubernetes
+
+`kubectl apply -f ./hyperbeam-single-machine/deployment.yaml`
+
+## Goals
 - A better CLI
 - Default scene files as CLI options
 - Instrumentation

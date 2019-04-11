@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hyperbeam-deployment
+spec:
+  template:
+    metadata:
+      labels:
+        app: hyperbeam
+    spec:
+      containers:
+      - name: hyperbeam
+        image: nhirakawa/hyperbeam-single-machine:1.0-SNAPSHOT
+      restartPolicy: Never

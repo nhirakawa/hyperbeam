@@ -3,7 +3,7 @@ package com.github.nhirakawa.hyperbeam;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 
-public class Metrics {
+public final class Metrics {
 
   private static final MetricRegistry METRIC_REGISTRY = new MetricRegistry();
 
