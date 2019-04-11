@@ -10,6 +10,7 @@ public abstract class ShapeAdt {
     R BOX(BoxModel box);
     R CONSTANT_MEDIUM(ConstantMediumModel constantMedium);
     R MOVING_SPHERE(MovingSphereModel movingSphere);
+    R REVERSE_NORMALS(ReverseNormalsModel reverseNormals);
 
   }
 
