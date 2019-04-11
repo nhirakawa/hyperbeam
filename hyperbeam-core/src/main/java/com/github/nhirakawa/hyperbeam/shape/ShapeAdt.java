@@ -7,6 +7,7 @@ public abstract class ShapeAdt {
 
   interface Cases<R>{
     R BOX(BoxModel box);
+    R CONSTANT_MEDIUM(ConstantMediumModel constantMedium);
   }
 
   public abstract <R> R match(Cases<R> cases);
