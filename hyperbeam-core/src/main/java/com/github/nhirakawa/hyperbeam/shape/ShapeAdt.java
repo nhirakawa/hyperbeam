@@ -1,8 +1,23 @@
 package com.github.nhirakawa.hyperbeam.shape;
 
 import org.derive4j.Data;
+import org.derive4j.Derive;
+import org.derive4j.Visibility;
 
-@Data
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
+@JsonTypeInfo(
+    use = Id.NAME,
+    include = As.PROPERTY,
+    property = "type"
+)
+@JsonSubTypes(
+    @JsonSubTypes.Type(value = Sphere.class, name = "Sphere")
+)
+@Data(@Derive(withVisibility = Visibility.Same))
 public abstract class ShapeAdt {
 
   interface Cases<R> {
