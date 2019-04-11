@@ -7,10 +7,16 @@ public abstract class ShapeAdt {
 
   interface Cases<R> {
 
+    R BOUNDING_VOLUME_HIERARCHY(BoundingVolumeHierarchyModel boundingVolumeHierarchy);
     R BOX(BoxModel box);
     R CONSTANT_MEDIUM(ConstantMediumModel constantMedium);
     R MOVING_SPHERE(MovingSphereModel movingSphere);
     R REVERSE_NORMALS(ReverseNormalsModel reverseNormals);
+    R SCENE_OBJECTS_LIST(SceneObjectsList sceneObjectsList);
+    R SPHERE(SphereModel sphere);
+    R XY_RECTANGLE(XYRectangleModel xyRectangle);
+    R XZ_RECTANGLE(XZRectangleModel xzRectangle);
+    R YZ_RECTANGLE(YZRectangleModel yzRectangle);
 
   }
 
