@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <properties>
+    <derive4j.version>1.1.0</derive4j.version>
+  </properties>
   <parent>
     <groupId>com.github.nhirakawa</groupId>
     <artifactId>hyperbeam</artifactId>
@@ -51,6 +54,14 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.derive4j</groupId>
+      <artifactId>derive4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.derive4j</groupId>
+      <artifactId>derive4j-annotation</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.immutables</groupId>
       <artifactId>value</artifactId>
