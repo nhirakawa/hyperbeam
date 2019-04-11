@@ -46,9 +46,10 @@
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.2.1</version>
         <configuration>
+          <finalName>hyperbeam-single-machine</finalName>
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>com.github.nhirakawa.hyperbeam.hadoop.HyperbeamJobRunner</mainClass>
+              <mainClass>com.github.nhirakawa.hyperbeam.RayTracerRunner</mainClass>
             </transformer>
           </transformers>
         </configuration>
@@ -63,6 +64,17 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <configuration>
+          <repository>nhirakawa/hyperbeam-single-machine</repository>
+          <tag>${project.version}</tag>
+          <buildArgs>
+            <JAR_FILE>hyperbeam.jar</JAR_FILE>
+          </buildArgs>
+        </configuration>
       </plugin>
     </plugins>
   </build>
