@@ -31,7 +31,7 @@ import com.github.nhirakawa.hyperbeam.geometry.Coordinates;
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.MaterialScatterRecord;
-import com.github.nhirakawa.hyperbeam.scene.Scene;
+import com.github.nhirakawa.hyperbeam.scene.SerializedScene;
 import com.github.nhirakawa.hyperbeam.scene.SceneGenerator;
 import com.github.nhirakawa.hyperbeam.shape.BoundingVolumeHierarchy;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
@@ -57,9 +57,9 @@ public class RayTracer {
   }
 
   public void doThreadedRayTrace() throws IOException {
-    Scene scene = SceneGenerator.generateCornellBox();
+    SerializedScene scene = SceneGenerator.generateCornellBox();
 
-    LOG.debug("Scene is {} bytes", objectMapper.writeValueAsBytes(scene).length);
+    LOG.debug("SerializedScene is {} bytes", objectMapper.writeValueAsBytes(scene).length);
 
     Stopwatch stopwatch = Stopwatch.createStarted();
     List<RgbModel> rgbs = render(configWrapper, scene);
@@ -75,7 +75,7 @@ public class RayTracer {
     ImageIO.write(bufferedImage, "png", new File(configWrapper.getOutFile()));
   }
 
-  private static List<RgbModel> render(ConfigWrapper configWrapper, Scene scene) {
+  private static List<RgbModel> render(ConfigWrapper configWrapper, SerializedScene scene) {
     ExecutorService executorService = buildExecutor(configWrapper.getNumberOfThreads());
 
     SceneObject world = BoundingVolumeHierarchy.builder()

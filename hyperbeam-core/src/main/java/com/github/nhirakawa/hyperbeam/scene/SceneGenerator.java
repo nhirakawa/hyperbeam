@@ -60,7 +60,7 @@ public final class SceneGenerator {
       .setVerticalFovDegrees(20)
       .build();
 
-  public static Scene generateTwoPerlinSpheres() {
+  public static SerializedScene generateTwoPerlinSpheres() {
     Texture texture = PerlinNoiseTexture.builder()
         .setScale(0.3)
         .build();
@@ -95,14 +95,14 @@ public final class SceneGenerator {
         )
         .build();
 
-    return Scene.builder()
+    return SerializedScene.builder()
         .setCamera(COMMON_CAMERA)
         .addSceneObjects(sphere1)
         .addSceneObjects(sphere2)
         .build();
   }
 
-  public static Scene generateEarth() {
+  public static SerializedScene generateEarth() {
     Material material = LambertianMaterial.builder()
         .setTexture(
             ImageTexture.builder()
@@ -117,13 +117,13 @@ public final class SceneGenerator {
         .setMaterial(material)
         .build();
 
-    return Scene.builder()
+    return SerializedScene.builder()
         .setCamera(COMMON_CAMERA)
         .addSceneObjects(sphere)
         .build();
   }
 
-  public static Scene generateSphereAndLight() {
+  public static SerializedScene generateSphereAndLight() {
     Texture texture = PerlinNoiseTexture.builder()
         .setScale(4)
         .build();
@@ -208,13 +208,13 @@ public final class SceneGenerator {
             .build()
     );
 
-    return Scene.builder()
+    return SerializedScene.builder()
         .setCamera(COMMON_CAMERA)
         .addAllSceneObjects(sceneObjects)
         .build();
   }
 
-  public static Scene generateCornellBox() {
+  public static SerializedScene generateCornellBox() {
     Camera camera = Camera.builder()
         .setLookFrom(
             Vector3.builder()
@@ -415,13 +415,13 @@ public final class SceneGenerator {
             .build()
     );
 
-    return Scene.builder()
+    return SerializedScene.builder()
         .setCamera(camera)
         .addAllSceneObjects(sceneObjects)
         .build();
   }
 
-  public static Scene generateCornellSmoke() {
+  public static SerializedScene generateCornellSmoke() {
     Camera camera = Camera.builder()
         .setLookFrom(
             Vector3.builder()
@@ -642,7 +642,7 @@ public final class SceneGenerator {
             .build()
     );
 
-    return Scene.builder()
+    return SerializedScene.builder()
         .setCamera(camera)
         .addAllSceneObjects(sceneObjects)
         .build();
@@ -662,7 +662,7 @@ public final class SceneGenerator {
     writeScene(generateSphereAndLight(), "sphere-and-light.json");
   }
 
-  private static void writeScene(Scene scene, String filename) throws IOException {
+  private static void writeScene(SerializedScene scene, String filename) throws IOException {
     File file = new File("src/src/main/resources/scenes");
 
     if (!file.exists()) {
