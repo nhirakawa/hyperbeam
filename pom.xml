@@ -15,6 +15,7 @@
   <modules>
     <module>hyperbeam-core</module>
     <module>hyperbeam-single-machine</module>
+    <module>hyperbeam-serde</module>
   </modules>
 
   <properties>
