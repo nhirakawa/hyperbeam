@@ -2,6 +2,10 @@ package com.github.nhirakawa.hyperbeam.shape;
 
 import org.derive4j.Data;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.github.nhirakawa.hyperbeam.jackson.ShapeAdtSerializer;
+
+@JsonSerialize(using = ShapeAdtSerializer.class)
 @Data
 public abstract class ShapeAdt {
 

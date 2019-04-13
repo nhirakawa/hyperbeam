@@ -176,11 +176,11 @@
               <artifactId>dagger-compiler</artifactId>
               <version>${dagger.version}</version>
             </path>
-            <path>
-              <groupId>org.derive4j</groupId>
-              <artifactId>derive4j</artifactId>
-              <version>${derive4j.version}</version>
-            </path>
+            <!--<path>-->
+              <!--<groupId>org.derive4j</groupId>-->
+              <!--<artifactId>derive4j-annotation</artifactId>-->
+              <!--<version>${derive4j.version}</version>-->
+            <!--</path>-->
           </annotationProcessorPaths>
         </configuration>
       </plugin>
