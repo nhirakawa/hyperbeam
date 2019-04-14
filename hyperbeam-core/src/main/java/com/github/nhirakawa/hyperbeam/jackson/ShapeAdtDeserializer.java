@@ -2,11 +2,7 @@ package com.github.nhirakawa.hyperbeam.jackson;
 
 import java.io.IOException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -26,14 +22,12 @@ import com.github.nhirakawa.hyperbeam.shape.YZRectangle;
 
 public class ShapeAdtDeserializer extends StdDeserializer<ShapeAdt> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ShapeAdtDeserializer.class);
-
   protected ShapeAdtDeserializer() {
     super(ShapeAdt.class);
   }
 
   @Override
-  public ShapeAdt deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
+  public ShapeAdt deserialize(JsonParser parser, DeserializationContext context) throws IOException {
     ObjectNode objectNode = parser.readValueAsTree();
 
     SceneObjectType sceneObjectType = SceneObjectType.valueOf(objectNode.get("shapeType").asText());
