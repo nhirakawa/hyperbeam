@@ -13,14 +13,22 @@ public class SceneObjectsList implements SceneObject {
 
   private static final Logger LOG = LoggerFactory.getLogger(SceneObjectsList.class);
 
+  private final List<ShapeAdt> shapeAdts;
   private final List<? extends SceneObject> hittables;
 
-  public SceneObjectsList(List<? extends SceneObject> hittables) {
-    this.hittables = ImmutableList.copyOf(hittables);
+  public SceneObjectsList(List<ShapeAdt> shapeAdts) {
+    this.shapeAdts = ImmutableList.copyOf(shapeAdts);
+    this.hittables = shapeAdts.stream()
+        .map(this::toSceneObject)
+        .collect(ImmutableList.toImmutableList());
   }
 
   public List<? extends SceneObject> getHittables() {
     return hittables;
+  }
+
+  public List<ShapeAdt> getShapeAdts() {
+    return shapeAdts;
   }
 
   @Override
@@ -33,7 +41,7 @@ public class SceneObjectsList implements SceneObject {
     Optional<HitRecord> tempRecord = Optional.empty();
     double closestSoFar = tMax;
 
-    for (int i = 0; i < hittables.size(); i++) {
+    for (int i = 0; i < shapeAdts.size(); i++) {
       Optional<HitRecord> maybeHitRecord = hittables.get(i).hit(ray, tMin, closestSoFar);
       if (maybeHitRecord.isPresent()) {
         tempRecord = maybeHitRecord;
@@ -46,8 +54,8 @@ public class SceneObjectsList implements SceneObject {
 
   @Override
   public Optional<AxisAlignedBoundingBox> getBoundingBox(double t0, double t1) {
-    if (hittables.isEmpty()) {
-      LOG.warn("No hittables");
+    if (shapeAdts.isEmpty()) {
+      LOG.warn("No shapeAdts");
       return Optional.empty();
     }
 
@@ -57,7 +65,7 @@ public class SceneObjectsList implements SceneObject {
       return Optional.empty();
     }
 
-    for (int i = 0; i < hittables.size(); i++) {
+    for (int i = 0; i < shapeAdts.size(); i++) {
       Optional<AxisAlignedBoundingBox> temp = hittables.get(i).getBoundingBox(t0, t1);
       if (!temp.isPresent()) {
         LOG.warn("No bounding box for {}", hittables.get(i));
@@ -70,4 +78,23 @@ public class SceneObjectsList implements SceneObject {
     return current;
   }
 
+  private SceneObject toSceneObject(ShapeAdt shapeAdt) {
+    return ShapeAdts.caseOf(shapeAdt)
+        .BOUNDING_VOLUME_HIERARCHY(this::toSceneObject)
+        .BOX(this::toSceneObject)
+        .CONSTANT_MEDIUM(this::toSceneObject)
+        .MOVING_SPHERE(this::toSceneObject)
+        .REVERSE_NORMALS(this::toSceneObject)
+        .SCENE_OBJECTS_LIST(this::toSceneObject)
+        .SPHERE(this::toSceneObject)
+        .TRANSLATION(this::toSceneObject)
+        .XY_RECTANGLE(this::toSceneObject)
+        .XZ_RECTANGLE(this::toSceneObject)
+        .YZ_RECTANGLE(this::toSceneObject)
+        .Y_ROTATION(this::toSceneObject);
+  }
+
+  private <T extends SceneObject> SceneObject toSceneObject(T t) {
+    return t;
+  }
 }

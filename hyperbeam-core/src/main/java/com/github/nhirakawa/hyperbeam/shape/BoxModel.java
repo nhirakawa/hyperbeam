@@ -24,66 +24,78 @@ public abstract class BoxModel implements SceneObject {
   public SceneObjectsList getSceneObjectsList() {
     return new SceneObjectsList(
         ImmutableList.of(
-            XYRectangle.builder() // 0
-                .setX0(getPMin().getX())
-                .setX1(getPMax().getX())
-                .setY0(getPMin().getY())
-                .setY1(getPMax().getY())
-                .setK(getPMax().getZ())
-                .setMaterial(getMaterial())
-                .build(),
-            ReverseNormals.builder() // 1
-                .setSceneObject(
-                    XYRectangle.builder()
-                        .setX0(getPMin().getX())
-                        .setX1(getPMax().getX())
-                        .setY0(getPMin().getY())
-                        .setY1(getPMax().getY())
-                        .setK(getPMin().getZ())
-                        .setMaterial(getMaterial())
-                        .build()
-                )
-                .build(),
-            XZRectangle.builder() // 2
-                .setX0(getPMin().getX())
-                .setX1(getPMax().getX())
-                .setZ0(getPMin().getZ())
-                .setZ1(getPMax().getZ())
-                .setK(getPMax().getY())
-                .setMaterial(getMaterial())
-                .build(),
-            ReverseNormals.builder() // 3
-                .setSceneObject(
-                    XZRectangle.builder()
-                        .setX0(getPMin().getX())
-                        .setX1(getPMax().getX())
-                        .setZ0(getPMin().getZ())
-                        .setZ1(getPMax().getZ())
-                        .setK(getPMin().getY())
-                        .setMaterial(getMaterial())
-                        .build()
-                )
-                .build(),
-            YZRectangle.builder() // 4
-                .setY0(getPMin().getY())
-                .setY1(getPMax().getY())
-                .setZ0(getPMin().getZ())
-                .setZ1(getPMax().getZ())
-                .setK(getPMax().getX())
-                .setMaterial(getMaterial())
-                .build(),
-            ReverseNormals.builder() // 5
-                .setSceneObject(
-                    YZRectangle.builder()
-                        .setY0(getPMin().getY())
-                        .setY1(getPMax().getY())
-                        .setZ0(getPMin().getZ())
-                        .setZ1(getPMax().getZ())
-                        .setK(getPMin().getX())
-                        .setMaterial(getMaterial())
-                        .build()
-                )
-                .build()
+            ShapeAdts.XY_RECTANGLE(
+                XYRectangle.builder() // 0
+                    .setX0(getPMin().getX())
+                    .setX1(getPMax().getX())
+                    .setY0(getPMin().getY())
+                    .setY1(getPMax().getY())
+                    .setK(getPMax().getZ())
+                    .setMaterial(getMaterial())
+                    .build()
+            ),
+            ShapeAdts.REVERSE_NORMALS(
+                ReverseNormals.builder() // 1
+                    .setSceneObject(
+                        XYRectangle.builder()
+                            .setX0(getPMin().getX())
+                            .setX1(getPMax().getX())
+                            .setY0(getPMin().getY())
+                            .setY1(getPMax().getY())
+                            .setK(getPMin().getZ())
+                            .setMaterial(getMaterial())
+                            .build()
+                    )
+                    .build()
+            ),
+            ShapeAdts.XZ_RECTANGLE(
+                XZRectangle.builder() // 2
+                    .setX0(getPMin().getX())
+                    .setX1(getPMax().getX())
+                    .setZ0(getPMin().getZ())
+                    .setZ1(getPMax().getZ())
+                    .setK(getPMax().getY())
+                    .setMaterial(getMaterial())
+                    .build()
+            ),
+            ShapeAdts.REVERSE_NORMALS(
+                ReverseNormals.builder() // 3
+                    .setSceneObject(
+                        XZRectangle.builder()
+                            .setX0(getPMin().getX())
+                            .setX1(getPMax().getX())
+                            .setZ0(getPMin().getZ())
+                            .setZ1(getPMax().getZ())
+                            .setK(getPMin().getY())
+                            .setMaterial(getMaterial())
+                            .build()
+                    )
+                    .build()
+            ),
+            ShapeAdts.YZ_RECTANGLE(
+                YZRectangle.builder() // 4
+                    .setY0(getPMin().getY())
+                    .setY1(getPMax().getY())
+                    .setZ0(getPMin().getZ())
+                    .setZ1(getPMax().getZ())
+                    .setK(getPMax().getX())
+                    .setMaterial(getMaterial())
+                    .build()
+            ),
+            ShapeAdts.REVERSE_NORMALS(
+                ReverseNormals.builder() // 5
+                    .setSceneObject(
+                        YZRectangle.builder()
+                            .setY0(getPMin().getY())
+                            .setY1(getPMax().getY())
+                            .setZ0(getPMin().getZ())
+                            .setZ1(getPMax().getZ())
+                            .setK(getPMin().getX())
+                            .setMaterial(getMaterial())
+                            .build()
+                    )
+                    .build()
+            )
         )
     );
   }

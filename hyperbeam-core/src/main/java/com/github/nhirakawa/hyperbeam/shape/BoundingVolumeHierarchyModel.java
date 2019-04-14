@@ -34,8 +34,8 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
 
   @Value.Lazy
   @JsonIgnore
-  public List<SceneObject> getSortedHittablesList() {
-    final Comparator<SceneObject> comparator;
+  public List<ShapeAdt> getSortedHittablesList() {
+    final Comparator<ShapeAdt comparator;
     switch ((int) (MathUtils.rand() * 3)) {
       case 0:
         comparator = getComparator(MIN_X);
@@ -50,7 +50,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
         throw new IllegalArgumentException("Invalid random number when sorting hittables");
     }
 
-    return getSceneObjectsList().getHittables().stream()
+    return getSceneObjectsList().getShapeAdts().stream()
         .sorted(comparator)
         .collect(ImmutableList.toImmutableList());
   }
@@ -66,6 +66,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
     } else if (size == 2) {
       return sortedHittablesList.get(0);
     } else {
+
       return BoundingVolumeHierarchy.builder()
           .setSceneObjectsList(new SceneObjectsList(sortedHittablesList.subList(0, size / 2)))
           .setTime0(getTime0())
@@ -134,7 +135,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
     return Optional.of(getAxisAlignedBoundingBox());
   }
 
-  private static Comparator<SceneObject> getComparator(Function<AxisAlignedBoundingBox, Double> function) {
+  private static Comparator<ShapeAdt> getComparator(Function<AxisAlignedBoundingBox, Double> function) {
     return (hittable1, hittable2) -> {
       Optional<AxisAlignedBoundingBox> box1 = hittable1.getBoundingBox(0, 0);
       Optional<AxisAlignedBoundingBox> box2 = hittable2.getBoundingBox(0, 0);

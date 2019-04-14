@@ -13,6 +13,6 @@ import com.github.nhirakawa.immutable.style.ImmutableStyle;
 public interface SceneModel {
 
   Camera getCamera();
-  List<ShapeAdt> getShapeAdts();
+  List<ShapeAdt> getSceneObjects();
 
 }

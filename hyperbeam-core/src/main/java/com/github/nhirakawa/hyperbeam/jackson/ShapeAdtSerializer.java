@@ -25,9 +25,11 @@ public class ShapeAdtSerializer extends StdSerializer<ShapeAdt> {
         .REVERSE_NORMALS(this::forObject)
         .SCENE_OBJECTS_LIST(this::forObject)
         .SPHERE(this::forObject)
+        .TRANSLATION(this::forObject)
         .XY_RECTANGLE(this::forObject)
         .XZ_RECTANGLE(this::forObject)
         .YZ_RECTANGLE(this::forObject)
+        .Y_ROTATION(this::forObject)
         .accept(jsonGenerator);
   }
 

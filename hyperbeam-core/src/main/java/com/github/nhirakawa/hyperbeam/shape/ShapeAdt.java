@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.nhirakawa.hyperbeam.jackson.ShapeAdtDeserializer;
 import com.github.nhirakawa.hyperbeam.jackson.ShapeAdtSerializer;
+import com.github.nhirakawa.hyperbeam.transform.TranslationModel;
+import com.github.nhirakawa.hyperbeam.transform.YRotationModel;
 
 @JsonSerialize(using = ShapeAdtSerializer.class)
 @JsonDeserialize(using = ShapeAdtDeserializer.class)
@@ -21,9 +23,11 @@ public abstract class ShapeAdt {
     R REVERSE_NORMALS(ReverseNormalsModel reverseNormals);
     R SCENE_OBJECTS_LIST(SceneObjectsList sceneObjectsList);
     R SPHERE(SphereModel sphere);
+    R TRANSLATION(TranslationModel translation);
     R XY_RECTANGLE(XYRectangleModel xyRectangle);
     R XZ_RECTANGLE(XZRectangleModel xzRectangle);
     R YZ_RECTANGLE(YZRectangleModel yzRectangle);
+    R Y_ROTATION(YRotationModel yRotation);
 
   }
 
