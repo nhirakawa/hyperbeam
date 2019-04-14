@@ -1,9 +1,10 @@
 package com.github.nhirakawa.hyperbeam;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
@@ -19,7 +20,7 @@ public class AdtTestRunner {
 
   private static final ObjectMapper OBJECT_MAPPER = buildObjectMapper();
 
-  public static void main(String... args) throws JsonProcessingException {
+  public static void main(String... args) throws IOException {
     ConstantTexture texture = ConstantTexture.builder()
         .setColor(
             Vector3.builder()
@@ -40,11 +41,11 @@ public class AdtTestRunner {
         .setMaterial(material)
         .build();
 
-    ShapeAdt shapeAdt = ShapeAdts.SPHERE(sphere);
+    ShapeAdt serialized = ShapeAdts.SPHERE(sphere);
 
-    String json = OBJECT_MAPPER.writeValueAsString(shapeAdt);
+    String json = OBJECT_MAPPER.writeValueAsString(serialized);
 
-    LOG.info("{}", json);
+    ShapeAdt deserialized = OBJECT_MAPPER.readValue(json, ShapeAdt.class);
   }
 
   private static ObjectMapper buildObjectMapper() {
