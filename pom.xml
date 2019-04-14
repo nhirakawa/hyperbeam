@@ -15,7 +15,6 @@
   <modules>
     <module>hyperbeam-core</module>
     <module>hyperbeam-single-machine</module>
-    <module>hyperbeam-serde</module>
   </modules>
 
   <properties>
@@ -42,6 +41,11 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
         <version>${jackson.version}</version>
       </dependency>
       <dependency>
@@ -157,34 +161,6 @@
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <compilerArgs>
-            <arg>-Xlint:all,-processing</arg>
-          </compilerArgs>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.immutables</groupId>
-              <artifactId>value</artifactId>
-              <version>${immutables.version}</version>
-            </path>
-            <path>
-              <groupId>com.google.dagger</groupId>
-              <artifactId>dagger-compiler</artifactId>
-              <version>${dagger.version}</version>
-            </path>
-            <!--<path>-->
-              <!--<groupId>org.derive4j</groupId>-->
-              <!--<artifactId>derive4j-annotation</artifactId>-->
-              <!--<version>${derive4j.version}</version>-->
-            <!--</path>-->
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
 
 </project>
