@@ -35,7 +35,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
   @Value.Lazy
   @JsonIgnore
   public List<ShapeAdt> getSortedHittablesList() {
-    final Comparator<ShapeAdt comparator;
+    final Comparator<ShapeAdt> comparator;
     switch ((int) (MathUtils.rand() * 3)) {
       case 0:
         comparator = getComparator(MIN_X);
