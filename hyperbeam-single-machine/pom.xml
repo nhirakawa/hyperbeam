@@ -53,7 +53,7 @@
           <finalName>hyperbeam-single-machine</finalName>
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>com.github.nhirakawa.hyperbeam.AdtTestRunner</mainClass>
+              <mainClass>com.github.nhirakawa.hyperbeam.RayTracerRunner</mainClass>
             </transformer>
           </transformers>
         </configuration>
