@@ -2,6 +2,7 @@ package com.github.nhirakawa.hyperbeam;
 
 import java.util.Optional;
 
+import com.github.nhirakawa.hyperbeam.shape.AxisAlignedBoundingBox;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 import com.github.nhirakawa.hyperbeam.shape.XZRectangleModel;
 
@@ -11,5 +12,9 @@ public final class XZRectangleProcessor {
 
   public static Optional<HitRecord> hit(XZRectangleModel xzRectangleModel, HitRecordParams hitRecordParams) {
     return xzRectangleModel.hit(hitRecordParams.getRay(), hitRecordParams.getTMin(), hitRecordParams.getTMax());
+  }
+
+  public static Optional<AxisAlignedBoundingBox> getBoundingBox(XZRectangleModel xzRectangleModel, BoundingBoxParams boundingBoxParams) {
+    return xzRectangleModel.getBoundingBox(boundingBoxParams);
   }
 }

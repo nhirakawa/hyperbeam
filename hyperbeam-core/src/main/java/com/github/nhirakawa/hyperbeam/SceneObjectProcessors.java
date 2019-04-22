@@ -28,7 +28,19 @@ public final class SceneObjectProcessors {
   }
 
   public static Optional<AxisAlignedBoundingBox> getBoundingBox(ShapeAdt shapeAdt, BoundingBoxParams boundingBoxParams) {
-    throw new UnsupportedOperationException();
+    return ShapeAdts.caseOf(shapeAdt)
+        .BOUNDING_VOLUME_HIERARCHY(boundingVolumeHierarchyModel -> BoundingVolumeHierarchyProcessor.getBoundingBox(boundingVolumeHierarchyModel, boundingBoxParams))
+        .BOX(boxModel -> BoxProcessor.getBoundingBox(boxModel, boundingBoxParams))
+        .CONSTANT_MEDIUM(constantMediumModel -> ConstantMediumProcessor.getBoundingBox(constantMediumModel, boundingBoxParams))
+        .MOVING_SPHERE(movingSphereModel -> MovingSphereProcessor.getBoundingBox(movingSphereModel, boundingBoxParams))
+        .REVERSE_NORMALS(reverseNormalsModel -> ReverseNormalsProcessor.getBoundingBox(reverseNormalsModel, boundingBoxParams))
+        .SCENE_OBJECTS_LIST(sceneObjectsList -> SceneObjectsListProcessor.getBoundingBox(sceneObjectsList, boundingBoxParams))
+        .SPHERE(sphereModel -> SphereProcessor.getBoundingBox(sphereModel, boundingBoxParams))
+        .TRANSLATION(translationModel -> TranslationProcessor.getBoundingBox(translationModel, boundingBoxParams))
+        .XY_RECTANGLE(xyRectangleModel -> XYRectangleProcessor.getBoundingBox(xyRectangleModel, boundingBoxParams))
+        .XZ_RECTANGLE(xzRectangleModel -> XZRectangleProcessor.getBoundingBox(xzRectangleModel, boundingBoxParams))
+        .YZ_RECTANGLE(yzRectangleModel -> YZRectangleProcessor.getBoundingBox(yzRectangleModel, boundingBoxParams))
+        .Y_ROTATION(yRotationModel -> YRotationProcessor.getBoundingBox(yRotationModel, boundingBoxParams));
   }
 
 }
