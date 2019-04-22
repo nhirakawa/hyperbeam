@@ -35,8 +35,9 @@ import com.github.nhirakawa.hyperbeam.scene.Scene;
 import com.github.nhirakawa.hyperbeam.scene.SceneGenerator;
 import com.github.nhirakawa.hyperbeam.shape.BoundingVolumeHierarchy;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
-import com.github.nhirakawa.hyperbeam.shape.SceneObject;
 import com.github.nhirakawa.hyperbeam.shape.SceneObjectsList;
+import com.github.nhirakawa.hyperbeam.shape.ShapeAdt;
+import com.github.nhirakawa.hyperbeam.shape.ShapeAdts;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -78,11 +79,13 @@ public class RayTracer {
   private static List<RgbModel> render(ConfigWrapper configWrapper, Scene scene) {
     ExecutorService executorService = buildExecutor(configWrapper.getNumberOfThreads());
 
-    SceneObject world = BoundingVolumeHierarchy.builder()
-        .setSceneObjectsList(new SceneObjectsList(scene.getSceneObjects()))
-        .setTime0(0)
-        .setTime1(1)
-        .build();
+    ShapeAdt world = ShapeAdts.BOUNDING_VOLUME_HIERARCHY(
+        BoundingVolumeHierarchy.builder()
+            .setSceneObjectsList(new SceneObjectsList(scene.getSceneObjects()))
+            .setTime0(0)
+            .setTime1(1)
+            .build()
+    );
 
     List<CompletableFuture<RgbModel>> futures = new ArrayList<>();
     for (int j = configWrapper.getNumberOfColumns(); j > 0; j--) {
@@ -134,7 +137,7 @@ public class RayTracer {
                                    int numberOfRows,
                                    int numberOfColumns,
                                    Camera camera,
-                                   SceneObject world,
+                                   ShapeAdt world,
                                    int i,
                                    int j) {
     Vector3 color = Vector3.zero();
@@ -175,8 +178,14 @@ public class RayTracer {
     }
   }
 
-  private static Vector3 color(Ray ray, SceneObject sceneObject, int depth) {
-    Optional<HitRecord> maybeHitRecord = sceneObject.hit(ray, 0.001, Double.MAX_VALUE);
+  private static Vector3 color(Ray ray, ShapeAdt sceneObject, int depth) {
+    HitRecordParams hitRecordParams = HitRecordParams.builder()
+        .setRay(ray)
+        .setTMin(0.001)
+        .setTMax(Double.MAX_VALUE)
+        .build();
+
+    Optional<HitRecord> maybeHitRecord = SceneObjectProcessors.hit(sceneObject, hitRecordParams);
     if (maybeHitRecord.isPresent()) {
       HitRecord hitRecord = maybeHitRecord.get();
 
