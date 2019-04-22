@@ -167,13 +167,13 @@ public abstract class Vector3Model {
   }
 
   @JsonIgnore
-  @Value.Lazy
+  @Value.Derived
   public double getSquaredLength() {
     return (getX() * getX()) + (getY() * getY()) + (getZ() * getZ());
   }
 
   @JsonIgnore
-  @Value.Lazy
+  @Value.Derived
   public double getNorm() {
     double xSquared = getX() * getX();
     double ySquared = getY() * getY();

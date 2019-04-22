@@ -21,7 +21,7 @@ public abstract class XYRectangleModel implements SceneObject {
   public abstract double getK();
   public abstract Material getMaterial();
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public Optional<AxisAlignedBoundingBox> getBoundingBox() {
     Vector3 min = Vector3.builder()

@@ -12,27 +12,27 @@ public interface ConfigWrapperModel {
 
   Config getConfig();
 
-  @Value.Lazy
+  @Value.Derived
   default int getNumberOfSamples() {
     return getConfig().getInt(ConfigPaths.NUMBER_OF_SAMPLES.getPath());
   }
 
-  @Value.Lazy
+  @Value.Derived
   default int getNumberOfThreads() {
     return getConfig().getInt(ConfigPaths.NUMBER_OF_THREADS.getPath());
   }
 
-  @Value.Lazy
+  @Value.Derived
   default int getNumberOfRows() {
     return getConfig().getInt(ConfigPaths.NUMBER_OF_ROWS.getPath());
   }
 
-  @Value.Lazy
+  @Value.Derived
   default int getNumberOfColumns() {
     return getConfig().getInt(ConfigPaths.NUMBER_OF_COLUMNS.getPath());
   }
 
-  @Value.Lazy
+  @Value.Derived
   default String getOutFile() {
     return getConfig().getString(ConfigPaths.OUT_FILE.getPath());
   }

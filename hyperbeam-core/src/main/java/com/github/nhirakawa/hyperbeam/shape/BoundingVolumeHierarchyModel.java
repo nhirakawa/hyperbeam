@@ -34,7 +34,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
     return SceneObjectType.BOUNDING_VOLUME_HIERARCHY;
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public List<ShapeAdt> getSortedHittablesList() {
     final Comparator<ShapeAdt> comparator;
@@ -57,7 +57,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
         .collect(ImmutableList.toImmutableList());
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public ShapeAdt getLeft() {
     List<ShapeAdt> sortedHittablesList = getSortedHittablesList();
@@ -79,7 +79,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
     }
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public ShapeAdt getRight() {
     List<ShapeAdt> sortedHittablesList = getSortedHittablesList();
@@ -100,7 +100,7 @@ public abstract class BoundingVolumeHierarchyModel implements SceneObject {
     }
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public AxisAlignedBoundingBox getAxisAlignedBoundingBox() {
     Optional<AxisAlignedBoundingBox> leftBox = getBoundingBoxForShapeAdt(getLeft(), getTime0(), getTime1());

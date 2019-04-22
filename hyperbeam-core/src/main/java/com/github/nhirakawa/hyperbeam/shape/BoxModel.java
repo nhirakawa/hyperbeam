@@ -19,7 +19,7 @@ public abstract class BoxModel implements SceneObject {
   public abstract Vector3 getPMax();
   public abstract Material getMaterial();
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public SceneObjectsList getSceneObjectsList() {
     return new SceneObjectsList(
@@ -100,7 +100,7 @@ public abstract class BoxModel implements SceneObject {
     );
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public AxisAlignedBoundingBox getBoundingBox() {
     return AxisAlignedBoundingBox.builder()

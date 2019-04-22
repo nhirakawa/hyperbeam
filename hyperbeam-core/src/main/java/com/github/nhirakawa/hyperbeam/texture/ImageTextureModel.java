@@ -19,7 +19,7 @@ public abstract class ImageTextureModel implements Texture {
 
   public abstract URL getImageUrl();
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public BufferedImage getBufferedImage() {
     try {

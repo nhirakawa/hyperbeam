@@ -27,13 +27,13 @@ public abstract class YZRectangleModel implements SceneObject {
   public abstract double getK();
   public abstract Material getMaterial();
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public Vector3 getNormal() {
     return NORMAL;
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public AxisAlignedBoundingBox getBoundingBox() {
     Vector3 min = Vector3.builder()

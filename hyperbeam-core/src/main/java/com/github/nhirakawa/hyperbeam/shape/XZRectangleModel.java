@@ -27,7 +27,7 @@ public abstract class XZRectangleModel implements SceneObject {
   public abstract double getK();
   public abstract Material getMaterial();
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public AxisAlignedBoundingBox getBoundingBox() {
     Vector3 min = Vector3.builder()
@@ -48,7 +48,7 @@ public abstract class XZRectangleModel implements SceneObject {
         .build();
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   public Vector3 getNormal() {
     return NORMAL;

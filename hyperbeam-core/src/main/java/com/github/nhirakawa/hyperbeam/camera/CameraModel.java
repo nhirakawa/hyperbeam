@@ -23,55 +23,55 @@ public interface CameraModel {
   double getTime0();
   double getTime1();
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default double getTheta() {
     return (getVerticalFovDegrees() * Math.PI) / 180;
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default double getHalfHeight() {
     return StrictMath.tan(getTheta() / 2);
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default double getHalfWidth() {
     return getAspectRatio() * getHalfHeight();
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default Vector3 getW() {
     return getLookFrom().subtract(getLookAt()).unit();
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default Vector3 getU() {
     return getViewUp().cross(getW()).unit();
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default Vector3 getV() {
     return getW().cross(getU());
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default double getLensRadius() {
     return getAperture() / 2;
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default Vector3 getOrigin() {
     return getLookFrom();
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default Vector3 getLowerLeftCorner() {
     return getOrigin().subtract(getU().scalarMultiply(getHalfWidth() * getFocusDistance()))
@@ -79,13 +79,13 @@ public interface CameraModel {
         .subtract(getW().scalarMultiply(getFocusDistance()));
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default Vector3 getHorizontal() {
     return getU().scalarMultiply(2 * getFocusDistance() * getHalfWidth());
   }
 
-  @Value.Lazy
+  @Value.Derived
   @JsonIgnore
   default Vector3 getVertical() {
     return getV().scalarMultiply(2 * getFocusDistance() * getHalfHeight());
