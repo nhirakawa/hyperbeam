@@ -36,7 +36,6 @@ import com.github.nhirakawa.hyperbeam.scene.SceneGenerator;
 import com.github.nhirakawa.hyperbeam.shape.BoundingVolumeHierarchy;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 import com.github.nhirakawa.hyperbeam.shape.SceneObject;
-import com.github.nhirakawa.hyperbeam.shape.SceneObjectsList;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -49,11 +48,17 @@ public class RayTracer {
 
   private final ObjectMapper objectMapper;
   private final ConfigWrapper configWrapper;
+  private final RayProcessor rayProcessor;
+  private final SortedHittablesFactory sortedHittablesFactory;
 
   public RayTracer(ObjectMapper objectMapper,
-                   ConfigWrapper configWrapper) {
+                   ConfigWrapper configWrapper,
+                   RayProcessor rayProcessor,
+                   SortedHittablesFactory sortedHittablesFactory) {
     this.objectMapper = objectMapper;
     this.configWrapper = configWrapper;
+    this.rayProcessor = rayProcessor;
+    this.sortedHittablesFactory = sortedHittablesFactory;
   }
 
   public void doThreadedRayTrace() throws IOException {
@@ -75,11 +80,11 @@ public class RayTracer {
     ImageIO.write(bufferedImage, "png", new File(configWrapper.getOutFile()));
   }
 
-  private static List<RgbModel> render(ConfigWrapper configWrapper, Scene scene) {
+  private List<RgbModel> render(ConfigWrapper configWrapper, Scene scene) {
     ExecutorService executorService = buildExecutor(configWrapper.getNumberOfThreads());
 
     SceneObject world = BoundingVolumeHierarchy.builder()
-        .setSceneObjectsList(new SceneObjectsList(scene.getSceneObjects()))
+        .setSortedSceneObjects(sortedHittablesFactory.getSortedHittables(scene.getSceneObjects()))
         .setTime0(0)
         .setTime1(1)
         .build();
@@ -130,7 +135,7 @@ public class RayTracer {
     }
   }
 
-  private static RgbModel buildRgb(int numberOfSamples,
+  private RgbModel buildRgb(int numberOfSamples,
                                    int numberOfRows,
                                    int numberOfColumns,
                                    Camera camera,
@@ -175,8 +180,8 @@ public class RayTracer {
     }
   }
 
-  private static Vector3 color(Ray ray, SceneObject sceneObject, int depth) {
-    Optional<HitRecord> maybeHitRecord = sceneObject.hit(ray, 0.001, Double.MAX_VALUE);
+  private Vector3 color(Ray ray, SceneObject sceneObject, int depth) {
+    Optional<HitRecord> maybeHitRecord = rayProcessor.hit(sceneObject, ray, 0.001, Double.MAX_VALUE);
     if (maybeHitRecord.isPresent()) {
       HitRecord hitRecord = maybeHitRecord.get();
 

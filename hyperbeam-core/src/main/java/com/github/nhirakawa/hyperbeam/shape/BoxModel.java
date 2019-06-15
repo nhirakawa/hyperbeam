@@ -1,11 +1,8 @@
 package com.github.nhirakawa.hyperbeam.shape;
 
-import java.util.Optional;
-
 import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.nhirakawa.hyperbeam.geometry.Ray;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.Material;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
@@ -95,16 +92,6 @@ public abstract class BoxModel implements SceneObject {
         .setMin(getPMin())
         .setMax(getPMax())
         .build();
-  }
-
-  @Override
-  public Optional<HitRecord> hit(Ray ray, double tMin, double tMax) {
-    return getSceneObjectsList().hit(ray, tMin, tMax);
-  }
-
-  @Override
-  public Optional<AxisAlignedBoundingBox> getBoundingBox(double t0, double t1) {
-    return Optional.of(getBoundingBox());
   }
 
   @Override
