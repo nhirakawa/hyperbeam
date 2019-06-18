@@ -34,9 +34,23 @@ class HyperbeamModule {
 
   @Provides
   @Singleton
+  static RayProcessor provideRayProcessor() {
+    return new RayProcessor();
+  }
+
+  @Provides
+  @Singleton
+  static SortedHittablesFactory provideSortedHittablesFactory(RayProcessor rayProcessor) {
+    return new SortedHittablesFactory(rayProcessor);
+  }
+
+  @Provides
+  @Singleton
   static RayTracer provideRayTracer(ObjectMapper objectMapper,
-                                    ConfigWrapper configWrapper) {
-    return new RayTracer(objectMapper, configWrapper);
+                                    ConfigWrapper configWrapper,
+                                    RayProcessor rayProcessor,
+                                    SortedHittablesFactory sortedHittablesFactory) {
+    return new RayTracer(objectMapper, configWrapper, rayProcessor, sortedHittablesFactory);
   }
 
 }
