@@ -3,6 +3,7 @@ package com.github.nhirakawa.hyperbeam.shape;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.github.nhirakawa.hyperbeam.AlgebraicSceneObject;
 import com.github.nhirakawa.hyperbeam.transform.Translation;
 import com.github.nhirakawa.hyperbeam.transform.YRotation;
 
@@ -26,5 +27,7 @@ public interface SceneObject {
 
   @SuppressWarnings("unused")
   SceneObjectType getShapeType();
+
+  AlgebraicSceneObject toAlgebraicSceneObject();
 
 }

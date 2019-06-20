@@ -3,6 +3,8 @@ package com.github.nhirakawa.hyperbeam.shape;
 import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.nhirakawa.hyperbeam.AlgebraicSceneObject;
+import com.github.nhirakawa.hyperbeam.AlgebraicSceneObjects;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.Material;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
@@ -38,6 +40,13 @@ public abstract class SphereModel implements SceneObject {
   @Value.Auxiliary
   public SceneObjectType getShapeType() {
     return SceneObjectType.SPHERE;
+  }
+
+  @Override
+  @JsonIgnore
+  @Value.Lazy
+  public AlgebraicSceneObject toAlgebraicSceneObject() {
+    return AlgebraicSceneObjects.SPHERE(this);
   }
 
 }

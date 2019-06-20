@@ -3,6 +3,8 @@ package com.github.nhirakawa.hyperbeam.shape;
 import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.nhirakawa.hyperbeam.AlgebraicSceneObject;
+import com.github.nhirakawa.hyperbeam.AlgebraicSceneObjects;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.IsotropicMaterial;
 import com.github.nhirakawa.hyperbeam.material.Material;
@@ -19,9 +21,16 @@ public abstract class ConstantMediumModel implements SceneObject {
       .setZ(0)
       .build();
 
-  public abstract SceneObject getSceneObject();
+  public abstract AlgebraicSceneObject getSceneObject();
   public abstract double getDensity();
   public abstract Texture getTexture();
+
+  @Override
+  @Value.Lazy
+  @JsonIgnore
+  public AlgebraicSceneObject toAlgebraicSceneObject() {
+    return AlgebraicSceneObjects.CONSTANT_MEDIUM(this);
+  }
 
   @Value.Derived
   @JsonIgnore

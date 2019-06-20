@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.github.nhirakawa.hyperbeam.AlgebraicSceneObjects;
 import com.github.nhirakawa.hyperbeam.camera.Camera;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.DiffuseLightMaterial;
@@ -301,14 +302,16 @@ public final class SceneGenerator {
     List<SceneObject> sceneObjects = ImmutableList.of(
         ReverseNormals.builder()
             .setSceneObject(
-                YZRectangle.builder()
-                    .setY0(0)
-                    .setY1(555)
-                    .setZ0(0)
-                    .setZ1(555)
-                    .setK(555)
-                    .setMaterial(green)
-                    .build()
+                AlgebraicSceneObjects.YZ_RECTANGLE(
+                    YZRectangle.builder()
+                        .setY0(0)
+                        .setY1(555)
+                        .setZ0(0)
+                        .setZ1(555)
+                        .setK(555)
+                        .setMaterial(green)
+                        .build()
+                )
             )
             .build(),
         YZRectangle.builder()
@@ -329,14 +332,16 @@ public final class SceneGenerator {
             .build(),
         ReverseNormals.builder()
             .setSceneObject(
-                XZRectangle.builder()
-                    .setX0(0)
-                    .setX1(555)
-                    .setZ0(0)
-                    .setZ1(555)
-                    .setK(555)
-                    .setMaterial(white)
-                    .build()
+                AlgebraicSceneObjects.XZ_RECTANGLE(
+                    XZRectangle.builder()
+                        .setX0(0)
+                        .setX1(555)
+                        .setZ0(0)
+                        .setZ1(555)
+                        .setK(555)
+                        .setMaterial(white)
+                        .build()
+                )
             )
             .build(),
         XZRectangle.builder()
@@ -349,34 +354,40 @@ public final class SceneGenerator {
             .build(),
         ReverseNormals.builder()
             .setSceneObject(
-                XYRectangle.builder()
-                    .setX0(0)
-                    .setX1(555)
-                    .setY0(0)
-                    .setY1(555)
-                    .setK(555)
-                    .setMaterial(white)
-                    .build()
+                AlgebraicSceneObjects.XY_RECTANGLE(
+                    XYRectangle.builder()
+                        .setX0(0)
+                        .setX1(555)
+                        .setY0(0)
+                        .setY1(555)
+                        .setK(555)
+                        .setMaterial(white)
+                        .build()
+                )
             )
             .build(),
         Translation.builder()
             .setSceneObject(
-                YRotation.builder()
-                    .setSceneObject(
-                        Box.builder()
-                            .setPMin(Vector3.zero())
-                            .setPMax(
-                                Vector3.builder()
-                                    .setX(165)
-                                    .setY(165)
-                                    .setZ(165)
+                AlgebraicSceneObjects.Y_ROTATION(
+                    YRotation.builder()
+                        .setSceneObject(
+                            AlgebraicSceneObjects.BOX(
+                                Box.builder()
+                                    .setPMin(Vector3.zero())
+                                    .setPMax(
+                                        Vector3.builder()
+                                            .setX(165)
+                                            .setY(165)
+                                            .setZ(165)
+                                            .build()
+                                    )
+                                    .setMaterial(white)
                                     .build()
                             )
-                            .setMaterial(white)
-                            .build()
-                    )
-                    .setAngleInDegrees(-18)
-                    .build()
+                        )
+                        .setAngleInDegrees(-18)
+                        .build()
+                )
             )
             .setOffset(
                 Vector3.builder()
@@ -388,22 +399,26 @@ public final class SceneGenerator {
             .build(),
         Translation.builder()
             .setSceneObject(
-                YRotation.builder()
-                    .setSceneObject(
-                        Box.builder()
-                            .setPMin(Vector3.zero())
-                            .setPMax(
-                                Vector3.builder()
-                                    .setX(165)
-                                    .setY(330)
-                                    .setZ(165)
+                AlgebraicSceneObjects.Y_ROTATION(
+                    YRotation.builder()
+                        .setSceneObject(
+                            AlgebraicSceneObjects.BOX(
+                                Box.builder()
+                                    .setPMin(Vector3.zero())
+                                    .setPMax(
+                                        Vector3.builder()
+                                            .setX(165)
+                                            .setY(330)
+                                            .setZ(165)
+                                            .build()
+                                    )
+                                    .setMaterial(white)
                                     .build()
                             )
-                            .setMaterial(white)
-                            .build()
-                    )
-                    .setAngleInDegrees(15)
-                    .build()
+                        )
+                        .setAngleInDegrees(15)
+                        .build()
+                )
             )
             .setOffset(
                 Vector3.builder()
@@ -508,14 +523,16 @@ public final class SceneGenerator {
     List<SceneObject> sceneObjects = ImmutableList.of(
         ReverseNormals.builder()
             .setSceneObject(
-                YZRectangle.builder()
-                    .setY0(0)
-                    .setY1(555)
-                    .setZ0(0)
-                    .setZ1(555)
-                    .setK(555)
-                    .setMaterial(green)
-                    .build()
+                AlgebraicSceneObjects.YZ_RECTANGLE(
+                    YZRectangle.builder()
+                        .setY0(0)
+                        .setY1(555)
+                        .setZ0(0)
+                        .setZ1(555)
+                        .setK(555)
+                        .setMaterial(green)
+                        .build()
+                )
             )
             .build(),
         YZRectangle.builder()
@@ -536,14 +553,16 @@ public final class SceneGenerator {
             .build(),
         ReverseNormals.builder()
             .setSceneObject(
-                XZRectangle.builder()
-                    .setX0(0)
-                    .setX1(555)
-                    .setZ0(0)
-                    .setZ1(555)
-                    .setK(555)
-                    .setMaterial(white)
-                    .build()
+                AlgebraicSceneObjects.XZ_RECTANGLE(
+                    XZRectangle.builder()
+                        .setX0(0)
+                        .setX1(555)
+                        .setZ0(0)
+                        .setZ1(555)
+                        .setK(555)
+                        .setMaterial(white)
+                        .build()
+                )
             )
             .build(),
         XZRectangle.builder()
@@ -556,45 +575,53 @@ public final class SceneGenerator {
             .build(),
         ReverseNormals.builder()
             .setSceneObject(
-                XYRectangle.builder()
-                    .setX0(0)
-                    .setX1(555)
-                    .setY0(0)
-                    .setY1(555)
-                    .setK(555)
-                    .setMaterial(white)
-                    .build()
+                AlgebraicSceneObjects.XY_RECTANGLE(
+                    XYRectangle.builder()
+                        .setX0(0)
+                        .setX1(555)
+                        .setY0(0)
+                        .setY1(555)
+                        .setK(555)
+                        .setMaterial(white)
+                        .build()
+                )
             )
             .build(),
         ConstantMedium.builder()
             .setSceneObject(
-                Translation.builder()
-                    .setSceneObject(
-                        YRotation.builder()
-                            .setSceneObject(
-                                Box.builder()
-                                    .setPMin(Vector3.zero())
-                                    .setPMax(
-                                        Vector3.builder()
-                                            .setX(165)
-                                            .setY(165)
-                                            .setZ(165)
-                                            .build()
+                AlgebraicSceneObjects.TRANSLATION(
+                    Translation.builder()
+                        .setSceneObject(
+                            AlgebraicSceneObjects.Y_ROTATION(
+                                YRotation.builder()
+                                    .setSceneObject(
+                                        AlgebraicSceneObjects.BOX(
+                                            Box.builder()
+                                                .setPMin(Vector3.zero())
+                                                .setPMax(
+                                                    Vector3.builder()
+                                                        .setX(165)
+                                                        .setY(165)
+                                                        .setZ(165)
+                                                        .build()
+                                                )
+                                                .setMaterial(white)
+                                                .build()
+                                        )
                                     )
-                                    .setMaterial(white)
+                                    .setAngleInDegrees(-18)
                                     .build()
                             )
-                            .setAngleInDegrees(-18)
-                            .build()
-                    )
-                    .setOffset(
-                        Vector3.builder()
-                            .setX(130)
-                            .setY(0)
-                            .setZ(65)
-                            .build()
-                    )
-                    .build()
+                        )
+                        .setOffset(
+                            Vector3.builder()
+                                .setX(130)
+                                .setY(0)
+                                .setZ(65)
+                                .build()
+                        )
+                        .build()
+                )
             )
             .setDensity(0.01)
             .setTexture(
@@ -605,33 +632,39 @@ public final class SceneGenerator {
             .build(),
         ConstantMedium.builder()
             .setSceneObject(
-                Translation.builder()
-                    .setSceneObject(
-                        YRotation.builder()
-                            .setSceneObject(
-                                Box.builder()
-                                    .setPMin(Vector3.zero())
-                                    .setPMax(
-                                        Vector3.builder()
-                                            .setX(165)
-                                            .setY(330)
-                                            .setZ(165)
-                                            .build()
+                AlgebraicSceneObjects.TRANSLATION(
+                    Translation.builder()
+                        .setSceneObject(
+                            AlgebraicSceneObjects.Y_ROTATION(
+                                YRotation.builder()
+                                    .setSceneObject(
+                                        AlgebraicSceneObjects.BOX(
+                                            Box.builder()
+                                                .setPMin(Vector3.zero())
+                                                .setPMax(
+                                                    Vector3.builder()
+                                                        .setX(165)
+                                                        .setY(330)
+                                                        .setZ(165)
+                                                        .build()
+                                                )
+                                                .setMaterial(white)
+                                                .build()
+                                        )
                                     )
-                                    .setMaterial(white)
+                                    .setAngleInDegrees(15)
                                     .build()
                             )
-                            .setAngleInDegrees(15)
-                            .build()
-                    )
-                    .setOffset(
-                        Vector3.builder()
-                            .setX(265)
-                            .setY(0)
-                            .setZ(295)
-                            .build()
-                    )
-                    .build()
+                        )
+                        .setOffset(
+                            Vector3.builder()
+                                .setX(265)
+                                .setY(0)
+                                .setZ(295)
+                                .build()
+                        )
+                        .build()
+                )
             )
             .setDensity(0.01)
             .setTexture(

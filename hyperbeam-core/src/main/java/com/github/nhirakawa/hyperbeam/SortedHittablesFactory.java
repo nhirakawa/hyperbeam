@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import com.github.nhirakawa.hyperbeam.shape.AxisAlignedBoundingBox;
-import com.github.nhirakawa.hyperbeam.shape.SceneObject;
 import com.github.nhirakawa.hyperbeam.util.MathUtils;
 import com.google.common.collect.ImmutableList;
 
@@ -23,8 +22,8 @@ public class SortedHittablesFactory {
   private static final Function<AxisAlignedBoundingBox, Double> MIN_Y = aabb -> aabb.getMin().getY();
   private static final Function<AxisAlignedBoundingBox, Double> MIN_Z = aabb -> aabb.getMin().getZ();
 
-  List<SceneObject> getSortedHittables(Collection<SceneObject> sceneObjects) {
-    final Comparator<SceneObject> comparator;
+  List<AlgebraicSceneObject> getSortedHittables(Collection<AlgebraicSceneObject> sceneObjects) {
+    final Comparator<AlgebraicSceneObject> comparator;
     switch ((int) (MathUtils.rand() * 3)) {
       case 0:
         comparator = getComparator(MIN_X);
@@ -44,7 +43,7 @@ public class SortedHittablesFactory {
         .collect(ImmutableList.toImmutableList());
   }
 
-  private Comparator<SceneObject> getComparator(Function<AxisAlignedBoundingBox, Double> function) {
+  private Comparator<AlgebraicSceneObject> getComparator(Function<AxisAlignedBoundingBox, Double> function) {
     return (hittable1, hittable2) -> {
       Optional<AxisAlignedBoundingBox> box1 = rayProcessor.getBoundingBox(hittable1, 0, 0);
       Optional<AxisAlignedBoundingBox> box2 = rayProcessor.getBoundingBox(hittable2, 0, 0);

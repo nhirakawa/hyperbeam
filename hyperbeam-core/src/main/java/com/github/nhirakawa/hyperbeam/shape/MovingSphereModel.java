@@ -2,6 +2,9 @@ package com.github.nhirakawa.hyperbeam.shape;
 
 import org.immutables.value.Value;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.nhirakawa.hyperbeam.AlgebraicSceneObject;
+import com.github.nhirakawa.hyperbeam.AlgebraicSceneObjects;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.Material;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
@@ -21,6 +24,13 @@ public abstract class MovingSphereModel implements SceneObject {
   @Value.Auxiliary
   public SceneObjectType getShapeType() {
     return SceneObjectType.MOVING_SPHERE;
+  }
+
+  @Override
+  @Value.Lazy
+  @JsonIgnore
+  public AlgebraicSceneObject toAlgebraicSceneObject() {
+    return AlgebraicSceneObjects.MOVING_SPHERE(this);
   }
 
   public Vector3 getCenter(double time) {

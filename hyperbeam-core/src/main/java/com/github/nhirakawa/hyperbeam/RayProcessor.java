@@ -15,7 +15,6 @@ import com.github.nhirakawa.hyperbeam.shape.ConstantMediumModel;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 import com.github.nhirakawa.hyperbeam.shape.MovingSphereModel;
 import com.github.nhirakawa.hyperbeam.shape.ReverseNormalsModel;
-import com.github.nhirakawa.hyperbeam.shape.SceneObject;
 import com.github.nhirakawa.hyperbeam.shape.SceneObjectsList;
 import com.github.nhirakawa.hyperbeam.shape.SphereModel;
 import com.github.nhirakawa.hyperbeam.shape.XYRectangleModel;
@@ -32,56 +31,21 @@ public class RayProcessor {
 
   // hit record
 
-  public Optional<HitRecord> hit(SceneObject sceneObject, Ray ray, double tMin, double tMax) {
-    if (sceneObject instanceof SphereModel) {
-      return hitSphere((SphereModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof BoundingVolumeHierarchyModel) {
-      return hitBoundingVolumeHierarchy((BoundingVolumeHierarchyModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof BoxModel) {
-      return hitBox((BoxModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof SceneObjectsList) {
-      return hitSceneObjectsList((SceneObjectsList) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof ConstantMediumModel) {
-      return hitConstantMedium((ConstantMediumModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof MovingSphereModel) {
-      return hitMovingSphere((MovingSphereModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof ReverseNormalsModel) {
-      return hitReverseNormals((ReverseNormalsModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof XYRectangleModel) {
-      return hitXYRectantle((XYRectangleModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof XZRectangleModel) {
-      return hitXZRectangle((XZRectangleModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof YZRectangleModel) {
-      return hitYZRectangle((YZRectangleModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof TranslationModel) {
-      return hitTranslation((TranslationModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof YRotationModel) {
-      return hitYRotation((YRotationModel) sceneObject, ray, tMin, tMax);
-    }
-
-    throw new IllegalArgumentException("Can't hit unknown object - " + sceneObject);
+  public Optional<HitRecord> hit(AlgebraicSceneObject sceneObject, Ray ray, double tMin, double tMax) {
+    return AlgebraicSceneObjects.cases()
+        .BOUNDING_VOLUME_HIERARCHY(boundingVolumeHierarchyModel -> hitBoundingVolumeHierarchy(boundingVolumeHierarchyModel, ray, tMin, tMax))
+        .BOX(box -> hitBox(box, ray, tMin, tMax))
+        .CONSTANT_MEDIUM(constantMediumModel -> hitConstantMedium(constantMediumModel, ray, tMin, tMax))
+        .MOVING_SPHERE(movingSphereModel -> hitMovingSphere(movingSphereModel, ray, tMin, tMax))
+        .REVERSE_NORMALS(reverseNormalsModel -> hitReverseNormals(reverseNormalsModel, ray, tMin, tMax))
+        .SCENE_OBJECTS_LIST(sceneObjectsList -> hitSceneObjectsList(sceneObjectsList, ray, tMin, tMax))
+        .SPHERE(sphereModel -> hitSphere(sphereModel, ray, tMin, tMax))
+        .TRANSLATION(translationModel -> hitTranslation(translationModel, ray, tMin, tMax))
+        .XY_RECTANGLE(xyRectangleModel -> hitXYRectantle(xyRectangleModel, ray, tMin, tMax))
+        .XZ_RECTANGLE(xzRectangleModel -> hitXZRectangle(xzRectangleModel, ray, tMin, tMax))
+        .Y_ROTATION(yRotationModel -> hitYRotation(yRotationModel, ray, tMin, tMax))
+        .YZ_RECTANGLE(yzRectangleModel -> hitYZRectangle(yzRectangleModel, ray, tMin, tMax))
+        .apply(sceneObject);
   }
 
   private Optional<HitRecord> hitSphere(SphereModel sphere, Ray ray, double tMin, double tMax) {
@@ -174,7 +138,8 @@ public class RayProcessor {
   }
 
   private Optional<HitRecord> hitBox(BoxModel box, Ray ray, double tMin, double tMax) {
-    return hit(box.getSceneObjectsList(), ray, tMin, tMax);
+    AlgebraicSceneObject sceneObjectsList = AlgebraicSceneObjects.SCENE_OBJECTS_LIST(box.getSceneObjectsList());
+    return hit(sceneObjectsList, ray, tMin, tMax);
   }
 
   private Optional<HitRecord> hitSceneObjectsList(SceneObjectsList sceneObjectsList, Ray ray, double tMin, double tMax) {
@@ -457,56 +422,20 @@ public class RayProcessor {
 
   // bounding box
 
-  public Optional<AxisAlignedBoundingBox> getBoundingBox(SceneObject sceneObject, double t0, double t1) {
-    if (sceneObject instanceof BoundingVolumeHierarchyModel) {
-      return getBoundingBoxForBoundingVolumeHierarcy((BoundingVolumeHierarchyModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof BoxModel) {
-      return getBoundingBoxForBox((BoxModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof ConstantMediumModel) {
-      return getBoundingBoxForConstantMedium((ConstantMediumModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof MovingSphereModel) {
-      return getBoundingBoxForMovingSphere((MovingSphereModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof ReverseNormalsModel) {
-      return getBoundingBoxForReverseNormals((ReverseNormalsModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof SceneObjectsList) {
-      return getBoundingBoxForSceneObjectsList((SceneObjectsList) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof SphereModel) {
-      return getBoundingBoxForSphere((SphereModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof XYRectangleModel) {
-      return getBoundingBoxForXYRectangle((XYRectangleModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof XZRectangleModel) {
-      return getBoundingBoxForXZRectangle((XZRectangleModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof YZRectangleModel) {
-      return getBoundingBoxForYZRectangle((YZRectangleModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof TranslationModel) {
-      return getBoundingBoxForTranslation((TranslationModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof YRotationModel) {
-      return getBoundingBoxForYRotation((YRotationModel) sceneObject, t0, t1);
-    }
-
-    throw new IllegalArgumentException("Cannot get bounding box for " + sceneObject);
+  public Optional<AxisAlignedBoundingBox> getBoundingBox(AlgebraicSceneObject sceneObject, double t0, double t1) {
+    return AlgebraicSceneObjects.caseOf(sceneObject)
+        .BOUNDING_VOLUME_HIERARCHY(boundingVolumeHierarchyModel -> getBoundingBoxForBoundingVolumeHierarcy(boundingVolumeHierarchyModel, t0, t1))
+        .BOX(boxModel -> getBoundingBoxForBox(boxModel, t0, t1))
+        .CONSTANT_MEDIUM(constantMediumModel -> getBoundingBoxForConstantMedium(constantMediumModel, t0, t1))
+        .MOVING_SPHERE(movingSphereModel -> getBoundingBoxForMovingSphere(movingSphereModel, t0, t1))
+        .REVERSE_NORMALS(reverseNormalsModel -> getBoundingBoxForReverseNormals(reverseNormalsModel, t0, t1))
+        .SCENE_OBJECTS_LIST(sceneObjectsList -> getBoundingBoxForSceneObjectsList(sceneObjectsList, t0, t1))
+        .SPHERE(sphereModel -> getBoundingBoxForSphere(sphereModel, t0, t1))
+        .TRANSLATION(translationModel -> getBoundingBoxForTranslation(translationModel, t0, t1))
+        .XY_RECTANGLE(xyRectangleModel -> getBoundingBoxForXYRectangle(xyRectangleModel, t0, t1))
+        .XZ_RECTANGLE(xzRectangleModel -> getBoundingBoxForXZRectangle(xzRectangleModel, t0, t1))
+        .Y_ROTATION(yRotationModel -> getBoundingBoxForYRotation(yRotationModel, t0, t1))
+        .YZ_RECTANGLE(yzRectangleModel -> getBoundingBoxForYZRectangle(yzRectangleModel, t0, t1));
   }
 
   private Optional<AxisAlignedBoundingBox> getBoundingBoxForBoundingVolumeHierarcy(BoundingVolumeHierarchyModel boundingVolumeHierarchy, double t0, double t1) {
@@ -514,7 +443,7 @@ public class RayProcessor {
   }
 
   private AxisAlignedBoundingBox getAxisAlignedBoundingBoxForBoundingVolumeHierarchy(BoundingVolumeHierarchyModel boundingVolumeHierarchy) {
-    Optional<AxisAlignedBoundingBox> leftBox =getBoundingBox(boundingVolumeHierarchy.getLeft(), boundingVolumeHierarchy.getTime0(), boundingVolumeHierarchy.getTime1());
+    Optional<AxisAlignedBoundingBox> leftBox = getBoundingBox(boundingVolumeHierarchy.getLeft(), boundingVolumeHierarchy.getTime0(), boundingVolumeHierarchy.getTime1());
     Optional<AxisAlignedBoundingBox> rightBox = getBoundingBox(boundingVolumeHierarchy.getRight(), boundingVolumeHierarchy.getTime0(), boundingVolumeHierarchy.getTime1());
 
     Preconditions.checkState(leftBox.isPresent(), "Could not get bounding box for %s", boundingVolumeHierarchy.getLeft());

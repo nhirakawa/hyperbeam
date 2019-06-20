@@ -64,7 +64,7 @@ public class RayTracer {
   public void doThreadedRayTrace() throws IOException {
     Scene scene = SceneGenerator.generateCornellBox();
 
-    LOG.debug("Scene is {} bytes", objectMapper.writeValueAsBytes(scene).length);
+//    LOG.debug("Scene is {} bytes", objectMapper.writeValueAsBytes(scene).length);
 
     Stopwatch stopwatch = Stopwatch.createStarted();
     List<RgbModel> rgbs = render(configWrapper, scene);
@@ -83,13 +83,20 @@ public class RayTracer {
   private List<RgbModel> render(ConfigWrapper configWrapper, Scene scene) {
     ExecutorService executorService = buildExecutor(configWrapper.getNumberOfThreads());
 
-    SceneObject world = BoundingVolumeHierarchy.builder()
-        .setSortedSceneObjects(sortedHittablesFactory.getSortedHittables(scene.getSceneObjects()))
-        .setTime0(0)
-        .setTime1(1)
-        .build();
+    List<AlgebraicSceneObject> algebraicSceneObjects = scene.getSceneObjects().stream()
+        .map(SceneObject::toAlgebraicSceneObject)
+        .collect(ImmutableList.toImmutableList());
+
+    AlgebraicSceneObject world = AlgebraicSceneObjects.BOUNDING_VOLUME_HIERARCHY(
+        BoundingVolumeHierarchy.builder()
+            .setSortedSceneObjects(sortedHittablesFactory.getSortedHittables(algebraicSceneObjects))
+            .setTime0(0)
+            .setTime1(1)
+            .build()
+    );
 
     List<CompletableFuture<RgbModel>> futures = new ArrayList<>();
+
     for (int j = configWrapper.getNumberOfColumns(); j > 0; j--) {
       for (int i = 0; i < configWrapper.getNumberOfRows(); i++) {
         int finalI = i;
@@ -136,12 +143,12 @@ public class RayTracer {
   }
 
   private RgbModel buildRgb(int numberOfSamples,
-                                   int numberOfRows,
-                                   int numberOfColumns,
-                                   Camera camera,
-                                   SceneObject world,
-                                   int i,
-                                   int j) {
+                            int numberOfRows,
+                            int numberOfColumns,
+                            Camera camera,
+                            AlgebraicSceneObject world,
+                            int i,
+                            int j) {
     Vector3 color = Vector3.zero();
 
     for (int s = 0; s < numberOfSamples; s++) {
@@ -180,7 +187,7 @@ public class RayTracer {
     }
   }
 
-  private Vector3 color(Ray ray, SceneObject sceneObject, int depth) {
+  private Vector3 color(Ray ray, AlgebraicSceneObject sceneObject, int depth) {
     Optional<HitRecord> maybeHitRecord = rayProcessor.hit(sceneObject, ray, 0.001, Double.MAX_VALUE);
     if (maybeHitRecord.isPresent()) {
       HitRecord hitRecord = maybeHitRecord.get();
