@@ -31,6 +31,7 @@
     <javax.inject.version>1</javax.inject.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>4.12</junit.version>
+    <maven-help-plugin.version>3.2.0</maven-help-plugin.version>
     <metrics.version>4.0.0</metrics.version>
     <slf4j.version>1.7.25</slf4j.version>
   </properties>
@@ -131,6 +132,11 @@
           </compilerArgs>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>${maven-help-plugin.version}</version>
+      </plugin>
     </plugins>
   </build>
 
@@ -152,11 +158,11 @@
             <executions>
               <execution>
                 <id>default</id>
-                <phase>package</phase>
                 <goals>
                   <goal>build</goal>
                   <goal>push</goal>
                 </goals>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
