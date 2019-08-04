@@ -62,7 +62,7 @@ public class RayTracer {
   }
 
   public void doThreadedRayTrace() throws IOException {
-    Scene scene = SceneGenerator.generateCornellBox();
+    Scene scene = SceneGenerator.generateFinalScene();
 
     LOG.debug("Scene is {} bytes", objectMapper.writeValueAsBytes(scene).length);
 
