@@ -1,15 +1,13 @@
 package com.github.nhirakawa.hyperbeam.config;
 
-import org.immutables.value.Value;
-
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import com.google.common.base.Preconditions;
 import com.typesafe.config.Config;
+import org.immutables.value.Value;
 
 @Value.Immutable
 @ImmutableStyle
 public interface ConfigWrapperModel {
-
   Config getConfig();
 
   @Value.Lazy
@@ -41,11 +39,10 @@ public interface ConfigWrapperModel {
   default void validate() {
     for (ConfigPaths configPaths : ConfigPaths.values()) {
       Preconditions.checkState(
-          getConfig().hasPath(configPaths.getPath()),
-          "%s was not found",
-          configPaths.getPath()
+        getConfig().hasPath(configPaths.getPath()),
+        "%s was not found",
+        configPaths.getPath()
       );
     }
   }
-
 }

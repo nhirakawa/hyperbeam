@@ -1,16 +1,13 @@
 package com.github.nhirakawa.hyperbeam.color;
 
-import java.awt.*;
-
-import org.immutables.value.Value;
-
 import com.github.nhirakawa.hyperbeam.geometry.Coordinates;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
+import java.awt.*;
+import org.immutables.value.Value;
 
 @Value.Immutable
 @ImmutableStyle
 public interface RgbModel {
-
   Coordinates getCoordinates();
   int getRed();
   int getGreen();
@@ -20,5 +17,4 @@ public interface RgbModel {
   default Color getColor() {
     return new Color(getRed(), getGreen(), getBlue());
   }
-
 }
