@@ -2,14 +2,12 @@ package com.github.nhirakawa.hyperbeam.material;
 
 import static com.github.nhirakawa.hyperbeam.util.MathUtils.rand;
 
-import java.util.Optional;
-
-import org.immutables.value.Value;
-
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
+import java.util.Optional;
+import org.immutables.value.Value;
 
 @Value.Immutable
 @ImmutableStyle
@@ -34,15 +32,25 @@ public abstract class DielectricMaterialModel extends Material {
     if (inRay.getDirection().dotProduct(hitRecord.getNormal()) > 0) {
       outwardNormal = hitRecord.getNormal().scalarMultiply(-1);
       niOverNt = getRefractiveIndex();
-      cosine = (getRefractiveIndex() * inRay.getDirection().dotProduct(hitRecord.getNormal())) / inRay.getDirection()
-          .getNorm();
+      cosine =
+        (
+          getRefractiveIndex() *
+          inRay.getDirection().dotProduct(hitRecord.getNormal())
+        ) /
+          inRay.getDirection().getNorm();
     } else {
       outwardNormal = hitRecord.getNormal();
       niOverNt = 1 / getRefractiveIndex();
-      cosine = -inRay.getDirection().dotProduct(hitRecord.getNormal()) / inRay.getDirection().getNorm();
+      cosine =
+        -inRay.getDirection().dotProduct(hitRecord.getNormal()) /
+          inRay.getDirection().getNorm();
     }
 
-    Optional<Vector3> refracted = refract(inRay.getDirection(), outwardNormal, niOverNt);
+    Optional<Vector3> refracted = refract(
+      inRay.getDirection(),
+      outwardNormal,
+      niOverNt
+    );
 
     final double reflectProbability;
     if (refracted.isPresent()) {
@@ -52,29 +60,33 @@ public abstract class DielectricMaterialModel extends Material {
     }
 
     if (rand() < reflectProbability) {
-      return MaterialScatterRecord.builder()
-          .setAttenuation(Vector3.one())
-          .setScattered(
-              Ray.builder()
-                  .setOrigin(hitRecord.getPoint())
-                  .setDirection(reflected)
-                  .setTime(inRay.getTime())
-                  .build()
-          )
-          .setWasScattered(true)
-          .build();
+      return MaterialScatterRecord
+        .builder()
+        .setAttenuation(Vector3.one())
+        .setScattered(
+          Ray
+            .builder()
+            .setOrigin(hitRecord.getPoint())
+            .setDirection(reflected)
+            .setTime(inRay.getTime())
+            .build()
+        )
+        .setWasScattered(true)
+        .build();
     } else {
-      return MaterialScatterRecord.builder()
-          .setAttenuation(Vector3.one())
-          .setScattered(
-              Ray.builder()
-                  .setOrigin(hitRecord.getPoint())
-                  .setDirection(refracted.get())
-                  .setTime(inRay.getTime())
-                  .build()
-          )
-          .setWasScattered(true)
-          .build();
+      return MaterialScatterRecord
+        .builder()
+        .setAttenuation(Vector3.one())
+        .setScattered(
+          Ray
+            .builder()
+            .setOrigin(hitRecord.getPoint())
+            .setDirection(refracted.get())
+            .setTime(inRay.getTime())
+            .build()
+        )
+        .setWasScattered(true)
+        .build();
     }
   }
 
@@ -83,5 +95,4 @@ public abstract class DielectricMaterialModel extends Material {
     double r0Squared = StrictMath.pow(r0, 2);
     return r0Squared + ((1 - r0Squared) * StrictMath.pow((1 - cosine), 5));
   }
-
 }

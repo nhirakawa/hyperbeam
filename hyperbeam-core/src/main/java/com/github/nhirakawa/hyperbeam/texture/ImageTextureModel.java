@@ -1,17 +1,14 @@
 package com.github.nhirakawa.hyperbeam.texture;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.nhirakawa.hyperbeam.geometry.Vector3;
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-
 import javax.imageio.ImageIO;
-
 import org.immutables.value.Value;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.nhirakawa.hyperbeam.geometry.Vector3;
-import com.github.nhirakawa.immutable.style.ImmutableStyle;
 
 @Value.Immutable
 @ImmutableStyle
@@ -46,11 +43,12 @@ public abstract class ImageTextureModel implements Texture {
 
     Color color = new Color(rgb);
 
-    return Vector3.builder()
-        .setX(color.getRed() / 255)
-        .setY(color.getGreen() / 255)
-        .setZ(color.getBlue() / 255)
-        .build();
+    return Vector3
+      .builder()
+      .setX(color.getRed() / 255)
+      .setY(color.getGreen() / 255)
+      .setZ(color.getBlue() / 255)
+      .build();
   }
 
   @Override
@@ -58,5 +56,4 @@ public abstract class ImageTextureModel implements Texture {
   public TextureType getTextureType() {
     return TextureType.IMAGE;
   }
-
 }

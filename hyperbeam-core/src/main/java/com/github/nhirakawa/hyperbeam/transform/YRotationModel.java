@@ -1,17 +1,17 @@
 package com.github.nhirakawa.hyperbeam.transform;
 
-import org.immutables.value.Value;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.hyperbeam.shape.SceneObject;
 import com.github.nhirakawa.hyperbeam.shape.SceneObjectType;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
+import org.immutables.value.Value;
 
 @ImmutableStyle
 @Value.Immutable
 public abstract class YRotationModel implements SceneObject {
 
   public abstract SceneObject getSceneObject();
+
   public abstract double getAngleInDegrees();
 
   @Value.Derived
@@ -37,5 +37,4 @@ public abstract class YRotationModel implements SceneObject {
   public SceneObjectType getShapeType() {
     return SceneObjectType.Y_ROTATION;
   }
-
 }

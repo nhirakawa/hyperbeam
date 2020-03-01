@@ -1,15 +1,14 @@
 package com.github.nhirakawa.hyperbeam.shape;
 
+import com.google.common.collect.ImmutableList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableList;
-
 public class SceneObjectsList implements SceneObject {
-
-  private static final Logger LOG = LoggerFactory.getLogger(SceneObjectsList.class);
+  private static final Logger LOG = LoggerFactory.getLogger(
+    SceneObjectsList.class
+  );
 
   private final List<? extends SceneObject> hittables;
 
@@ -25,5 +24,4 @@ public class SceneObjectsList implements SceneObject {
   public SceneObjectType getShapeType() {
     return SceneObjectType.SCENE_OBJECTS_LIST;
   }
-
 }

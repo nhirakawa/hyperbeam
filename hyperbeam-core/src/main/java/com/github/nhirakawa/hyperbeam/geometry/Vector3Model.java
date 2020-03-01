@@ -1,42 +1,45 @@
 package com.github.nhirakawa.hyperbeam.geometry;
 
-import java.util.function.Function;
-
-import org.immutables.value.Value;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
+import java.util.function.Function;
+import org.immutables.value.Value;
 
 @Value.Immutable
 @ImmutableStyle
 public abstract class Vector3Model {
+  private static final Vector3 ZERO = Vector3
+    .builder()
+    .setX(0)
+    .setY(0)
+    .setZ(0)
+    .build();
 
-  private static final Vector3 ZERO = Vector3.builder()
-      .setX(0)
-      .setY(0)
-      .setZ(0)
-      .build();
+  private static final Vector3 MAX = Vector3
+    .builder()
+    .setX(Double.MAX_VALUE)
+    .setY(Double.MAX_VALUE)
+    .setZ(Double.MAX_VALUE)
+    .build();
 
-  private static final Vector3 MAX = Vector3.builder()
-      .setX(Double.MAX_VALUE)
-      .setY(Double.MAX_VALUE)
-      .setZ(Double.MAX_VALUE)
-      .build();
+  private static final Vector3 MIN = Vector3
+    .builder()
+    .setX(-Double.MAX_VALUE)
+    .setY(-Double.MAX_VALUE)
+    .setZ(-Double.MAX_VALUE)
+    .build();
 
-  private static final Vector3 MIN = Vector3.builder()
-      .setX(-Double.MAX_VALUE)
-      .setY(-Double.MAX_VALUE)
-      .setZ(-Double.MAX_VALUE)
-      .build();
-
-  private static final Vector3 ONE = Vector3.builder()
-      .setX(1)
-      .setY(1)
-      .setZ(1)
-      .build();
+  private static final Vector3 ONE = Vector3
+    .builder()
+    .setX(1)
+    .setY(1)
+    .setZ(1)
+    .build();
 
   public abstract double getX();
+
   public abstract double getY();
+
   public abstract double getZ();
 
   public double get(int i) {
@@ -48,7 +51,9 @@ public abstract class Vector3Model {
       case 2:
         return getZ();
       default:
-        throw new IllegalArgumentException(String.format("%s is not in [0,2]", i));
+        throw new IllegalArgumentException(
+          String.format("%s is not in [0,2]", i)
+        );
     }
   }
 
@@ -75,11 +80,7 @@ public abstract class Vector3Model {
     double y = getY() + vector.getY();
     double z = getZ() + vector.getZ();
 
-    return Vector3.builder()
-        .setX(x)
-        .setY(y)
-        .setZ(z)
-        .build();
+    return Vector3.builder().setX(x).setY(y).setZ(z).build();
   }
 
   public Vector3 subtract(Vector3 vector) {
@@ -87,11 +88,7 @@ public abstract class Vector3Model {
     double y = getY() - vector.getY();
     double z = getZ() - vector.getZ();
 
-    return Vector3.builder()
-        .setX(x)
-        .setY(y)
-        .setZ(z)
-        .build();
+    return Vector3.builder().setX(x).setY(y).setZ(z).build();
   }
 
   public Vector3 multiply(Vector3 vector) {
@@ -99,11 +96,7 @@ public abstract class Vector3Model {
     double y = getY() * vector.getY();
     double z = getZ() * vector.getZ();
 
-    return Vector3.builder()
-        .setX(x)
-        .setY(y)
-        .setZ(z)
-        .build();
+    return Vector3.builder().setX(x).setY(y).setZ(z).build();
   }
 
   public Vector3 divide(Vector3 vector) {
@@ -111,11 +104,7 @@ public abstract class Vector3Model {
     double y = getY() / vector.getY();
     double z = getZ() / vector.getZ();
 
-    return Vector3.builder()
-        .setX(x)
-        .setY(y)
-        .setZ(z)
-        .build();
+    return Vector3.builder().setX(x).setY(y).setZ(z).build();
   }
 
   public Vector3 scalarMultiply(double scalar) {
@@ -123,11 +112,7 @@ public abstract class Vector3Model {
     double y = getY() * scalar;
     double z = getZ() * scalar;
 
-    return Vector3.builder()
-        .setX(x)
-        .setY(y)
-        .setZ(z)
-        .build();
+    return Vector3.builder().setX(x).setY(y).setZ(z).build();
   }
 
   public Vector3 scalarDivide(double scalar) {
@@ -135,11 +120,7 @@ public abstract class Vector3Model {
     double y = getY() / scalar;
     double z = getZ() / scalar;
 
-    return Vector3.builder()
-        .setX(x)
-        .setY(y)
-        .setZ(z)
-        .build();
+    return Vector3.builder().setX(x).setY(y).setZ(z).build();
   }
 
   public double dotProduct(Vector3 vector) {
@@ -155,11 +136,7 @@ public abstract class Vector3Model {
     double y = (getZ() * vector.getX()) - (getX() * vector.getZ());
     double z = (getX() * vector.getY()) - (getY() * vector.getX());
 
-    return Vector3.builder()
-        .setX(x)
-        .setY(y)
-        .setZ(z)
-        .build();
+    return Vector3.builder().setX(x).setY(y).setZ(z).build();
   }
 
   public Vector3 unit() {
@@ -187,11 +164,7 @@ public abstract class Vector3Model {
     double y = -getY();
     double z = -getZ();
 
-    return Vector3.builder()
-        .setX(x)
-        .setY(y)
-        .setZ(z)
-        .build();
+    return Vector3.builder().setX(x).setY(y).setZ(z).build();
   }
 
   public Vector3 apply(Function<Double, Double> function) {
@@ -199,11 +172,7 @@ public abstract class Vector3Model {
     double y = function.apply(getY());
     double z = function.apply(getZ());
 
-    return Vector3.builder()
-        .setX(x)
-        .setY(y)
-        .setZ(z)
-        .build();
+    return Vector3.builder().setX(x).setY(y).setZ(z).build();
   }
 
   public static Vector3 zero() {
@@ -221,5 +190,4 @@ public abstract class Vector3Model {
   public static Vector3 min() {
     return MIN;
   }
-
 }

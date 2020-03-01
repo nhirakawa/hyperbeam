@@ -1,7 +1,6 @@
 package com.github.nhirakawa.hyperbeam.shape;
 
 public enum SceneObjectType {
-
   SPHERE,
   MOVING_SPHERE,
   XY_RECTANGLE,
@@ -15,5 +14,4 @@ public enum SceneObjectType {
   AXIS_ALIGNED_BOUNDING_BOX,
   BOUNDING_VOLUME_HIERARCHY,
   SCENE_OBJECTS_LIST,
-
 }
