@@ -1,8 +1,7 @@
 package com.github.nhirakawa.hyperbeam.shape;
 
-import org.immutables.value.Value;
-
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
+import org.immutables.value.Value;
 
 @Value.Immutable
 @ImmutableStyle
@@ -14,5 +13,4 @@ public abstract class ReverseNormalsModel implements SceneObject {
   public SceneObjectType getShapeType() {
     return SceneObjectType.REVERSE_NORMALS;
   }
-
 }

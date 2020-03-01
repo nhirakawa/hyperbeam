@@ -1,18 +1,16 @@
 package com.github.nhirakawa.hyperbeam.camera;
 
-import org.immutables.value.Value;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.util.MathUtils;
 import com.github.nhirakawa.hyperbeam.util.VectorUtils;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
+import org.immutables.value.Value;
 
 @Value.Immutable
 @ImmutableStyle
 public interface CameraModel {
-
   Vector3 getLookFrom();
   Vector3 getLookAt();
   Vector3 getViewUp();
@@ -74,9 +72,10 @@ public interface CameraModel {
   @Value.Lazy
   @JsonIgnore
   default Vector3 getLowerLeftCorner() {
-    return getOrigin().subtract(getU().scalarMultiply(getHalfWidth() * getFocusDistance()))
-        .subtract(getV().scalarMultiply(getHalfHeight() * getFocusDistance()))
-        .subtract(getW().scalarMultiply(getFocusDistance()));
+    return getOrigin()
+      .subtract(getU().scalarMultiply(getHalfWidth() * getFocusDistance()))
+      .subtract(getV().scalarMultiply(getHalfHeight() * getFocusDistance()))
+      .subtract(getW().scalarMultiply(getFocusDistance()));
   }
 
   @Value.Lazy
@@ -92,21 +91,26 @@ public interface CameraModel {
   }
 
   default Ray getRay(double s, double t) {
-    Vector3 rd = VectorUtils.getRandomVectorInUnitDisk().scalarMultiply(getLensRadius());
-    Vector3 offset = getU().scalarMultiply(rd.getX()).add(getV().scalarMultiply(rd.getY()));
+    Vector3 rd = VectorUtils
+      .getRandomVectorInUnitDisk()
+      .scalarMultiply(getLensRadius());
+    Vector3 offset = getU()
+      .scalarMultiply(rd.getX())
+      .add(getV().scalarMultiply(rd.getY()));
 
     double time = getTime0() + (MathUtils.rand() * (getTime1() - getTime0()));
 
-    return Ray.builder()
-        .setOrigin(getOrigin().add(offset))
-        .setDirection(
-            getLowerLeftCorner().add(getHorizontal().scalarMultiply(s))
-                .add(getVertical().scalarMultiply(t))
-                .subtract(getOrigin())
-                .subtract(offset)
-        )
-        .setTime(time)
-        .build();
+    return Ray
+      .builder()
+      .setOrigin(getOrigin().add(offset))
+      .setDirection(
+        getLowerLeftCorner()
+          .add(getHorizontal().scalarMultiply(s))
+          .add(getVertical().scalarMultiply(t))
+          .subtract(getOrigin())
+          .subtract(offset)
+      )
+      .setTime(time)
+      .build();
   }
-
 }

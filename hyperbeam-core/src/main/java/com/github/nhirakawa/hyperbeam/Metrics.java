@@ -4,7 +4,6 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 
 public final class Metrics {
-
   private static final MetricRegistry METRIC_REGISTRY = new MetricRegistry();
 
   private Metrics() {}
