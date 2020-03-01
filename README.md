@@ -31,7 +31,6 @@ A (toy) ray tracer in Java
   - More idiomatic Java
   - Better variable names
   - `Shape` is a catch-all in `Scene` - that should be a better abstraction
-- Java 11?
 - External scene files (OBJ? PLY? STL? Something else?)
   - Will need to add generic triangle meshes
   - ANTLR parsing
