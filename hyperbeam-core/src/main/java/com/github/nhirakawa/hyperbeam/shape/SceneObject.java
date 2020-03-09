@@ -3,8 +3,11 @@ package com.github.nhirakawa.hyperbeam.shape;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.github.nhirakawa.hyperbeam.geometry.Ray;
+import com.github.nhirakawa.hyperbeam.RayProcessor;
 import com.github.nhirakawa.hyperbeam.transform.Translation;
 import com.github.nhirakawa.hyperbeam.transform.YRotation;
+import java.util.Optional;
 
 @SuppressWarnings("ClassReferencesSubclass")
 @JsonTypeInfo(
@@ -34,4 +37,17 @@ import com.github.nhirakawa.hyperbeam.transform.YRotation;
 public interface SceneObject {
   @SuppressWarnings("unused")
   SceneObjectType getShapeType();
+
+  Optional<HitRecord> hit(
+    RayProcessor rayProcessor,
+    Ray ray,
+    double tMin,
+    double tMax
+  );
+
+  Optional<AxisAlignedBoundingBox> getBoundingBox(
+    RayProcessor rayProcessor,
+    double t0,
+    double t1
+  );
 }

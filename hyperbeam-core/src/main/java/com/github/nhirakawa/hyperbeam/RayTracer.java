@@ -232,8 +232,8 @@ public class RayTracer {
   }
 
   private Vector3 color(Ray ray, SceneObject sceneObject, int depth) {
-    Optional<HitRecord> maybeHitRecord = rayProcessor.hit(
-      sceneObject,
+    Optional<HitRecord> maybeHitRecord = sceneObject.hit(
+      rayProcessor,
       ray,
       0.001,
       Double.MAX_VALUE
