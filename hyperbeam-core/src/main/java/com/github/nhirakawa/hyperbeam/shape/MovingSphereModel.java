@@ -1,8 +1,11 @@
 package com.github.nhirakawa.hyperbeam.shape;
 
+import com.github.nhirakawa.hyperbeam.geometry.Ray;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.Material;
+import com.github.nhirakawa.hyperbeam.RayProcessor;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
+import java.util.Optional;
 import org.immutables.value.Value;
 
 @Value.Immutable
@@ -25,6 +28,25 @@ public abstract class MovingSphereModel implements SceneObject {
   @Value.Auxiliary
   public SceneObjectType getShapeType() {
     return SceneObjectType.MOVING_SPHERE;
+  }
+
+  @Override
+  public Optional<HitRecord> hit(
+    RayProcessor rayProcessor,
+    Ray ray,
+    double tMin,
+    double tMax
+  ) {
+    return rayProcessor.hitMovingSphere(this, ray, tMin, tMax);
+  }
+
+  @Override
+  public Optional<AxisAlignedBoundingBox> getBoundingBox(
+    RayProcessor rayProcessor,
+    double t0,
+    double t1
+  ) {
+    return rayProcessor.getBoundingBoxForMovingSphere(this, t0, t1);
   }
 
   public Vector3 getCenter(double time) {

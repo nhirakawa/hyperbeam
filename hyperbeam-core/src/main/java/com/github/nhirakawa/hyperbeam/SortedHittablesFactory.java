@@ -52,13 +52,13 @@ public class SortedHittablesFactory {
     Function<AxisAlignedBoundingBox, Double> function
   ) {
     return (hittable1, hittable2) -> {
-      Optional<AxisAlignedBoundingBox> box1 = rayProcessor.getBoundingBox(
-        hittable1,
+      Optional<AxisAlignedBoundingBox> box1 = hittable1.getBoundingBox(
+        rayProcessor,
         0,
         0
       );
-      Optional<AxisAlignedBoundingBox> box2 = rayProcessor.getBoundingBox(
-        hittable2,
+      Optional<AxisAlignedBoundingBox> box2 = hittable2.getBoundingBox(
+        rayProcessor,
         0,
         0
       );

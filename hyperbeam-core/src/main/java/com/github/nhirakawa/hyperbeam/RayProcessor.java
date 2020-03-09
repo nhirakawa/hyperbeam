@@ -25,87 +25,7 @@ import java.util.Optional;
 
 public class RayProcessor {
 
-  // hit record
-  public Optional<HitRecord> hit(
-    SceneObject sceneObject,
-    Ray ray,
-    double tMin,
-    double tMax
-  ) {
-    if (sceneObject instanceof SphereModel) {
-      return hitSphere((SphereModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof BoundingVolumeHierarchyModel) {
-      return hitBoundingVolumeHierarchy(
-        (BoundingVolumeHierarchyModel) sceneObject,
-        ray,
-        tMin,
-        tMax
-      );
-    }
-
-    if (sceneObject instanceof BoxModel) {
-      return hitBox((BoxModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof SceneObjectsList) {
-      return hitSceneObjectsList(
-        (SceneObjectsList) sceneObject,
-        ray,
-        tMin,
-        tMax
-      );
-    }
-
-    if (sceneObject instanceof ConstantMediumModel) {
-      return hitConstantMedium(
-        (ConstantMediumModel) sceneObject,
-        ray,
-        tMin,
-        tMax
-      );
-    }
-
-    if (sceneObject instanceof MovingSphereModel) {
-      return hitMovingSphere((MovingSphereModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof ReverseNormalsModel) {
-      return hitReverseNormals(
-        (ReverseNormalsModel) sceneObject,
-        ray,
-        tMin,
-        tMax
-      );
-    }
-
-    if (sceneObject instanceof XYRectangleModel) {
-      return hitXYRectantle((XYRectangleModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof XZRectangleModel) {
-      return hitXZRectangle((XZRectangleModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof YZRectangleModel) {
-      return hitYZRectangle((YZRectangleModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof TranslationModel) {
-      return hitTranslation((TranslationModel) sceneObject, ray, tMin, tMax);
-    }
-
-    if (sceneObject instanceof YRotationModel) {
-      return hitYRotation((YRotationModel) sceneObject, ray, tMin, tMax);
-    }
-
-    throw new IllegalArgumentException(
-      "Can't hit unknown object - " + sceneObject
-    );
-  }
-
-  private Optional<HitRecord> hitSphere(
+  public Optional<HitRecord> hitSphere(
     SphereModel sphere,
     Ray ray,
     double tMin,
@@ -182,7 +102,7 @@ public class RayProcessor {
     return Optional.empty();
   }
 
-  private Optional<HitRecord> hitBoundingVolumeHierarchy(
+  public Optional<HitRecord> hitBoundingVolumeHierarchy(
     BoundingVolumeHierarchyModel boundingVolumeHierarchy,
     Ray ray,
     double tMin,
@@ -194,18 +114,12 @@ public class RayProcessor {
         )
         .hit(ray, tMin, tMax)
     ) {
-      Optional<HitRecord> leftHitRecord = hit(
-        boundingVolumeHierarchy.getLeft(),
-        ray,
-        tMin,
-        tMax
-      );
-      Optional<HitRecord> rightHitRecord = hit(
-        boundingVolumeHierarchy.getRight(),
-        ray,
-        tMin,
-        tMax
-      );
+      Optional<HitRecord> leftHitRecord = boundingVolumeHierarchy
+        .getLeft()
+        .hit(this, ray, tMin, tMax);
+      Optional<HitRecord> rightHitRecord = boundingVolumeHierarchy
+        .getRight()
+        .hit(this, ray, tMin, tMax);
 
       if (leftHitRecord.isPresent() && rightHitRecord.isPresent()) {
         if (leftHitRecord.get().getT() < rightHitRecord.get().getT()) {
@@ -225,16 +139,16 @@ public class RayProcessor {
     }
   }
 
-  private Optional<HitRecord> hitBox(
+  public Optional<HitRecord> hitBox(
     BoxModel box,
     Ray ray,
     double tMin,
     double tMax
   ) {
-    return hit(box.getSceneObjectsList(), ray, tMin, tMax);
+    return box.getSceneObjectsList().hit(this, ray, tMin, tMax);
   }
 
-  private Optional<HitRecord> hitSceneObjectsList(
+  public Optional<HitRecord> hitSceneObjectsList(
     SceneObjectsList sceneObjectsList,
     Ray ray,
     double tMin,
@@ -244,12 +158,10 @@ public class RayProcessor {
     double closestSoFar = tMax;
 
     for (int i = 0; i < sceneObjectsList.getHittables().size(); i++) {
-      Optional<HitRecord> maybeHitRecord = hit(
-        sceneObjectsList.getHittables().get(i),
-        ray,
-        tMin,
-        closestSoFar
-      );
+      Optional<HitRecord> maybeHitRecord = sceneObjectsList
+        .getHittables()
+        .get(i)
+        .hit(this, ray, tMin, closestSoFar);
       if (maybeHitRecord.isPresent()) {
         tempRecord = maybeHitRecord;
         closestSoFar = maybeHitRecord.get().getT();
@@ -259,28 +171,22 @@ public class RayProcessor {
     return tempRecord;
   }
 
-  private Optional<HitRecord> hitConstantMedium(
+  public Optional<HitRecord> hitConstantMedium(
     ConstantMediumModel constantMedium,
     Ray ray,
     double tMin,
     double tMax
   ) {
-    Optional<HitRecord> hitRecord1 = hit(
-      constantMedium.getSceneObject(),
-      ray,
-      -Double.MAX_VALUE,
-      Double.MAX_VALUE
-    );
+    Optional<HitRecord> hitRecord1 = constantMedium
+      .getSceneObject()
+      .hit(this, ray, -Double.MAX_VALUE, Double.MAX_VALUE);
     if (!hitRecord1.isPresent()) {
       return Optional.empty();
     }
 
-    Optional<HitRecord> hitRecord2 = hit(
-      constantMedium.getSceneObject(),
-      ray,
-      hitRecord1.get().getT() + 0.0001,
-      Double.MAX_VALUE
-    );
+    Optional<HitRecord> hitRecord2 = constantMedium
+      .getSceneObject()
+      .hit(this, ray, hitRecord1.get().getT() + 0.0001, Double.MAX_VALUE);
     if (!hitRecord2.isPresent()) {
       return Optional.empty();
     }
@@ -325,7 +231,7 @@ public class RayProcessor {
     );
   }
 
-  private Optional<HitRecord> hitMovingSphere(
+  public Optional<HitRecord> hitMovingSphere(
     MovingSphereModel movingSphere,
     Ray ray,
     double tMin,
@@ -382,17 +288,19 @@ public class RayProcessor {
     return Optional.empty();
   }
 
-  private Optional<HitRecord> hitReverseNormals(
+  public Optional<HitRecord> hitReverseNormals(
     ReverseNormalsModel reverseNormals,
     Ray ray,
     double tMin,
     double tMax
   ) {
-    return hit(reverseNormals.getSceneObject(), ray, tMin, tMax)
+    return reverseNormals
+      .getSceneObject()
+      .hit(this, ray, tMin, tMax)
       .map(hitRecord -> hitRecord.withNormal(hitRecord.getNormal().negate()));
   }
 
-  private Optional<HitRecord> hitXYRectantle(
+  public Optional<HitRecord> hitXYRectantle(
     XYRectangleModel xyRectangle,
     Ray ray,
     double tMin,
@@ -437,7 +345,7 @@ public class RayProcessor {
     );
   }
 
-  private Optional<HitRecord> hitXZRectangle(
+  public Optional<HitRecord> hitXZRectangle(
     XZRectangleModel xzRectangle,
     Ray ray,
     double tMin,
@@ -480,7 +388,7 @@ public class RayProcessor {
     );
   }
 
-  private Optional<HitRecord> hitYZRectangle(
+  public Optional<HitRecord> hitYZRectangle(
     YZRectangleModel yzRectangle,
     Ray ray,
     double tMin,
@@ -523,7 +431,7 @@ public class RayProcessor {
     );
   }
 
-  private Optional<HitRecord> hitTranslation(
+  public Optional<HitRecord> hitTranslation(
     TranslationModel translation,
     Ray ray,
     double tMin,
@@ -533,7 +441,9 @@ public class RayProcessor {
       ray.getOrigin().subtract(translation.getOffset())
     );
 
-    return hit(translation.getSceneObject(), offsetRay, tMin, tMax)
+    return translation
+      .getSceneObject()
+      .hit(this, offsetRay, tMin, tMax)
       .map(
         hitRecord -> hitRecord.withPoint(
           hitRecord.getPoint().add(translation.getOffset())
@@ -541,7 +451,7 @@ public class RayProcessor {
       );
   }
 
-  private Optional<HitRecord> hitYRotation(
+  public Optional<HitRecord> hitYRotation(
     YRotationModel yRotation,
     Ray ray,
     double tMin,
@@ -585,12 +495,9 @@ public class RayProcessor {
       .setDirection(newDirection)
       .build();
 
-    Optional<HitRecord> maybeHitRecord = hit(
-      yRotation.getSceneObject(),
-      rotatedRay,
-      tMin,
-      tMax
-    );
+    Optional<HitRecord> maybeHitRecord = yRotation
+      .getSceneObject()
+      .hit(this, rotatedRay, tMin, tMax);
     if (!maybeHitRecord.isPresent()) {
       return Optional.empty();
     }
@@ -637,102 +544,7 @@ public class RayProcessor {
     );
   }
 
-  // bounding box
-  public Optional<AxisAlignedBoundingBox> getBoundingBox(
-    SceneObject sceneObject,
-    double t0,
-    double t1
-  ) {
-    if (sceneObject instanceof BoundingVolumeHierarchyModel) {
-      return getBoundingBoxForBoundingVolumeHierarcy(
-        (BoundingVolumeHierarchyModel) sceneObject,
-        t0,
-        t1
-      );
-    }
-
-    if (sceneObject instanceof BoxModel) {
-      return getBoundingBoxForBox((BoxModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof ConstantMediumModel) {
-      return getBoundingBoxForConstantMedium(
-        (ConstantMediumModel) sceneObject,
-        t0,
-        t1
-      );
-    }
-
-    if (sceneObject instanceof MovingSphereModel) {
-      return getBoundingBoxForMovingSphere(
-        (MovingSphereModel) sceneObject,
-        t0,
-        t1
-      );
-    }
-
-    if (sceneObject instanceof ReverseNormalsModel) {
-      return getBoundingBoxForReverseNormals(
-        (ReverseNormalsModel) sceneObject,
-        t0,
-        t1
-      );
-    }
-
-    if (sceneObject instanceof SceneObjectsList) {
-      return getBoundingBoxForSceneObjectsList(
-        (SceneObjectsList) sceneObject,
-        t0,
-        t1
-      );
-    }
-
-    if (sceneObject instanceof SphereModel) {
-      return getBoundingBoxForSphere((SphereModel) sceneObject, t0, t1);
-    }
-
-    if (sceneObject instanceof XYRectangleModel) {
-      return getBoundingBoxForXYRectangle(
-        (XYRectangleModel) sceneObject,
-        t0,
-        t1
-      );
-    }
-
-    if (sceneObject instanceof XZRectangleModel) {
-      return getBoundingBoxForXZRectangle(
-        (XZRectangleModel) sceneObject,
-        t0,
-        t1
-      );
-    }
-
-    if (sceneObject instanceof YZRectangleModel) {
-      return getBoundingBoxForYZRectangle(
-        (YZRectangleModel) sceneObject,
-        t0,
-        t1
-      );
-    }
-
-    if (sceneObject instanceof TranslationModel) {
-      return getBoundingBoxForTranslation(
-        (TranslationModel) sceneObject,
-        t0,
-        t1
-      );
-    }
-
-    if (sceneObject instanceof YRotationModel) {
-      return getBoundingBoxForYRotation((YRotationModel) sceneObject, t0, t1);
-    }
-
-    throw new IllegalArgumentException(
-      "Cannot get bounding box for " + sceneObject
-    );
-  }
-
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForBoundingVolumeHierarcy(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForBoundingVolumeHierarcy(
     BoundingVolumeHierarchyModel boundingVolumeHierarchy,
     double t0,
     double t1
@@ -744,19 +556,23 @@ public class RayProcessor {
     );
   }
 
-  private AxisAlignedBoundingBox getAxisAlignedBoundingBoxForBoundingVolumeHierarchy(
+  public AxisAlignedBoundingBox getAxisAlignedBoundingBoxForBoundingVolumeHierarchy(
     BoundingVolumeHierarchyModel boundingVolumeHierarchy
   ) {
-    Optional<AxisAlignedBoundingBox> leftBox = getBoundingBox(
-      boundingVolumeHierarchy.getLeft(),
-      boundingVolumeHierarchy.getTime0(),
-      boundingVolumeHierarchy.getTime1()
-    );
-    Optional<AxisAlignedBoundingBox> rightBox = getBoundingBox(
-      boundingVolumeHierarchy.getRight(),
-      boundingVolumeHierarchy.getTime0(),
-      boundingVolumeHierarchy.getTime1()
-    );
+    Optional<AxisAlignedBoundingBox> leftBox = boundingVolumeHierarchy
+      .getLeft()
+      .getBoundingBox(
+        this,
+        boundingVolumeHierarchy.getTime0(),
+        boundingVolumeHierarchy.getTime1()
+      );
+    Optional<AxisAlignedBoundingBox> rightBox = boundingVolumeHierarchy
+      .getRight()
+      .getBoundingBox(
+        this,
+        boundingVolumeHierarchy.getTime0(),
+        boundingVolumeHierarchy.getTime1()
+      );
 
     Preconditions.checkState(
       leftBox.isPresent(),
@@ -775,7 +591,7 @@ public class RayProcessor {
     );
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForBox(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForBox(
     BoxModel box,
     double t0,
     double t1
@@ -783,15 +599,15 @@ public class RayProcessor {
     return Optional.of(box.getBoundingBox());
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForConstantMedium(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForConstantMedium(
     ConstantMediumModel constantMedium,
     double t0,
     double t1
   ) {
-    return getBoundingBox(constantMedium.getSceneObject(), t0, t1);
+    return constantMedium.getSceneObject().getBoundingBox(this, t0, t1);
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForMovingSphere(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForMovingSphere(
     MovingSphereModel movingSphere,
     double t0,
     double t1
@@ -817,15 +633,15 @@ public class RayProcessor {
     return Optional.of(AxisAlignedBoundingBox.getSurroundingBox(box0, box1));
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForReverseNormals(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForReverseNormals(
     ReverseNormalsModel reverseNormals,
     double t0,
     double t1
   ) {
-    return getBoundingBox(reverseNormals.getSceneObject(), t0, t1);
+    return reverseNormals.getSceneObject().getBoundingBox(this, t0, t1);
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForSceneObjectsList(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForSceneObjectsList(
     SceneObjectsList sceneObjectsList,
     double t0,
     double t1
@@ -834,21 +650,19 @@ public class RayProcessor {
       return Optional.empty();
     }
 
-    Optional<AxisAlignedBoundingBox> current = getBoundingBox(
-      sceneObjectsList.getHittables().get(0),
-      t0,
-      t1
-    );
+    Optional<AxisAlignedBoundingBox> current = sceneObjectsList
+      .getHittables()
+      .get(0)
+      .getBoundingBox(this, t0, t1);
     if (!current.isPresent()) {
       return Optional.empty();
     }
 
     for (int i = 0; i < sceneObjectsList.getHittables().size(); i++) {
-      Optional<AxisAlignedBoundingBox> temp = getBoundingBox(
-        sceneObjectsList.getHittables().get(i),
-        t0,
-        t1
-      );
+      Optional<AxisAlignedBoundingBox> temp = sceneObjectsList
+        .getHittables()
+        .get(i)
+        .getBoundingBox(this, t0, t1);
       if (!temp.isPresent()) {
         return Optional.empty();
       }
@@ -862,7 +676,7 @@ public class RayProcessor {
     return current;
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForSphere(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForSphere(
     SphereModel sphere,
     double t0,
     double t1
@@ -870,7 +684,7 @@ public class RayProcessor {
     return Optional.of(sphere.getAxisAlignedBoundingBox());
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForXYRectangle(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForXYRectangle(
     XYRectangleModel xyRectangle,
     double t0,
     double t1
@@ -878,7 +692,7 @@ public class RayProcessor {
     return xyRectangle.getBoundingBox();
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForXZRectangle(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForXZRectangle(
     XZRectangleModel xzRectangle,
     double t0,
     double t1
@@ -886,7 +700,7 @@ public class RayProcessor {
     return Optional.of(xzRectangle.getBoundingBox());
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForYZRectangle(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForYZRectangle(
     YZRectangleModel yzRectangle,
     double t0,
     double t1
@@ -894,25 +708,25 @@ public class RayProcessor {
     return Optional.of(yzRectangle.getBoundingBox());
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForTranslation(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForTranslation(
     TranslationModel translation,
     double t0,
     double t1
   ) {
-    return getBoundingBox(translation.getSceneObject(), t0, t1)
+    return translation
+      .getSceneObject()
+      .getBoundingBox(this, t0, t1)
       .map(translation::getOffsetAxisAlignedBoundingBox);
   }
 
-  private Optional<AxisAlignedBoundingBox> getBoundingBoxForYRotation(
+  public Optional<AxisAlignedBoundingBox> getBoundingBoxForYRotation(
     YRotationModel yRotation,
     double t0,
     double t1
   ) {
-    Optional<AxisAlignedBoundingBox> maybeBoundingBox = getBoundingBox(
-      yRotation.getSceneObject(),
-      0,
-      1
-    );
+    Optional<AxisAlignedBoundingBox> maybeBoundingBox = yRotation
+      .getSceneObject()
+      .getBoundingBox(this, 0, 1);
     if (!maybeBoundingBox.isPresent()) {
       return Optional.empty();
     }
