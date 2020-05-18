@@ -2,6 +2,25 @@ package com.github.nhirakawa.hyperbeam;
 
 import static com.github.nhirakawa.hyperbeam.util.MathUtils.rand;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
+import javax.imageio.ImageIO;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.codahale.metrics.Timer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nhirakawa.hyperbeam.camera.Camera;
@@ -20,22 +39,6 @@ import com.github.nhirakawa.hyperbeam.shape.SceneObject;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Optional;
-import javax.imageio.ImageIO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class RayTracer {
   private static final Logger LOG = LoggerFactory.getLogger(RayTracer.class);
@@ -46,21 +49,24 @@ public class RayTracer {
   private final ConfigWrapper configWrapper;
   private final RayProcessor rayProcessor;
   private final SortedHittablesFactory sortedHittablesFactory;
+  private final SceneGenerator sceneGenerator;
 
   public RayTracer(
     ObjectMapper objectMapper,
     ConfigWrapper configWrapper,
     RayProcessor rayProcessor,
-    SortedHittablesFactory sortedHittablesFactory
+    SortedHittablesFactory sortedHittablesFactory,
+    SceneGenerator sceneGenerator
   ) {
     this.objectMapper = objectMapper;
     this.configWrapper = configWrapper;
     this.rayProcessor = rayProcessor;
     this.sortedHittablesFactory = sortedHittablesFactory;
+    this.sceneGenerator = sceneGenerator;
   }
 
   public void doThreadedRayTrace() throws IOException {
-    Scene scene = SceneGenerator.generateCornellBox();
+    Scene scene = sceneGenerator.generateCornellBox();
 
     LOG.debug(
       "Scene is {} bytes",

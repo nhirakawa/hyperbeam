@@ -1,7 +1,8 @@
 package com.github.nhirakawa.hyperbeam.scene;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.github.nhirakawa.hyperbeam.camera.Camera;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.material.DiffuseLightMaterial;
@@ -23,32 +24,30 @@ import com.github.nhirakawa.hyperbeam.transform.Translation;
 import com.github.nhirakawa.hyperbeam.transform.YRotation;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
 
 @SuppressWarnings("MagicNumber")
-public final class SceneGenerator {
-
-  private SceneGenerator() {}
-
-  private static final ObjectMapper OBJECT_MAPPER = buildObjectMapper();
+public class SceneGenerator {
 
   private static final Camera COMMON_CAMERA = Camera
-    .builder()
-    .setLookFrom(Vector3.builder().setX(13).setY(2).setZ(3).build())
-    .setLookAt(Vector3.zero())
-    .setViewUp(Vector3.builder().setX(0).setY(1).setZ(0).build())
-    .setFocusDistance(10)
-    .setAperture(0)
-    .setAspectRatio(200 / 100)
-    .setTime0(0)
-    .setTime1(1)
-    .setVerticalFovDegrees(20)
-    .build();
+      .builder()
+      .setLookFrom(Vector3.builder().setX(13).setY(2).setZ(3).build())
+      .setLookAt(Vector3.zero())
+      .setViewUp(Vector3.builder().setX(0).setY(1).setZ(0).build())
+      .setFocusDistance(10)
+      .setAperture(0)
+      .setAspectRatio(200 / 100)
+      .setTime0(0)
+      .setTime1(1)
+      .setVerticalFovDegrees(20)
+      .build();
 
-  public static Scene generateTwoPerlinSpheres() {
+  private final ObjectMapper objectMapper;
+
+  public SceneGenerator(ObjectMapper objectMapper) {
+    this.objectMapper = objectMapper;
+  }
+
+  public Scene generateTwoPerlinSpheres() {
     Texture texture = PerlinNoiseTexture.builder().setScale(0.3).build();
     SceneObject sphere1 = Sphere
       .builder()
@@ -71,7 +70,7 @@ public final class SceneGenerator {
       .build();
   }
 
-  public static Scene generateEarth() {
+  public Scene generateEarth() {
     Material material = LambertianMaterial
       .builder()
       .setTexture(
@@ -100,7 +99,7 @@ public final class SceneGenerator {
       .build();
   }
 
-  public static Scene generateSphereAndLight() {
+  public Scene generateSphereAndLight() {
     Texture texture = PerlinNoiseTexture.builder().setScale(4).build();
 
     List<SceneObject> sceneObjects = ImmutableList.of(
@@ -160,7 +159,7 @@ public final class SceneGenerator {
       .build();
   }
 
-  public static Scene generateCornellBox() {
+  public Scene generateCornellBox() {
     Camera camera = Camera
       .builder()
       .setLookFrom(Vector3.builder().setX(278).setY(278).setZ(-800).build())
@@ -330,7 +329,7 @@ public final class SceneGenerator {
       .build();
   }
 
-  public static Scene generateCornellSmoke() {
+  public Scene generateCornellSmoke() {
     Camera camera = Camera
       .builder()
       .setLookFrom(Vector3.builder().setX(278).setY(278).setZ(-800).build())
@@ -512,32 +511,5 @@ public final class SceneGenerator {
       .setCamera(camera)
       .addAllSceneObjects(sceneObjects)
       .build();
-  }
-
-  private static ObjectMapper buildObjectMapper() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new GuavaModule());
-    return objectMapper;
-  }
-
-  public static void main(String... args) throws IOException {
-    writeScene(generateTwoPerlinSpheres(), "two-perlin-spheres.json");
-    writeScene(generateCornellSmoke(), "cornell-smoke.json");
-    writeScene(generateCornellBox(), "cornell-box.json");
-    writeScene(generateEarth(), "earth.json");
-    writeScene(generateSphereAndLight(), "sphere-and-light.json");
-  }
-
-  private static void writeScene(Scene scene, String filename)
-    throws IOException {
-    File file = new File("src/src/main/resources/scenes");
-
-    if (!file.exists()) {
-      file.mkdir();
-    }
-
-    try (FileWriter fileWriter = new FileWriter("scenes/" + filename)) {
-      fileWriter.write(OBJECT_MAPPER.writeValueAsString(scene));
-    }
   }
 }

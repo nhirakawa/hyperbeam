@@ -1,13 +1,16 @@
 package com.github.nhirakawa.hyperbeam;
 
+import javax.inject.Singleton;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.github.nhirakawa.hyperbeam.config.ConfigWrapper;
+import com.github.nhirakawa.hyperbeam.scene.SceneGenerator;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+
 import dagger.Module;
 import dagger.Provides;
-import javax.inject.Singleton;
 
 @Module
 class HyperbeamModule {
@@ -56,5 +59,11 @@ class HyperbeamModule {
       rayProcessor,
       sortedHittablesFactory
     );
+  }
+
+  @Provides
+  @Singleton
+  static SceneGenerator provideSceneGenerator(ObjectMapper objectMapper) {
+    return new SceneGenerator(objectMapper);
   }
 }
