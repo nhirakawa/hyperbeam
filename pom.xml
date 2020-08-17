@@ -132,7 +132,7 @@
           <compilerArgs>
             <arg>-Xlint:all,-processing</arg>
           </compilerArgs>
-          <release>14</release>
+          <release>11</release>
         </configuration>
       </plugin>
       <plugin>
