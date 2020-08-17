@@ -1,7 +1,5 @@
 package com.github.nhirakawa.hyperbeam.scene;
 
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nhirakawa.hyperbeam.camera.Camera;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
@@ -24,22 +22,22 @@ import com.github.nhirakawa.hyperbeam.transform.Translation;
 import com.github.nhirakawa.hyperbeam.transform.YRotation;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
+import java.util.List;
 
 @SuppressWarnings("MagicNumber")
 public class SceneGenerator {
-
   private static final Camera COMMON_CAMERA = Camera
-      .builder()
-      .setLookFrom(Vector3.builder().setX(13).setY(2).setZ(3).build())
-      .setLookAt(Vector3.zero())
-      .setViewUp(Vector3.builder().setX(0).setY(1).setZ(0).build())
-      .setFocusDistance(10)
-      .setAperture(0)
-      .setAspectRatio(200 / 100)
-      .setTime0(0)
-      .setTime1(1)
-      .setVerticalFovDegrees(20)
-      .build();
+    .builder()
+    .setLookFrom(Vector3.builder().setX(13).setY(2).setZ(3).build())
+    .setLookAt(Vector3.zero())
+    .setViewUp(Vector3.builder().setX(0).setY(1).setZ(0).build())
+    .setFocusDistance(10)
+    .setAperture(0)
+    .setAspectRatio(200 / 100)
+    .setTime0(0)
+    .setTime1(1)
+    .setVerticalFovDegrees(20)
+    .build();
 
   private final ObjectMapper objectMapper;
 
