@@ -1,12 +1,13 @@
 package com.github.nhirakawa.hyperbeam.camera;
 
+import org.immutables.value.Value;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.util.MathUtils;
 import com.github.nhirakawa.hyperbeam.util.VectorUtils;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
-import org.immutables.value.Value;
 
 @Value.Immutable
 @ImmutableStyle
@@ -94,21 +95,30 @@ public interface CameraModel {
     Vector3 rd = VectorUtils
       .getRandomVectorInUnitDisk()
       .scalarMultiply(getLensRadius());
-    Vector3 offset = getU()
-      .scalarMultiply(rd.getX())
-      .add(getV().scalarMultiply(rd.getY()));
+
+    double offsetX = getU().getX() * rd.getX() + getV().getX() * rd.getY();
+    double offsetY = getU().getY() * rd.getX() + getV().getY() * rd.getY();
+    double offsetZ = getU().getZ() * rd.getX() + getV().getZ() * rd.getY();
 
     double time = getTime0() + (MathUtils.rand() * (getTime1() - getTime0()));
 
+    Vector3 direction = Vector3.builder()
+        .setX(getLowerLeftCorner().getX() + getHorizontal().getX() * s + getVertical().getX() * t - getOrigin().getX() - offsetX)
+        .setY(getLowerLeftCorner().getY() + getHorizontal().getY() * s + getVertical().getY() * t - getOrigin().getY() - offsetY)
+        .setZ(getLowerLeftCorner().getZ() + getHorizontal().getZ() * s + getVertical().getZ() * t - getOrigin().getZ() - offsetZ)
+        .build();
+
+    Vector3 originPlusOffset = Vector3.builder()
+        .setX(getOrigin().getX() + offsetX)
+        .setY(getOrigin().getY() + offsetY)
+        .setZ(getOrigin().getZ() + offsetZ)
+        .build();
+
     return Ray
       .builder()
-      .setOrigin(getOrigin().add(offset))
+      .setOrigin(originPlusOffset)
       .setDirection(
-        getLowerLeftCorner()
-          .add(getHorizontal().scalarMultiply(s))
-          .add(getVertical().scalarMultiply(t))
-          .subtract(getOrigin())
-          .subtract(offset)
+          direction
       )
       .setTime(time)
       .build();

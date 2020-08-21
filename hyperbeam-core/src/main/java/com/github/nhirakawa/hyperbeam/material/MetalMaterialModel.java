@@ -1,11 +1,12 @@
 package com.github.nhirakawa.hyperbeam.material;
 
+import org.immutables.value.Value;
+
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 import com.github.nhirakawa.hyperbeam.util.VectorUtils;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
-import org.immutables.value.Value;
 
 @Value.Immutable
 @ImmutableStyle
@@ -27,13 +28,20 @@ public abstract class MetalMaterialModel extends Material {
       inRay.getDirection().unit(),
       hitRecord.getNormal()
     );
+
+    Vector3 random = VectorUtils.getRandomUnitSphereVector();
+
+    Vector3 direction = Vector3.builder()
+        .setX(reflected.getX() + (random.getX() * getFuzz()))
+        .setY(reflected.getY() + (random.getY() + getFuzz()))
+        .setZ(reflected.getZ() + (random.getZ() + getFuzz()))
+        .build();
+
     Ray scatteredRay = Ray
       .builder()
       .setOrigin(hitRecord.getPoint())
       .setDirection(
-        reflected.add(
-          VectorUtils.getRandomUnitSphereVector().scalarMultiply(getFuzz())
-        )
+          direction
       )
       .setTime(inRay.getTime())
       .build();

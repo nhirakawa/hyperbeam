@@ -1,7 +1,8 @@
 package com.github.nhirakawa.hyperbeam.geometry;
 
-import com.github.nhirakawa.immutable.style.ImmutableStyle;
 import org.immutables.value.Value;
+
+import com.github.nhirakawa.immutable.style.ImmutableStyle;
 
 @Value.Immutable
 @ImmutableStyle
@@ -11,6 +12,10 @@ public interface RayModel {
   double getTime();
 
   default Vector3 getPointAtParameter(double t) {
-    return getOrigin().add(getDirection().scalarMultiply(t));
+    return Vector3.builder()
+        .setX(getOrigin().getX() + (getDirection().getX() * t))
+        .setY(getOrigin().getY() + (getDirection().getY() * t))
+        .setZ(getOrigin().getZ() + (getDirection().getZ() * t))
+        .build();
   }
 }

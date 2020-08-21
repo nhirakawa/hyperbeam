@@ -1,12 +1,13 @@
 package com.github.nhirakawa.hyperbeam.material;
 
+import org.immutables.value.Value;
+
 import com.github.nhirakawa.hyperbeam.geometry.Ray;
 import com.github.nhirakawa.hyperbeam.geometry.Vector3;
 import com.github.nhirakawa.hyperbeam.shape.HitRecord;
 import com.github.nhirakawa.hyperbeam.texture.Texture;
 import com.github.nhirakawa.hyperbeam.util.VectorUtils;
 import com.github.nhirakawa.immutable.style.ImmutableStyle;
-import org.immutables.value.Value;
 
 @Value.Immutable
 @ImmutableStyle
@@ -22,10 +23,15 @@ public abstract class LambertianMaterialModel extends Material {
 
   @Override
   public MaterialScatterRecord scatter(Ray inRay, HitRecord hitRecord) {
-    Vector3 target = hitRecord
-      .getPoint()
-      .add(hitRecord.getNormal())
-      .add(VectorUtils.getRandomUnitSphereVector());
+    Vector3 random = VectorUtils.getRandomUnitSphereVector();
+
+    Vector3 target = Vector3.builder()
+        .setX(hitRecord.getPoint().getX() + hitRecord.getNormal().getX() + random.getX())
+        .setY(hitRecord.getPoint().getY() + hitRecord.getNormal().getY() + random.getY())
+        .setZ(hitRecord.getPoint().getZ() + hitRecord.getNormal().getZ() + random.getZ())
+        .build();
+
+
     Ray scatteredRay = Ray
       .builder()
       .setOrigin(hitRecord.getPoint())
